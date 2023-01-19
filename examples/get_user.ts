@@ -7,4 +7,4 @@ async function auth(req: AxiosRequestConfig): Promise<string> {
 
 const c = new TourManager({ api_key: auth, base_url: 'https://rezkit-tours-staging.fly.dev' })
 
-c.user().user().then(console.log)
+c.user.user().then(console.log)

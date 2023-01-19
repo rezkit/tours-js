@@ -1,5 +1,6 @@
+import {ApiGroup} from "./common";
 
-export type FieldData = Record<string, FieldValue>
+export type FieldData = { [name: string]: FieldValue }
 
 export type FieldValue = StringFieldValue | NumberFieldValue | BooleanFieldValue | SelectionFieldValue
 
@@ -21,4 +22,10 @@ export interface BooleanFieldValue {
 export interface SelectionFieldValue {
     type: 'select'
     value: string[]
+}
+
+type EntityType = 'holiday' | 'holiday_version' | 'holiday_departure'
+
+export class Api extends ApiGroup {
+
 }

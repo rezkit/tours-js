@@ -1,6 +1,7 @@
 import {ApiGroup, Entity} from "./common";
+import {AxiosInstance} from "axios";
 
-export interface User extends Entity {
+interface IUser extends Entity {
 
     /**
      * User's full name
@@ -28,6 +29,26 @@ export interface User extends Entity {
     preferences: null
 }
 
+export class User implements IUser {
+
+    private axios: AxiosInstance
+
+    constructor(values: IUser, axios: AxiosInstance) {
+        Object.assign(this, values)
+        this.axios = axios
+    }
+
+    created_at!: string;
+    email!: string;
+    id!: string;
+    name!: string;
+    organization_id!: string;
+    preferences!: null;
+    rezkit_id!: string;
+    updated_at!: string;
+
+}
+
 export interface Organization extends Entity {
     name: string
     rezkit_id: string
@@ -40,7 +61,8 @@ export class Api extends ApiGroup {
      * Get the user profile of the API caller
      */
     async user(): Promise<User> {
-        return (await this.axios.get<User>('/user')).data
+        const user = (await this.axios.get<IUser>('/user')).data
+        return new User(user, this.axios)
     }
 
     async organization(): Promise<Organization> {

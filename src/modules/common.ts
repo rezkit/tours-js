@@ -1,4 +1,5 @@
 import { AxiosInstance } from "axios";
+import {ParsedUrlQuery, ParsedUrlQueryInput} from "querystring";
 
 export abstract class ApiGroup {
    protected axios: AxiosInstance
@@ -9,11 +10,11 @@ export abstract class ApiGroup {
 }
 
 export interface Entity {
-    id: string
+    readonly id: string
 
-    created_at: string
+    readonly created_at: string
 
-    updated_at: string
+    readonly updated_at: string
 }
 
 /**
