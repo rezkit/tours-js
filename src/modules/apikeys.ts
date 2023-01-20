@@ -67,6 +67,17 @@ export interface CreateApiKeyResponse {
 
 export class Api extends ApiGroup {
 
+    /***
+     * List API Keys
+     *
+     * @param query
+     * @example List Keys
+     *
+     *  import TourManager from '@rezkit/tours'
+     *  const client = new TourManager({ api_key })
+     *  const keys = await client.apiKeys.list({ page: 1, limit: 50 })
+     *
+     */
     async list(query?: PaginatedQuery): Promise<Paginated<ApiKey>> {
         let q = ''
 
@@ -80,12 +91,34 @@ export class Api extends ApiGroup {
         return data as Paginated<ApiKey>
     }
 
+    /**
+     * Find a key by ID
+     *
+     * @param id
+     *
+     * @example Find API Key
+     *
+     *  import TourManager from '@rezkit/tours'
+     *  const client = new TourManager({ api_key })
+     *  const key = await client.apiKeys.get(id)
+     */
     async find(id: string): Promise<ApiKey> {
         const { data } = await this.axios.get(`/api-keys/${id}`)
 
         return new ApiKey(data, this.axios)
     }
 
+    /**
+     * Create a new API Key
+     *
+     * @param params
+     *
+     * @example Create API Key
+     *
+     *  import TourManager from '@rezkit/tours'
+     *  const client = new TourManager({ api_key })
+     *  const key = await client.apiKeys.create({ name: 'My Awesome App' })
+     */
     async create(params: CreateApiKeyRequest): Promise<CreateApiKeyResponse> {
 
         const result = (await this.axios.post(`/api-keys`, params)).data

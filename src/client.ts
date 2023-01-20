@@ -1,6 +1,7 @@
 import {default as Axios, AxiosRequestConfig, AxiosInstance, AxiosError, AxiosResponse} from 'axios'
 import * as Modules from './modules'
 import Config from "./config";
+export * from './config';
 import {ValidationError} from "./modules/errors";
 
 export const BASE_URL = 'https://api.tours.rezkit.app';
