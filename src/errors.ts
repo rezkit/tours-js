@@ -9,3 +9,15 @@ export class ValidationError implements Error {
         this.errors = errors
     }
 }
+
+export class NotFoundError implements Error {
+    message: string;
+    name: string = 'Not Found';
+
+    readonly uri: string;
+
+    constructor(message: string, uri: string) {
+        this.message = message
+        this.uri = uri
+    }
+}

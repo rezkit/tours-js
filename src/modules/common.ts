@@ -12,9 +12,9 @@ export abstract class ApiGroup {
 export interface Entity {
     readonly id: string
 
-    readonly created_at: string
+    readonly created_at: string | Date
 
-    readonly updated_at: string
+    readonly updated_at: string | Date
 }
 
 /**
@@ -49,8 +49,14 @@ export interface Paginated<T> {
 
 export interface PaginatedQuery {
     page?: number
-
     limit?: number
 
-    offset?: number
+    trash?: boolean
+}
+
+export interface SortableQuery<T> {
+    sort?: T
+
+    order?: 'asc' | 'desc'
+
 }

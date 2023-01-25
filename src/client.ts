@@ -2,20 +2,20 @@ import {default as Axios, AxiosRequestConfig, AxiosInstance, AxiosError, AxiosRe
 import * as Modules from './modules'
 import Config from "./config";
 export * from './config';
-import {ValidationError} from "./modules/errors";
+import {NotFoundError, ValidationError} from "./errors";
 
 export const BASE_URL = 'https://api.tours.rezkit.app';
 
 export default class TourManager {
 
-    private axios: AxiosInstance
+    private readonly axios: AxiosInstance
 
     constructor(config: Config, requestConfig?: AxiosRequestConfig) {
         this.axios = Axios.create(requestConfig)
 
         this.axios.defaults.baseURL = config?.base_url || BASE_URL
 
-        this.axios.interceptors.response.use(null, this.handleError)
+        this.axios.interceptors.response.use(null, handleResponseError)
 
         if (config.api_key) {
             this.axios.interceptors.request.use( async (req) => {
@@ -41,8 +41,6 @@ export default class TourManager {
         }
     }
 
-
-
     get holidays(): Modules.Holidays.Api {
         return new Modules.Holidays.Api(this.axios)
     }
@@ -51,24 +49,38 @@ export default class TourManager {
         return new Modules.User.Api(this.axios)
     }
 
+    /**
+     * Field Management
+     */
     get fields(): Modules.Fields.Api {
         return new Modules.Fields.Api(this.axios)
     }
 
+    /**
+     * API Key Management
+     */
     get apiKeys(): Modules.ApiKeys.Api {
         return new Modules.ApiKeys.Api(this.axios)
     }
+}
 
-    private handleError(error: any) {
+/**
+ * Axios Response Error Handler
+ * @param error
+ * @private
+ */
+function handleResponseError(error: any) {
 
-        if (error.hasOwnProperty('response')) {
-            const { response }: { response: AxiosResponse } = error
+    if (error.hasOwnProperty('response')) {
+        const { response }: { response: AxiosResponse } = error
 
-            if (response.status === 422) {
+        switch (response.status) {
+            case 422:
                 throw new ValidationError(response.data)
-            }
+            case 404:
+                throw new NotFoundError(response.data.message, error.request.url)
         }
-
-        throw error
     }
+
+    throw error
 }

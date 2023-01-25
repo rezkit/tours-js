@@ -1,8 +1,8 @@
-import {ApiGroup, Entity, Paginated, PaginatedQuery} from "./common";
+import {ApiGroup, Entity, Paginated, PaginatedQuery, SortableQuery} from "./common";
 import * as querystring from "querystring";
 import {ParsedUrlQuery} from "querystring";
 import {FieldData} from "./fields";
-import {AxiosInstance} from "axios";
+import axios, {AxiosInstance} from "axios";
 
 interface IHoliday extends Entity {
     name: string
@@ -15,7 +15,7 @@ interface IHoliday extends Entity {
 
     published: boolean
 
-    rank: number
+    ordering: number
 
     fields: FieldData
 }
@@ -35,17 +35,43 @@ export interface CreateHolidayInput {
 export type UpdateHolidayInput = Partial<CreateHolidayInput>
 
 export class Holiday implements IHoliday {
+
     private axios: AxiosInstance;
 
+    /**
+     * @internal
+     * @param values
+     * @param axios
+     */
     constructor(values: IHoliday, axios: AxiosInstance) {
         Object.assign(this, values)
         this.axios = axios
     }
 
-    async delete(): Promise<void> {
+    /**
+     * Destroy this resource
+     *
+     * Destroys the resource and marks itself as deleted.
+     *
+     * @example
+     * await holiday.destroy()
+     */
+    async destroy(): Promise<void> {
         await this.axios.delete(`/holidays/${this.id}`)
+        this.deleted_at = new Date()
     }
 
+    /**
+     * Update the holiday with the given values.
+     * Updates the current resource with the new values.
+     *
+     * @param params - New holiday properties
+     * @returns Update holiday resource
+     *
+     * @example
+     *  const holiday = client.holidays.find(id)
+     *  await holiday.update({ name: 'New Name' })
+     */
     async update(params: UpdateHolidayInput): Promise<Holiday> {
         const rsp = (await this.axios.patch<IHoliday>(`/holidays/${this.id}`, params)).data
         Object.assign(this, rsp)
@@ -53,18 +79,22 @@ export class Holiday implements IHoliday {
     }
 
     code!: string;
-    readonly created_at!: string;
+    readonly created_at!: string | Date;
     description!: string | null;
     fields!: FieldData;
     readonly id!: string;
     introduction!: string | null;
     name!: string;
     published!: boolean;
-    rank!: number;
-    readonly updated_at!: string;
+    ordering!: number;
+    readonly updated_at!: string | Date;
+
+    deleted_at!: null | string | Date;
 }
 
-export interface HolidayListQuery extends PaginatedQuery {
+export type HolidaySortFields = 'id' | 'name' | 'code' | 'ordering' | 'created_at' | 'updated_at'
+
+export interface HolidayListQuery extends PaginatedQuery, SortableQuery<HolidaySortFields> {
 
     /**
      * Filter holidays by name
@@ -80,15 +110,26 @@ export interface HolidayListQuery extends PaginatedQuery {
      * Free-text search query
      */
     search?: string
+
+
+    /**
+     * Filter by publishing status
+     */
+    published?: boolean
 }
 
 export class Api extends ApiGroup {
 
-
     /**
-     * List Holidays
+     * Filter, sort, paginate and list Holidays
      *
-     * @param query
+     * @param query - List query parameters
+     * @returns Paginated holiday list
+     *
+     * @example
+     * const client = new TourManager({ api_key })
+     * const { data } = await client.holidays.list({ sort: 'code', page: 1, limit: 50 })
+     * data.forEach(h => console.log(h.code + "\t" + h.name))
      */
     async list(query?: HolidayListQuery): Promise<Paginated<Holiday>> {
         const serializedQuery = query !== undefined ? '?' + querystring.encode(query as ParsedUrlQuery) : ''
@@ -100,14 +141,29 @@ export class Api extends ApiGroup {
     }
 
     /**
-     * Get a holiday
-     * @param id Holiday
+     * Get a single holiday by ID
+     *
+     * @param id - Holiday ID
+     *
+     * @returns Holiday resource
+     *
+     * @example
+     * const client = new TourManager({ api_key })
+     * const holiday = await client.holidays.find(id)
      */
     async find(id: string): Promise<Holiday> {
         const h = (await this.axios.get<IHoliday>(`/holidays/${id}`)).data
         return new Holiday(h, this.axios)
     }
 
+    /**
+     * Create a new holiday with the given properties
+     * @param params Holiday properties
+     *
+     * @example
+     * const c = new TourManager({ api_key })
+     * const holiday: Holiday = await c.holidays.create({ name: 'x', code: 'TEST' })
+     */
     async create(params: CreateHolidayInput): Promise<Holiday> {
         const h = (await this.axios.post<IHoliday>(`/holidays`, params)).data
         return new Holiday(h, this.axios)
@@ -124,6 +180,16 @@ export class Api extends ApiGroup {
      * @param id Holiday ID
      */
     async delete(id: string): Promise<void> {
-        return (await this.axios.delete(`/holidays/${id}`))
+        await this.axios.delete(`/holidays/${id}`)
+    }
+
+    /**
+     * Restore a deleted holiday
+     *
+     * @param id
+     */
+    async restore(id: string): Promise<Holiday> {
+        const { data } = await this.axios.put(`/holidays/${id}/restore`)
+        return new Holiday(data, this.axios)
     }
 }
