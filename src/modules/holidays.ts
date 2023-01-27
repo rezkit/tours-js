@@ -1,4 +1,4 @@
-import {ApiGroup, Entity, Paginated, PaginatedQuery, SortableQuery} from "./common";
+import {ApiGroup, Entity, Paginated, PaginatedQuery, ReorderCommand, SortableQuery} from "./common";
 import * as querystring from "querystring";
 import {ParsedUrlQuery} from "querystring";
 import {FieldData} from "./fields";
@@ -32,7 +32,9 @@ export interface CreateHolidayInput {
     published?: boolean
 }
 
-export type UpdateHolidayInput = Partial<CreateHolidayInput>
+export interface UpdateHolidayInput extends Partial<CreateHolidayInput> {
+    ordering?: ReorderCommand
+}
 
 export class Holiday implements IHoliday {
 

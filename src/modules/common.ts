@@ -60,3 +60,5 @@ export interface SortableQuery<T> {
     order?: 'asc' | 'desc'
 
 }
+
+export type ReorderCommand = 'up' | 'down' | 'first' | 'last'
