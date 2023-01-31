@@ -6,12 +6,23 @@ import {NotFoundError, ValidationError} from "./errors";
 
 export const BASE_URL = 'https://api.tours.rezkit.app';
 
-const USER_AGENT = `RezKit/Tours (js/runtime:${process.version})`
+const USER_AGENT = `RezKit/Tours js`
 
+/**
+ * Tour Manager API Client
+ *
+ * API client for connecting to the RezKit Tour Manager
+ */
 export default class TourManager {
 
     private readonly axios: AxiosInstance
 
+    /**
+     * Create a new API Client instance
+     *
+     * @param config - Client configuration
+     * @param requestConfig - Optional Axios request config overrides.
+     */
     constructor(config: Config, requestConfig?: AxiosRequestConfig) {
         this.axios = Axios.create(requestConfig)
 
