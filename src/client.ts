@@ -54,7 +54,7 @@ export default class TourManager {
         } else {
             // Interactive/session auth
             this.axios.defaults.withCredentials = true
-            this.axios.defaults.xsrfCookieName = 'XSRF_TOKEN'
+            this.axios.defaults.xsrfCookieName = 'XSRF-TOKEN'
             this.axios.defaults.xsrfHeaderName = 'X-XSRF-TOKEN'
         }
     }
