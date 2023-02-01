@@ -1,8 +1,15 @@
-import {ApiGroup, Entity, Paginated, PaginatedQuery, ReorderCommand, SortableQuery} from "./common";
+import {
+    ApiGroup,
+    type Entity,
+    type Paginated,
+    type PaginatedQuery,
+    type ReorderCommand,
+    type SortableQuery
+} from "./common";
 import * as querystring from "querystring";
-import {ParsedUrlQuery} from "querystring";
-import {FieldData} from "./fields";
-import axios, {AxiosInstance} from "axios";
+import type {ParsedUrlQuery} from "querystring";
+import type {FieldData} from "./fields";
+import type {AxiosInstance} from "axios";
 
 interface IHoliday extends Entity {
     name: string

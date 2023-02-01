@@ -1,5 +1,5 @@
-import {ApiGroup, Entity} from "./common";
-import {AxiosInstance} from "axios";
+import {ApiGroup, type Entity} from "./common";
+import type {AxiosInstance} from "axios";
 
 interface IUser extends Entity {
 

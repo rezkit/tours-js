@@ -1,13 +1,16 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "module": "CommonJS",
+    "module": "ES6",
     "rootDir": "src/",
     "outDir": "lib/",
     "esModuleInterop": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "strict": true,
+    "preserveValueImports": true,
+    "isolatedModules": true,
+    "importsNotUsedAsValues": "error",
     "sourceMap": true,
     "types": [
       "node"

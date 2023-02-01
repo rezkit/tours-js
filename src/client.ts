@@ -1,6 +1,6 @@
-import {default as Axios, AxiosRequestConfig, AxiosInstance, AxiosError, AxiosResponse} from 'axios'
+import {default as Axios, type AxiosRequestConfig, type AxiosInstance, type AxiosResponse } from 'axios'
 import * as Modules from './modules'
-import Config from "./config";
+import type Config from "./config";
 export * from './config';
 import {NotFoundError, ValidationError} from "./errors";
 

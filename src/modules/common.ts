@@ -1,5 +1,4 @@
-import { AxiosInstance } from "axios";
-import {ParsedUrlQuery, ParsedUrlQueryInput} from "querystring";
+import type { AxiosInstance } from "axios";
 
 export abstract class ApiGroup {
    protected axios: AxiosInstance

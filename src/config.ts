@@ -1,4 +1,4 @@
-import {AxiosRequestConfig} from "axios";
+import type {AxiosRequestConfig} from "axios";
 
 /**
  * A CredentialProvider function is a function which takes a request and

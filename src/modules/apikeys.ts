@@ -1,6 +1,6 @@
-import {ApiGroup, Entity, Paginated, PaginatedQuery} from "./common";
+import {ApiGroup, type Entity, type Paginated, type PaginatedQuery} from "./common";
 import * as qs from "querystring";
-import {AxiosInstance} from "axios";
+import type {AxiosInstance} from "axios";
 
 interface IApiKey extends Entity {
     name: string
