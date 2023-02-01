@@ -6,8 +6,6 @@ import {
     type ReorderCommand,
     type SortableQuery
 } from "./common";
-import * as querystring from "querystring";
-import type {ParsedUrlQuery} from "querystring";
 import type {FieldData} from "./fields";
 import type {AxiosInstance} from "axios";
 
@@ -132,7 +130,7 @@ export class Api extends ApiGroup {
     /**
      * Filter, sort, paginate and list Holidays
      *
-     * @param query - List query parameters
+     * @param params - List query parameters
      * @returns Paginated holiday list
      *
      * @example
@@ -140,9 +138,8 @@ export class Api extends ApiGroup {
      * const { data } = await client.holidays.list({ sort: 'code', page: 1, limit: 50 })
      * data.forEach(h => console.log(h.code + "\t" + h.name))
      */
-    async list(query?: HolidayListQuery): Promise<Paginated<Holiday>> {
-        const serializedQuery = query !== undefined ? '?' + querystring.encode(query as ParsedUrlQuery) : ''
-        const response = (await this.axios.get<Paginated<IHoliday>>(`/holidays${serializedQuery}`)).data
+    async list(params?: HolidayListQuery): Promise<Paginated<Holiday>> {
+        const response = (await this.axios.get<Paginated<IHoliday>>(`/holidays`, { params })).data
 
         response.data = response.data.map(h => new Holiday(h, this.axios))
 

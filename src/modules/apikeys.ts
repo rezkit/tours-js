@@ -1,5 +1,4 @@
 import {ApiGroup, type Entity, type Paginated, type PaginatedQuery} from "./common";
-import * as qs from "querystring";
 import type {AxiosInstance} from "axios";
 
 interface IApiKey extends Entity {
@@ -70,7 +69,7 @@ export class Api extends ApiGroup {
     /***
      * List API Keys
      *
-     * @param query
+     * @param params - List query parameters
      * @example List Keys
      *
      *  import TourManager from '@rezkit/tours'
@@ -78,14 +77,8 @@ export class Api extends ApiGroup {
      *  const keys = await client.apiKeys.list({ page: 1, limit: 50 })
      *
      */
-    async list(query?: PaginatedQuery): Promise<Paginated<ApiKey>> {
-        let q = ''
-
-        if (query) {
-            q += '?' + qs.encode(query as qs.ParsedUrlQuery)
-        }
-
-        const { data }: { data: Paginated<IApiKey> } = await this.axios.get(`/api-keys${q}`)
+    async list(params?: PaginatedQuery): Promise<Paginated<ApiKey>> {
+        const { data }: { data: Paginated<IApiKey> } = await this.axios.get(`/api-keys`, { params })
         data.data = data.data.map(k => new ApiKey(k, this.axios))
 
         return data as Paginated<ApiKey>
