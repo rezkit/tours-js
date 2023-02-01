@@ -6,8 +6,6 @@ import {NotFoundError, ValidationError} from "./errors";
 
 export const BASE_URL = 'https://api.tours.rezkit.app';
 
-const USER_AGENT = `RezKit/Tours js`
-
 /**
  * Tour Manager API Client
  *
@@ -29,8 +27,11 @@ export default class TourManager {
         this.axios.defaults.baseURL = config?.base_url || BASE_URL
 
         this.axios.defaults.headers.common = {
-            'Accept': 'application/json',
-            'User-Agent': USER_AGENT,
+            'Accept': 'application/json'
+        }
+
+        if (typeof(process) !== 'undefined' && process.hasOwnProperty('version') ) {
+            this.axios.defaults.headers.common['User-Agent'] = `RezKit/Tours (js/runtime:${process.version})`
         }
 
         this.axios.interceptors.response.use(null, handleResponseError)
