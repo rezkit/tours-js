@@ -3,6 +3,7 @@ import {
     type Entity,
     type Paginated,
     type PaginatedQuery,
+    type QueryBoolean,
     type ReorderCommand,
     type SortableQuery
 } from "./common";
@@ -122,7 +123,7 @@ export interface HolidayListQuery extends PaginatedQuery, SortableQuery<HolidayS
     /**
      * Filter by publishing status
      */
-    published?: boolean
+    published?: QueryBoolean
 }
 
 export class Api extends ApiGroup {
