@@ -24,6 +24,5 @@
     "node_modules",
     "**/*.spec.ts",
     "examples/**/*.ts"
-  ],
-  "ts-node": {}
+  ]
 }

@@ -9,8 +9,9 @@ import {
 } from "./common";
 import type {FieldData} from "./fields";
 import type {AxiosInstance} from "axios";
+import {HolidayVersion, type IHolidayVersion} from "./holidayVersion";
 
-interface IHoliday extends Entity {
+export interface IHoliday extends Entity {
     name: string
 
     code: string
@@ -25,6 +26,7 @@ interface IHoliday extends Entity {
 
     fields: FieldData
 }
+
 
 export interface CreateHolidayInput {
     name: string
@@ -84,6 +86,42 @@ export class Holiday implements IHoliday {
         const rsp = (await this.axios.patch<IHoliday>(`/holidays/${this.id}`, params)).data
         Object.assign(this, rsp)
         return this
+    }
+
+    /**
+     * Get the versions for a `Holiday`
+     *
+     * @param params
+     */
+    async versions(params: HolidayListQuery): Promise<Paginated<HolidayVersion>> {
+        const response = (await this.axios.get<Paginated<IHolidayVersion>>(`/holidays/${this.id}/versions`, { params })).data
+
+        response.data = response.data.map(v => new HolidayVersion(v, this.axios))
+
+        return response as Paginated<HolidayVersion>
+    }
+
+    async version(id: string): Promise<HolidayVersion> {
+        const response = (await this.axios.get<IHolidayVersion>(`/holidays/${this.id}/versions/${id}`)).data
+        return new HolidayVersion(response, this.axios)
+    }
+
+    /**
+     * Create a new Version for this holiday
+     * @param params
+     */
+    async createVersion(params: CreateHolidayInput): Promise<HolidayVersion> {
+        const response = (await this.axios.post<IHolidayVersion>(`/holidays/${this.id}/versions`, params)).data
+        return new HolidayVersion(response, this.axios)
+    }
+
+    /**
+     * Restore a deleted Holiday Version
+     * @param id
+     */
+    async restoreVersion(id: string): Promise<HolidayVersion> {
+        const response = (await this.axios.put<HolidayVersion>(`/holidays/${this.id}/versions/${id}/restore`)).data
+        return new HolidayVersion(response, this.axios)
     }
 
     code!: string;
