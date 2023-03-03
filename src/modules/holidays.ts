@@ -93,7 +93,7 @@ export class Holiday implements IHoliday {
      *
      * @param params
      */
-    async versions(params: HolidayListQuery): Promise<Paginated<HolidayVersion>> {
+    async versions(params?: HolidayListQuery): Promise<Paginated<HolidayVersion>> {
         const response = (await this.axios.get<Paginated<IHolidayVersion>>(`/holidays/${this.id}/versions`, { params })).data
 
         response.data = response.data.map(v => new HolidayVersion(v, this.axios))
