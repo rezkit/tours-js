@@ -2,7 +2,6 @@ import type { AxiosInstance } from "axios";
 
 export abstract class ApiGroup {
    protected axios: AxiosInstance
-
     constructor(axios: AxiosInstance) {
        this.axios = axios
     }

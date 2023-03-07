@@ -9,7 +9,7 @@ import {
 } from "./common";
 import type {FieldData} from "./fields";
 import type {AxiosInstance} from "axios";
-import {HolidayVersion, type IHolidayVersion} from "./holidayVersion";
+import {HolidayVersion, HolidayVersions, type IHolidayVersion} from "./holidayVersion";
 
 export interface IHoliday extends Entity {
     name: string
@@ -88,47 +88,8 @@ export class Holiday implements IHoliday {
         return this
     }
 
-    /**
-     * Get the versions for a `Holiday`
-     *
-     * @param params
-     */
-    async versions(params?: HolidayListQuery): Promise<Paginated<HolidayVersion>> {
-        const response = (await this.axios.get<Paginated<IHolidayVersion>>(`/holidays/${this.id}/versions`, { params })).data
-
-        response.data = response.data.map(v => new HolidayVersion(v, this.axios))
-
-        return response as Paginated<HolidayVersion>
-    }
-
-    async version(id: string): Promise<HolidayVersion> {
-        const response = (await this.axios.get<IHolidayVersion>(`/holidays/${this.id}/versions/${id}`)).data
-        return new HolidayVersion(response, this.axios)
-    }
-
-    /**
-     * Create a new Version for this holiday
-     * @param params
-     */
-    async createVersion(params: CreateHolidayInput): Promise<HolidayVersion> {
-        const response = (await this.axios.post<IHolidayVersion>(`/holidays/${this.id}/versions`, params)).data
-        return new HolidayVersion(response, this.axios)
-    }
-
-    /**
-     * Restore a deleted Holiday Version
-     * @param id
-     */
-    async restoreVersion(id: string): Promise<HolidayVersion> {
-        const response = (await this.axios.put<HolidayVersion>(`/holidays/${this.id}/versions/${id}/restore`)).data
-        return new HolidayVersion(response, this.axios)
-    }
-    
-    /**
-     * Destroy a holiday version
-     */
-    async destroyVersion(id: string): Promise<void> {
-        await this.axios.delete(`/holidays/${this.id}/versions/${id}`)
+    get versions(): HolidayVersions {
+        return new HolidayVersions(this.axios, this.id)
     }
 
     code!: string;
@@ -243,5 +204,10 @@ export class Api extends ApiGroup {
     async restore(id: string): Promise<Holiday> {
         const { data } = await this.axios.put(`/holidays/${id}/restore`)
         return new Holiday(data, this.axios)
+    }
+
+    // Get a versions API client
+    versions(holidayId: string): HolidayVersions {
+        return new HolidayVersions(this.axios, holidayId)
     }
 }
