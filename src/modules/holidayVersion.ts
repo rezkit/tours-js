@@ -16,7 +16,7 @@ export class HolidayVersion implements IHolidayVersion {
     }
 
     async update(params: UpdateHolidayInput): Promise<HolidayVersion> {
-        const response = (await this.axios.post<IHolidayVersion>(this.path, params)).data
+        const response = (await this.axios.patch<IHolidayVersion>(this.path, params)).data
         Object.assign(this, response)
 
         return this
