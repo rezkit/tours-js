@@ -123,6 +123,13 @@ export class Holiday implements IHoliday {
         const response = (await this.axios.put<HolidayVersion>(`/holidays/${this.id}/versions/${id}/restore`)).data
         return new HolidayVersion(response, this.axios)
     }
+    
+    /**
+     * Destroy a holiday version
+     */
+    async destroyVersion(id: string): Promise<void> {
+        await this.axios.delete(`/holidays/${this.id}/versions/${id}`)
+    }
 
     code!: string;
     readonly created_at!: string | Date;
