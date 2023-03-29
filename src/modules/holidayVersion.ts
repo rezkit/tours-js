@@ -3,6 +3,7 @@ import type {CreateHolidayInput, HolidayListQuery, IHoliday, UpdateHolidayInput}
 import type {FieldData} from "./fields.js";
 import {ApiGroup, type Paginated} from "./common.js";
 import {Categories, type Categorized, CategoryAttachment} from "./categories.js";
+import {Itinerary, ItineraryEntry} from "./itinerary";
 
 
 export interface IHolidayVersion extends IHoliday {
@@ -31,6 +32,10 @@ export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersi
 
     categories(): CategoryAttachment<HolidayVersion> {
         return new CategoryAttachment(this.axios, 'holiday_version', this)
+    }
+
+    get itinerary(): Itinerary {
+        return new Itinerary(this.axios, this.id)
     }
 
     code!: string;
