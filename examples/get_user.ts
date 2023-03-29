@@ -1,10 +1,3 @@
-import TourManager from '../lib/client'
-import {AxiosRequestConfig} from "axios";
+import {client} from "./helpers";
 
-async function auth(req: AxiosRequestConfig): Promise<string> {
-    return process.env.RK_API_KEY ?? ''
-}
-
-const c = new TourManager({ api_key: auth, base_url: 'https://rezkit-tours-staging.fly.dev' })
-
-c.user.user().then(console.log)
+client.user.user().then(console.log)

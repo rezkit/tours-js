@@ -6,10 +6,11 @@ import {
     type QueryBoolean,
     type ReorderCommand,
     type SortableQuery
-} from "./common";
-import type {FieldData} from "./fields";
+} from "./common.js";
+import type {FieldData} from "./fields.js";
 import type {AxiosInstance} from "axios";
-import {HolidayVersion, HolidayVersions, type IHolidayVersion} from "./holidayVersion";
+import {HolidayVersions} from "./holidayVersion.js";
+import {Categories, type Categorized, CategoryAttachment} from "./categories.js";
 
 export interface IHoliday extends Entity {
     name: string
@@ -44,9 +45,9 @@ export interface UpdateHolidayInput extends Partial<CreateHolidayInput> {
     ordering?: ReorderCommand
 }
 
-export class Holiday implements IHoliday {
+export class Holiday implements IHoliday, Categorized<Holiday> {
 
-    private axios: AxiosInstance;
+    private readonly axios: AxiosInstance;
 
     /**
      * @internal
@@ -90,6 +91,13 @@ export class Holiday implements IHoliday {
 
     get versions(): HolidayVersions {
         return new HolidayVersions(this.axios, this.id)
+    }
+
+    /**
+     * Categories API
+     */
+    categories(): CategoryAttachment<this> {
+       return new CategoryAttachment<this>(this.axios, 'holiday', this)
     }
 
     code!: string;
@@ -206,8 +214,18 @@ export class Api extends ApiGroup {
         return new Holiday(data, this.axios)
     }
 
-    // Get a versions API client
+    /**
+     * Get a versions API client
+     *
+     */
     versions(holidayId: string): HolidayVersions {
         return new HolidayVersions(this.axios, holidayId)
+    }
+
+    /**
+     * Get a holiday categories API client
+     */
+    get categories(): Categories {
+        return new Categories(this.axios, 'holiday')
     }
 }

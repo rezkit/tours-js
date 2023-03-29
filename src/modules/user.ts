@@ -1,4 +1,4 @@
-import {ApiGroup, type Entity} from "./common";
+import {ApiGroup, type Entity} from "./common.js";
 import type {AxiosInstance} from "axios";
 
 interface IUser extends Entity {

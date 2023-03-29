@@ -1,13 +1,14 @@
 import type {AxiosInstance} from "axios";
-import type {CreateHolidayInput, HolidayListQuery, IHoliday, UpdateHolidayInput} from "./holidays";
-import type {FieldData} from "./fields";
-import {ApiGroup, type Paginated} from "./common";
+import type {CreateHolidayInput, HolidayListQuery, IHoliday, UpdateHolidayInput} from "./holidays.js";
+import type {FieldData} from "./fields.js";
+import {ApiGroup, type Paginated} from "./common.js";
+import {Categories, type Categorized, CategoryAttachment} from "./categories.js";
 
 
 export interface IHolidayVersion extends IHoliday {
     holiday_id: string
 }
-export class HolidayVersion implements IHolidayVersion {
+export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersion> {
 
     private axios: AxiosInstance
 
@@ -26,6 +27,10 @@ export class HolidayVersion implements IHolidayVersion {
     async delete(): Promise<void> {
         await this.axios.delete(this.path)
         return
+    }
+
+    categories(): CategoryAttachment<HolidayVersion> {
+        return new CategoryAttachment(this.axios, 'holiday_version', this)
     }
 
     code!: string;
@@ -102,4 +107,7 @@ export class HolidayVersions extends ApiGroup {
         await this.axios.delete(`/holidays/${this.holidayId}/versions/${id}`)
     }
 
+    get categories(): Categories {
+        return new Categories(this.axios, 'holiday_version')
+    }
 }

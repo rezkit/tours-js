@@ -1,21 +1,24 @@
-import TourManager from '@rezkit/tours'
-import type {AxiosRequestConfig} from 'axios';
-import type {Paginated} from '@rezkit/tours/modules/common';
-import type {Holiday} from '@rezkit/tours/modules/holidays';
-
-
-async function auth(req: AxiosRequestConfig): Promise<string> {
-    return process.env.RK_API_KEY ?? ''
-}
+import type {Paginated} from '@rezkit/tours/lib/modules/common'
+import type {Holiday} from '@rezkit/tours/lib/modules/holidays'
+import {client} from "./helpers.js";
+import type {Category} from "@rezkit/tours/lib/modules/categories";
 
 async function main(): Promise<void> {
-    const c = new TourManager({ api_key: auth, base_url: 'https://rezkit-tours-staging.fly.dev' })
+    const holidays: Paginated<Holiday> = await client.holidays.list()
 
-    const holidays: Paginated<Holiday> = await c.holidays.list()
+    const walk = (c: Category, level: number): void => {
+        console.log( '-'.repeat(level) + ' ' + c.name)
 
-    holidays.data.forEach(holiday => {
+        c.children.forEach(c => walk(c, level++))
+    }
+
+    await Promise.all(holidays.data.map(async (holiday) => {
         console.log(`# ${holiday.name} (${holiday.id})`)
-    })
+
+        const categories = await holiday.categories().list({children: 1})
+
+        categories.data.forEach((c: Category) => walk(c, 1))
+    }))
 }
 
 main().then(_ => process.exit(0)).catch(console.error)

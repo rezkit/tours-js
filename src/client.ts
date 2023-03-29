@@ -1,8 +1,10 @@
 import {default as Axios, type AxiosRequestConfig, type AxiosInstance, type AxiosResponse } from 'axios'
-import * as Modules from './modules'
-import type Config from "./config";
-export * from './config';
-import {NotFoundError, ValidationError} from "./errors";
+import * as Modules from './modules.js'
+import type Config from "./config.js";
+export * from './config.js';
+export * as helpers from "./helpers.js";
+import {NotFoundError, ValidationError} from "./errors.js";
+import type {EntityType} from "./modules/common.js";
 
 export const BASE_URL = 'https://api.tours.rezkit.app';
 
@@ -80,6 +82,14 @@ export default class TourManager {
      */
     get apiKeys(): Modules.ApiKeys.Api {
         return new Modules.ApiKeys.Api(this.axios)
+    }
+
+    /**
+     * Category Management
+     * @param type
+     */
+    categories(type: EntityType): Modules.Categories.Categories {
+        return new Modules.Categories.Categories(this.axios, type)
     }
 }
 

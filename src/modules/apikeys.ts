@@ -1,4 +1,4 @@
-import {ApiGroup, type Entity, type Paginated, type PaginatedQuery} from "./common";
+import {ApiGroup, type Entity, type Paginated, type PaginatedQuery} from "./common.js";
 import type {AxiosInstance} from "axios";
 
 interface IApiKey extends Entity {

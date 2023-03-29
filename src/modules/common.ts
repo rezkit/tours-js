@@ -7,8 +7,10 @@ export abstract class ApiGroup {
     }
 }
 
-export interface Entity {
+export interface ID {
     readonly id: string
+}
+export interface Entity extends ID {
 
     readonly created_at: string | Date
 
@@ -48,7 +50,7 @@ export interface Paginated<T> {
 export interface PaginatedQuery {
     page?: number
     limit?: number
-    trash: QueryBoolean
+    trash?: QueryBoolean
 }
 
 export interface SortableQuery<T> {
@@ -79,3 +81,8 @@ export type QueryBooleanFalse = 0 | '0'
  * The values that resolve to an undefined value in a URL boolean
  */
 export type QueryBooleanUndefined = null | ''
+
+/**
+ * The names of entity types
+ */
+export type EntityType = 'holiday' | 'category' | 'holiday_version';

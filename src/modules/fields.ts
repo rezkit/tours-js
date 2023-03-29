@@ -1,4 +1,4 @@
-import {ApiGroup} from "./common";
+import {ApiGroup} from "./common.js";
 
 /**
  * User-defined field data
