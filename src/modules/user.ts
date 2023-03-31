@@ -1,5 +1,6 @@
 import {ApiGroup, type Entity} from "./common.js";
 import type {AxiosInstance} from "axios";
+import timestamp from "../annotations/timestamp.js";
 
 interface IUser extends Entity {
 
@@ -38,15 +39,14 @@ export class User implements IUser {
         this.axios = axios
     }
 
-    created_at!: string;
     email!: string;
     id!: string;
     name!: string;
     organization_id!: string;
     preferences!: null;
     rezkit_id!: string;
-    updated_at!: string;
-
+    @timestamp() readonly created_at!: Date;
+    @timestamp() readonly updated_at!: Date;
 }
 
 export interface Organization extends Entity {

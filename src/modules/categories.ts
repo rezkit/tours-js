@@ -2,6 +2,7 @@ import type {Entity, EntityType, Paginated, PaginatedQuery, QueryBoolean, Sortab
 import type {AxiosInstance} from "axios";
 import {ApiGroup} from "./common.js";
 import type {TreeNode} from "../helpers";
+import timestamp from "../annotations/timestamp.js";
 
 export interface ICategory extends Entity, TreeNode {
     type: EntityType;
@@ -21,8 +22,7 @@ export interface ICategory extends Entity, TreeNode {
 
 
 export class Category implements ICategory {
-    private axios: AxiosInstance;
-
+    private readonly axios: AxiosInstance;
     constructor(values: ICategory, axios: AxiosInstance) {
         Object.assign(this, values);
         this.axios = axios;
@@ -61,12 +61,12 @@ export class Category implements ICategory {
         return response.ordering
     }
 
-    readonly created_at!: string | Date
+    @timestamp() readonly created_at!: Date
     readonly id!: string
     name!: string
     parent_id!: string | null
     type!: EntityType
-    readonly updated_at!: string | Date
+    @timestamp() readonly updated_at!: Date
     deleted_at?: Date
     description!: string | null;
     published!: boolean;

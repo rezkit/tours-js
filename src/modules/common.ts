@@ -11,10 +11,9 @@ export interface ID {
     readonly id: string
 }
 export interface Entity extends ID {
+    readonly created_at: Date
 
-    readonly created_at: string | Date
-
-    readonly updated_at: string | Date
+    readonly updated_at: Date
 }
 
 /**
@@ -85,4 +84,22 @@ export type QueryBooleanUndefined = null | ''
 /**
  * The names of entity types
  */
-export type EntityType = 'holiday' | 'category' | 'holiday_version';
+export type EntityType = 'holiday' | 'category' | 'holiday_version' | 'element' | 'element_option' | 'departure';
+
+export interface Inventory {
+    type: string
+}
+
+export interface AllocationInventory extends Inventory {
+    type: 'allocation'
+    capacity: number
+}
+
+export interface OnRequestInventory extends Inventory {
+    type: 'on_request'
+    errata: string
+}
+
+export interface FreeSellInventory extends Inventory {
+    type: 'free_sell'
+}

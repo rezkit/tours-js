@@ -3,6 +3,9 @@ import type {CreateHolidayInput, HolidayListQuery, IHoliday, UpdateHolidayInput}
 import type {FieldData} from "./fields.js";
 import {ApiGroup, type Paginated} from "./common.js";
 import {Categories, type Categorized, CategoryAttachment} from "./categories.js";
+import {Elements} from "./elements.js";
+import timestamp from "../annotations/timestamp.js";
+import {Departures} from "./departures.js";
 
 
 export interface IHolidayVersion extends IHoliday {
@@ -10,7 +13,7 @@ export interface IHolidayVersion extends IHoliday {
 }
 export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersion> {
 
-    private axios: AxiosInstance
+    private readonly axios: AxiosInstance
 
     constructor(values: IHolidayVersion, axios: AxiosInstance) {
         this.axios = axios
@@ -33,21 +36,31 @@ export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersi
         return new CategoryAttachment(this.axios, 'holiday_version', this)
     }
 
-    code!: string;
-    readonly created_at!: string | Date;
-    description!: string | null;
-    fields!: FieldData;
-    holiday_id!: string;
+    departures(): Departures {
+        return new Departures(this.axios, { version: this.id })
+    }
+
+    readonly code!: string;
+
+    @timestamp() readonly created_at!: Date;
+    @timestamp() readonly updated_at!: Date;
+    readonly description!: string | null;
+    readonly fields!: FieldData;
+    readonly holiday_id!: string;
     readonly id!: string;
-    introduction!: string | null;
-    name!: string;
-    ordering!: number;
-    published!: boolean;
-    readonly updated_at!: string | Date;
+    readonly introduction!: string | null;
+    readonly name!: string;
+    readonly ordering!: number;
+    readonly published!: boolean;
 
     get path(): string {
         return `/holidays/${this.holiday_id}/versions/${this.id}`
     }
+
+    get elements(): Elements {
+        return new Elements(this.axios, this.id)
+    }
+
 }
 
 

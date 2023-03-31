@@ -1,5 +1,6 @@
 import {ApiGroup, type Entity, type Paginated, type PaginatedQuery} from "./common.js";
 import type {AxiosInstance} from "axios";
+import timestamp from "../annotations/timestamp.js";
 
 interface IApiKey extends Entity {
     name: string
@@ -44,11 +45,11 @@ export class ApiKey implements IApiKey {
     }
 
     readonly abilities!: string[];
-    readonly created_at!: string;
+    @timestamp() readonly created_at!: Date;
     readonly id!: string;
     readonly last_used_at!: string;
     readonly name!: string;
-    readonly updated_at!: string;
+    @timestamp() readonly updated_at!: Date;
 }
 
 export interface CreateApiKeyRequest {
