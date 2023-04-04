@@ -46,17 +46,21 @@ export class Element implements IElement {
 
     private readonly axios: AxiosInstance
 
-    constructor(data: IElement, axios: AxiosInstance) {
+    private apply(data: IElement) {
         Object.assign(this, data)
-        this.category = new Category(data.category, axios)
-        this.options = data.options.map(o => new ElementOption(o, axios))
+        this.category = new Category(data.category, this.axios)
+        this.options = data.options.map(o => new ElementOption(this.id, o, this.axios))
+    }
+
+    constructor(data: IElement, axios: AxiosInstance) {
         this.axios = axios
+        this.apply(data)
     }
 
     async update(params: UpdateElementParams): Promise<Element> {
         const {data} = await this.axios.patch<IElement>(this.path, params)
 
-        Object.assign(this, data)
+        this.apply(data)
 
         return this
     }
@@ -78,8 +82,7 @@ export class Element implements IElement {
     version_id!: string;
 
     deleted_at?: string | Date;
-
-    readonly options!: ElementOption[]
+    options!: ElementOption[]
 
     get path(): string {
         return `/holidays/versions/${this.version_id}/elements/${this.id}`
@@ -101,14 +104,49 @@ export class ElementOption implements IElementOption {
 
     private readonly axios: AxiosInstance
 
-    constructor(data: IElementOption, axios: AxiosInstance) {
+    @timestamp() deleted_at?: Date
+
+    readonly element_id: string
+
+    constructor(element_id: string, data: IElementOption, axios: AxiosInstance) {
+        this.element_id = element_id
         Object.assign(this, data)
 
         this.axios = axios
 
         this.category = new Category(data.category, axios)
     }
+
+    async update(params: UpdateElementOption): Promise<ElementOption> {
+        const { data } = await this.axios.patch<IElementOption>(this.path, params)
+        Object.assign(this, data)
+
+        return this
+    }
+
+    async destroy(): Promise<void> {
+        await this.axios.delete(this.path)
+        this.deleted_at = new Date()
+    }
+
+    get path(): string {
+        return `/holidays/elements/${this.element_id}/options/${this.id}`
+    }
 }
+
+export interface CreateElementOption {
+    name: string
+    category_id: string
+    published?: boolean
+    web_bookable?: boolean
+    is_lead?: boolean
+    price_unit: PriceUnit
+    occupancy: {from: number; to: number }
+
+    constraints?: { [key: string]: any }
+}
+
+export type UpdateElementOption = Partial<CreateElementOption>;
 
 export type ElementSort = 'id' | 'name' | 'created_at' | 'updated_at'
 
@@ -136,7 +174,16 @@ export class Elements extends ApiGroup {
     }
 
     async create(params: CreateElementParams): Promise<Element> {
-        const {data} = await this.axios.post<IElement>(`/holidays/versions/${this.version_id}`, params)
+        const {data} = await this.axios.post<IElement>(`/holidays/versions/${this.version_id}/elements`, params)
+        return new Element(data, this.axios)
+    }
+
+    async destroy(id: string): Promise<void> {
+        await this.axios.delete(`/holidays/versions/${this.version_id}/elements/${id}`)
+    }
+
+    async update(id: string, params: UpdateElementParams): Promise<Element> {
+        const {data} = await this.axios.patch<IElement>(`/holidays/versions/${this.version_id}/elements/${id}`, params)
         return new Element(data, this.axios)
     }
 }
