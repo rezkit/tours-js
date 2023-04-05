@@ -5,7 +5,7 @@ export default function timestamp(): Function {
     return (target: any, name: PropertyKey) => {
 
         // Internal name of the property to actually store the value against
-        const internalName = `__timestamp_${String(name)}`
+        const internalName = Symbol.for('__timestamp_' + String(name))
 
         Object.defineProperty(target, name, {
             get(this: any) {
