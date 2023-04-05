@@ -215,6 +215,7 @@ export class Departures extends ApiGroup {
     }
 
     async list(params: ListDeparturesQuery): Promise<Paginated<Departure>> {
+        params ||= {}
         Object.assign(params, this.constraints)
 
         const { data } = await this.axios.get<Paginated<IDeparture>>(`/holidays/departures`, { params })

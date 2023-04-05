@@ -36,7 +36,7 @@ export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersi
         return new CategoryAttachment(this.axios, 'holiday_version', this)
     }
 
-    departures(): Departures {
+    get departures(): Departures {
         return new Departures(this.axios, { version: this.id })
     }
 
