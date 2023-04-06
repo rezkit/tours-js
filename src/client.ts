@@ -3,6 +3,7 @@ import * as Modules from './modules.js'
 import type Config from "./config.js";
 export * from './config.js';
 export * as helpers from "./helpers.js";
+export * from './modules.js';
 import {NotFoundError, ValidationError} from "./errors.js";
 import type {EntityType} from "./modules/common.js";
 
