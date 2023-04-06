@@ -1,6 +1,7 @@
-import type {Entity, Paginated, PaginatedQuery, SortableQuery} from "./common";
+import type {Entity, Paginated, PaginatedQuery, SortableQuery} from "./common.js";
 import type {AxiosInstance} from "axios";
-import {ApiGroup} from "./common";
+import {ApiGroup} from "./common.js";
+import timestamp from "../annotations/timestamp.js";
 
 export interface IItineraryEntry extends Entity {
 
@@ -51,7 +52,7 @@ export class ItineraryEntry implements IItineraryEntry {
 
     private axios: AxiosInstance
 
-    readonly created_at!: string | Date;
+    @timestamp() readonly created_at!: Date;
     description!: string | null;
     end_day!: number;
     readonly id!: string;
@@ -61,10 +62,10 @@ export class ItineraryEntry implements IItineraryEntry {
     introduction!: string | null;
     start_day!: number;
     title!: string;
-    readonly updated_at!: string | Date;
+    @timestamp() readonly updated_at!: Date;
     version_id!: string;
     published!: boolean;
-    deleted_at?: string | Date;
+    deleted_at?: Date;
 
     constructor(values: IItineraryEntry, axios: AxiosInstance) {
         Object.assign(this, values)
