@@ -6,6 +6,7 @@ export * as helpers from "./helpers.js";
 export * from './modules.js';
 import {NotFoundError, ValidationError} from "./errors.js";
 import type {EntityType} from "./modules/common.js";
+import type { ListDeparturesQuery } from "./modules/departures";
 
 export const BASE_URL = 'https://api.tours.rezkit.app';
 
@@ -91,6 +92,10 @@ export default class TourManager {
      */
     categories(type: EntityType): Modules.Categories.Categories {
         return new Modules.Categories.Categories(this.axios, type)
+    }
+
+    departures(params: Partial<ListDeparturesQuery>): Modules.Departures.Departures {
+        return new Modules.Departures.Departures(this.axios, params)
     }
 }
 
