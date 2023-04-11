@@ -6,7 +6,7 @@ import {Categories, type Categorized, CategoryAttachment} from "./categories.js"
 import {Elements} from "./elements.js";
 import timestamp from "../annotations/timestamp.js";
 import {Departures} from "./departures.js";
-import {Itinerary, ItineraryEntry} from "./itinerary";
+import {Itinerary} from "./itinerary.js";
 
 export interface IHolidayVersion extends IHoliday {
     holiday_id: string
