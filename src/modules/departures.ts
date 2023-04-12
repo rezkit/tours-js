@@ -237,7 +237,15 @@ export class Departures extends ApiGroup {
         const { data } = await this.axios.post<IDeparture>(`/holidays/departures`, params)
         return new Departure(data, this.axios)
     }
-
+    
+    /**
+     * Delete a departure
+     * @param id Departure ID
+     */
+    async delete(id: string): Promise<void> {
+        await this.axios.delete(`/holidays/departures/${id}`)
+    }
+    
     async restore(id: string): Promise<Departure> {
         const { data } = await this.axios.put<IDeparture>(`/holidays/departures/${id}/restore`)
         return new Departure(data, this.axios)
