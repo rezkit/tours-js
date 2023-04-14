@@ -30,6 +30,7 @@ export interface CreateDepartureRequest {
     start: Date
     end: Date
     inventory: Inventory
+    published: boolean
 }
 
 export type UpdateDepartureRequest = Partial<Omit<CreateDepartureRequest, 'version_id'>>
