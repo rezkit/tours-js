@@ -5,8 +5,10 @@ import {ApiGroup} from "./common.js";
 import timestamp from "../annotations/timestamp.js";
 
 export interface IElement extends Entity {
-
+    name: string
+    
     version_id: string
+    
     is_package: boolean
 
     published: boolean
