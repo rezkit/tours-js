@@ -8,6 +8,7 @@ export interface IElement extends Entity {
 
     version_id: string
     is_package: boolean
+    name: string
 
     published: boolean
 
@@ -71,8 +72,18 @@ export class Element implements IElement {
         return
     }
 
+    async createOption(params: CreateElementOption): Promise<ElementOption> {
+        const { data } = await this.axios.post<IElementOption>(
+          `/holidays/elements/${this.id}/options`, params)
+
+        const option = new ElementOption(this.id, data, this.axios)
+        this.options.push(option)
+        return option
+    }
+
     balance_due!: number | null;
     category!: Category;
+    name!: string;
     @timestamp() readonly created_at!: Date;
     readonly id!: string;
     default_inventory!: Inventory;
@@ -82,7 +93,7 @@ export class Element implements IElement {
     version_id!: string;
 
     deleted_at?: string | Date;
-    options!: ElementOption[]
+    options!: ElementOption[];
 
     get path(): string {
         return `/holidays/versions/${this.version_id}/elements/${this.id}`
