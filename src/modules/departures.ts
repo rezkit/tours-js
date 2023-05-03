@@ -90,6 +90,15 @@ export interface IDepartureElement extends Entity {
     }
 
     readonly options: IDepartureElementOption[]
+
+    readonly element: DepartureElementRel;
+}
+
+interface DepartureElementRel {
+    readonly id: string
+    readonly name: string
+    readonly is_package: boolean
+    readonly published: boolean
 }
 
 export class DepartureElement implements IDepartureElement {
@@ -111,6 +120,7 @@ export class DepartureElement implements IDepartureElement {
     readonly id!: string;
     readonly inventory!: Inventory;
     readonly options!: DepartureElementOption[];
+    readonly element!: DepartureElementRel;
     @timestamp() readonly updated_at!: Date;
 }
 
@@ -136,7 +146,7 @@ export class DepartureElementOption implements IDepartureElementOption {
 
     constructor(data: IDepartureElementOption, axios: AxiosInstance) {
         Object.assign(this, data)
-        this.prices = data.prices.map(p => new Price(p, axios))
+        this.prices = data.prices?.map(p => new Price(p, axios)) || []
         this.category = new Category(data.category, axios)
         this.axios = axios
     }
@@ -238,7 +248,7 @@ export class Departures extends ApiGroup {
         const { data } = await this.axios.post<IDeparture>(`/holidays/departures`, params)
         return new Departure(data, this.axios)
     }
-    
+
     /**
      * Delete a departure
      * @param id Departure ID
@@ -246,7 +256,7 @@ export class Departures extends ApiGroup {
     async delete(id: string): Promise<void> {
         await this.axios.delete(`/holidays/departures/${id}`)
     }
-    
+
     async restore(id: string): Promise<Departure> {
         const { data } = await this.axios.put<IDeparture>(`/holidays/departures/${id}/restore`)
         return new Departure(data, this.axios)
