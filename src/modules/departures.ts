@@ -129,7 +129,7 @@ export class DepartureElement implements IDepartureElement {
      * @param params
      */
     async update(params: UpdateDepartureElementParams): Promise<this> {
-        const { data } = await this.axios.post<IDepartureElement>(
+        const { data } = await this.axios.patch<IDepartureElement>(
           `/holidays/departures/${this.departure_id}/elements/${this.id}`,
           params,
         )
