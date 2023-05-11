@@ -83,6 +83,7 @@ export class Departure implements IDeparture, Categorized<Departure> {
 
 export interface IDepartureElement extends Entity {
     readonly inventory: Inventory
+    readonly departure_id: string
 
     readonly balance_due: {
         calculated: boolean
@@ -90,7 +91,6 @@ export interface IDepartureElement extends Entity {
     }
 
     readonly options: IDepartureElementOption[]
-
     readonly element: DepartureElementRel;
 }
 
@@ -117,11 +117,31 @@ export class DepartureElement implements IDepartureElement {
     };
 
     @timestamp() readonly created_at!: Date;
-    readonly id!: string;
-    readonly inventory!: Inventory;
-    readonly options!: DepartureElementOption[];
-    readonly element!: DepartureElementRel;
+    id!: string;
+    inventory!: Inventory;
+    options!: DepartureElementOption[];
+    element!: DepartureElementRel;
+    readonly departure_id!: string;
     @timestamp() readonly updated_at!: Date;
+
+    /**
+     * Update a Departure Element
+     * @param params
+     */
+    async update(params: UpdateDepartureElementParams): Promise<this> {
+        const { data } = await this.axios.post<IDepartureElement>(
+          `/holidays/departures/${this.departure_id}/elements/${this.id}`,
+          params,
+        )
+        Object.assign(this, data)
+        this.options = data.options.map(o => new DepartureElementOption(o, this.axios))
+        return this
+    }
+}
+
+export interface UpdateDepartureElementParams {
+    inventory?: Inventory
+    balance_due?: Date | null
 }
 
 export interface IDepartureElementOption extends IElementOption {
