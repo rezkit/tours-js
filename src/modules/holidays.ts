@@ -11,6 +11,8 @@ import type {FieldData} from "./fields.js";
 import type {AxiosInstance} from "axios";
 import {HolidayVersions} from "./holidayVersion.js";
 import {Categories, type Categorized, CategoryAttachment} from "./categories.js";
+import timestamp from "../annotations/timestamp.js";
+import {Departures} from "./departures.js";
 
 export interface IHoliday extends Entity {
     name: string
@@ -89,19 +91,30 @@ export class Holiday implements IHoliday, Categorized<Holiday> {
         return this
     }
 
+    /**
+     * Get an API client for this holiday's versions
+     */
     get versions(): HolidayVersions {
         return new HolidayVersions(this.axios, this.id)
     }
 
     /**
-     * Categories API
+     * Get an API client for this holiday's departures
+     */
+    get departures(): Departures {
+        return new Departures(this.axios, { holiday: this.id })
+    }
+
+    /**
+     * Get an API client for this holiday's categories
      */
     categories(): CategoryAttachment<this> {
        return new CategoryAttachment<this>(this.axios, 'holiday', this)
     }
 
     code!: string;
-    readonly created_at!: string | Date;
+    @timestamp() readonly created_at!: Date;
+    @timestamp() readonly updated_at!: Date;
     description!: string | null;
     fields!: FieldData;
     readonly id!: string;
@@ -109,8 +122,6 @@ export class Holiday implements IHoliday, Categorized<Holiday> {
     name!: string;
     published!: boolean;
     ordering!: number;
-    readonly updated_at!: string | Date;
-
     deleted_at!: null | string | Date;
 }
 
@@ -215,11 +226,17 @@ export class Api extends ApiGroup {
     }
 
     /**
-     * Get a versions API client
-     *
+     * Get a versions API client for a given Holiday ID
      */
     versions(holidayId: string): HolidayVersions {
         return new HolidayVersions(this.axios, holidayId)
+    }
+
+    /**
+     * Get a departures API client for all departures
+     */
+    get departures(): Departures {
+        return new Departures(this.axios)
     }
 
     /**

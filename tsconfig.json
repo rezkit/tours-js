@@ -11,6 +11,7 @@
     "preserveValueImports": true,
     "isolatedModules": true,
     "importsNotUsedAsValues": "error",
+    "experimentalDecorators": true,
     "sourceMap": true,
     "types": [
       "node"

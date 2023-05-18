@@ -1,5 +1,6 @@
 import {ApiGroup, type Entity} from "./common.js";
 import type {AxiosInstance} from "axios";
+import timestamp from "../annotations/timestamp.js";
 
 interface IUser extends Entity {
 
@@ -38,21 +39,54 @@ export class User implements IUser {
         this.axios = axios
     }
 
-    created_at!: string;
     email!: string;
     id!: string;
     name!: string;
     organization_id!: string;
     preferences!: null;
     rezkit_id!: string;
-    updated_at!: string;
-
+    @timestamp() readonly created_at!: Date;
+    @timestamp() readonly updated_at!: Date;
 }
 
-export interface Organization extends Entity {
+export interface OrganizationSettings {
+    currencies: string[]
+    deposit_defaults: {
+        balance_due: number
+        percentage: number
+    }
+}
+
+export type UpdateOrganizationSettings = Partial<OrganizationSettings>;
+
+export interface IOrganization extends Entity, OrganizationSettings {
     name: string
     rezkit_id: string
-    data: object
+}
+
+export class Organization implements IOrganization {
+
+    private readonly axios: AxiosInstance
+
+    constructor(data: IOrganization, axios: AxiosInstance) {
+        Object.assign(this, data)
+        this.axios = axios
+    }
+
+    async update(params: UpdateOrganizationSettings): Promise<Organization> {
+        const { data } = await this.axios.put<IOrganization>(`/organization/settings`, params)
+        Object.assign(this, data)
+
+        return this
+    }
+
+    @timestamp() readonly created_at!: Date;
+    currencies!: string[];
+    deposit_defaults!: { balance_due: number; percentage: number };
+    readonly id!: string;
+    name!: string;
+    rezkit_id!: string;
+    readonly updated_at!: Date;
 }
 
 export class Api extends ApiGroup {
@@ -66,6 +100,7 @@ export class Api extends ApiGroup {
     }
 
     async organization(): Promise<Organization> {
-        return (await this.axios.get<Organization>('/organization')).data
+        const { data } = await this.axios.get<IOrganization>('/organization')
+        return new Organization(data, this.axios)
     }
 }
