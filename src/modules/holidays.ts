@@ -13,6 +13,7 @@ import {HolidayVersions} from "./holidayVersion.js";
 import {Categories, type Categorized, CategoryAttachment} from "./categories.js";
 import timestamp from "../annotations/timestamp.js";
 import {Departures} from "./departures.js";
+import { Content, ContentAttachment, type Contentized } from "./content.js";
 
 export interface IHoliday extends Entity {
     name: string
@@ -47,7 +48,7 @@ export interface UpdateHolidayInput extends Partial<CreateHolidayInput> {
     ordering?: ReorderCommand
 }
 
-export class Holiday implements IHoliday, Categorized<Holiday> {
+export class Holiday implements IHoliday, Categorized<Holiday>, Contentized<Holiday> {
 
     private readonly axios: AxiosInstance;
 
@@ -110,6 +111,10 @@ export class Holiday implements IHoliday, Categorized<Holiday> {
      */
     categories(): CategoryAttachment<this> {
        return new CategoryAttachment<this>(this.axios, 'holiday', this)
+    }
+
+    content(): ContentAttachment<this> {
+        return new ContentAttachment<this>(this.axios, 'holiday', this)
     }
 
     code!: string;
@@ -244,5 +249,9 @@ export class Api extends ApiGroup {
      */
     get categories(): Categories {
         return new Categories(this.axios, 'holiday')
+    }
+
+    get content(): Content {
+        return new Content(this.axios, 'holiday')
     }
 }

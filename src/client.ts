@@ -94,6 +94,10 @@ export default class TourManager {
         return new Modules.Categories.Categories(this.axios, type)
     }
 
+    content(type: EntityType): Modules.Content.Content {
+        return new Modules.Content.Content(this.axios, type)
+    }
+
     departures(params: Partial<ListDeparturesQuery>): Modules.Departures.Departures {
         return new Modules.Departures.Departures(this.axios, params)
     }
