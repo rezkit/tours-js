@@ -137,6 +137,15 @@ export class Content extends ApiGroup {
     return new ContentItem(data, this.axios);
   }
 
+  async update(id: string, params: UpdateContentItemParams): Promise<ContentItem> {
+    const { data } = await this.axios.patch<IContentItem>(`/${this.type}/content/${id}`, params)
+    return new ContentItem(data, this.axios)
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.axios.delete(`/${this.type}/content/${id}`)
+  }
+
   attached(id: string): ContentAttachment<ID> {
     return new ContentAttachment<ID>(this.axios, this.type, { id })
   }
