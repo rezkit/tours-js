@@ -62,6 +62,18 @@ export class ContentItem implements IContentItem {
     return this
   }
 
+  /**
+   * Get a list of uses for an item
+   *
+   * @example
+   *
+   * const holidays = await item.uses<IHoliday>()
+   */
+  async uses<T>(): Promise<T[]> {
+    const { data } = await this.axios.get<T[]>(this.path + '/uses')
+    return data
+  }
+
   async moveUp(): Promise<number> {
     const { data } = await this.axios.patch<IContentItem>(this.path, { ordering: 'up'})
     this.ordering = data.ordering
@@ -106,7 +118,7 @@ export class Content extends ApiGroup {
   async list(params?: ListContentsQuery): Promise<Paginated<ContentItem>> {
     const { data } = await this.axios.get<Paginated<IContentItem>>(`/${this.type}/content`, { params })
 
-    data.data.map(i => new ContentItem(i, this.axios))
+    data.data = data.data.map(i => new ContentItem(i, this.axios))
 
     return data as Paginated<ContentItem>
   }
