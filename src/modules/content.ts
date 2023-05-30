@@ -37,6 +37,7 @@ export interface ListContentsQuery extends PaginatedQuery, SortableQuery<Content
   published?: QueryBoolean
   title?: string
   category?: string
+  search?: string
 }
 
 export class ContentItem implements IContentItem {
