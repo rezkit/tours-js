@@ -52,6 +52,10 @@ export interface PaginatedQuery {
     trash?: QueryBoolean
 }
 
+/**
+ * Query which allows for sort. Order may be ascending or descending.
+ * Attributes which can be sorted are given by the type-param T
+ */
 export interface SortableQuery<T> {
     sort?: T
 
@@ -59,6 +63,30 @@ export interface SortableQuery<T> {
 
 }
 
+/**
+ * AttachmentResponse represents the result of an attachment/replacement
+ * operation
+ */
+export interface AttachmentResponse {
+    /**
+     * IDs of items which were attached
+     */
+    attached: string[]
+
+    /**
+     * IDs of items which were detached
+     */
+    detached: string[]
+
+    /**
+     * IDs of items which were updated
+     */
+    updated: string[]
+}
+
+/**
+ * Command words to re-order items in ordered sets.
+ */
 export type ReorderCommand = 'up' | 'down' | 'first' | 'last'
 
 /**
@@ -84,22 +112,44 @@ export type QueryBooleanUndefined = null | ''
 /**
  * The names of entity types
  */
-export type EntityType = 'holiday' | 'category' | 'holiday_version' | 'element' | 'element_option' | 'departure';
+export type EntityType = 'holiday' | 'category' | 'holiday_version'
+                       | 'element' | 'element_option' | 'departure'
+                       | 'content'
 
+/**
+ * Inventory Interface
+ */
 export interface Inventory {
     type: string
 }
 
+/**
+ * Allocation Inventory has a type of 'allocation'
+ * and a capacity value.
+ *
+ * Allocation is depleted from capacity as reservations are made and
+ * a reservation cannot be made if the remaining allocation is too low.
+ */
 export interface AllocationInventory extends Inventory {
     type: 'allocation'
     capacity: number
 }
 
+/**
+ * On Request Inventory  has a type of 'on_request' and an
+ * errata string.
+ *
+ * Reservations cannot be confirmed automatically and instead are entered
+ * into a queue of reservations to be verified and updated.
+ */
 export interface OnRequestInventory extends Inventory {
     type: 'on_request'
     errata: string
 }
 
+/**
+ * Free-sell inventory has a type of 'free_sell' and no additional properties.
+ */
 export interface FreeSellInventory extends Inventory {
     type: 'free_sell'
 }
