@@ -75,8 +75,8 @@ export default class TourManager {
     /**
      * Field Management
      */
-    get fields(): Modules.Fields.Api {
-        return new Modules.Fields.Api(this.axios)
+    fields(type: EntityType): Modules.Fields.FieldsApi {
+        return new Modules.Fields.FieldsApi(this.axios, type)
     }
 
     /**
