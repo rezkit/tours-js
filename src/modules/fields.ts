@@ -6,14 +6,7 @@ import type { AxiosInstance } from "axios";
  *
  * Data for user-defined fields are stored as a mapping of field names to a value datum
  */
-export type FieldData = { [name: string]: FieldValue }
-
-/**
- * User-defined field value datum
- *
- */
-export type FieldValue = string | number | boolean | string[] | null
-
+export type FieldData = { [name: string]: any }
 
 export interface FieldDefinition extends Entity {
     type: string
