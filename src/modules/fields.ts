@@ -98,6 +98,16 @@ export class FieldsApi extends ApiGroup {
         return data
     }
 
+    async moveUp(id: string): Promise<number> {
+        const { data } = await this.axios.patch<FieldDefinition>(`/${this.type}/fields/${id}`, <UpdateFieldRequest>{ordering: "up"})
+        return data.ordering
+    }
+
+    async moveDown(id: string): Promise<number> {
+        const { data } = await this.axios.patch<FieldDefinition>(`/${this.type}/fields/${id}`, <UpdateFieldRequest>{ordering: "down"})
+        return data.ordering
+    }
+
     async update(id: string, params: UpdateFieldRequest): Promise<FieldDefinition> {
         const { data } = await this.axios.patch<FieldDefinition>(`/${this.type}/fields/${id}`, params)
         return data
