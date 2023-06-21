@@ -40,6 +40,17 @@ export interface UpdateImageParams extends Partial<CreateImageParams> {
 
 }
 
+export interface ImageLinkParams {
+  width?: number
+  height?: number
+  quality?: number
+  blur?: number
+  auto_optimize?: 'low' | 'medium' | 'high'
+  hue?: number
+  saturation?: number
+  brightness?: number
+}
+
 export class Image implements IImage {
 
   constructor(data: IImage, axios: AxiosInstance) {
@@ -72,6 +83,11 @@ export class Image implements IImage {
     this.category = new Category(data.category, this.axios)
 
     return this
+  }
+
+  async link(params?: ImageLinkParams): Promise<string> {
+    const { data } = await this.axios.get(`/images/${this.id}/link`, { params })
+    return data.link
   }
 }
 
