@@ -33,7 +33,7 @@ export interface CreateImageParams {
   focus_x?: number
   focus_y?: number
   category_id: string
-  image: Buffer | File | Blob | ReadableStream
+  image: File | Blob
 }
 
 export interface UpdateImageParams extends Partial<CreateImageParams> {
@@ -91,21 +91,31 @@ export class Images extends ApiGroup {
   }
 
   async create(params: CreateImageParams): Promise<Image> {
-    const { data } = await this.axios.post<IImage>('/images', params, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
+
+    const payload = new FormData();
+
+    payload.set("title", params.title)
+    payload.set("category_id", params.category_id)
+    payload.set("image", params.image)
+
+    if (params.description) {
+      payload.set("description", params.description)
+    }
+
+    if (params.focus_x) {
+      payload.set("focus_x", params.focus_x.toString())
+    }
+
+    if (params.focus_y) {
+      payload.set("focus_y", params.focus_y.toString())
+    }
+
+    const { data } = await this.axios.post<IImage>('/images', payload)
     return new Image(data, this.axios)
   }
 
   async update(id: string, params: UpdateImageParams): Promise<Image> {
-    const { data } = await this.axios.patch<IImage>(`/images/${id}`, params, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-
+    const { data } = await this.axios.patch<IImage>(`/images/${id}`, params)
     return new Image(data, this.axios)
   }
 }
