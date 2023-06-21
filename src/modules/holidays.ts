@@ -14,6 +14,8 @@ import {Categories, type Categorized, CategoryAttachment} from "./categories.js"
 import timestamp from "../annotations/timestamp.js";
 import {Departures} from "./departures.js";
 import { Content, ContentAttachment, type Contentized } from "./content.js";
+import type { Imagable } from "./images.js";
+import { ImageAttachment } from "./images.js";
 
 export interface IHoliday extends Entity {
     name: string
@@ -48,7 +50,7 @@ export interface UpdateHolidayInput extends Partial<CreateHolidayInput> {
     ordering?: ReorderCommand
 }
 
-export class Holiday implements IHoliday, Categorized<Holiday>, Contentized<Holiday> {
+export class Holiday implements IHoliday, Categorized<Holiday>, Contentized<Holiday>, Imagable<Holiday> {
 
     private readonly axios: AxiosInstance;
 
@@ -128,6 +130,10 @@ export class Holiday implements IHoliday, Categorized<Holiday>, Contentized<Holi
     published!: boolean;
     ordering!: number;
     deleted_at!: null | string | Date;
+
+    images(): ImageAttachment<Holiday> {
+        return new ImageAttachment(this.axios, 'holiday', this);
+    }
 }
 
 export type HolidaySortFields = 'id' | 'name' | 'code' | 'ordering' | 'created_at' | 'updated_at'

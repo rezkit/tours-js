@@ -86,6 +86,10 @@ export default class TourManager {
         return new Modules.ApiKeys.Api(this.axios)
     }
 
+    get images(): Modules.Images.Images {
+        return new Modules.Images.Images(this.axios)
+    }
+
     /**
      * Category Management
      * @param type
