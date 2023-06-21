@@ -33,7 +33,7 @@ export interface CreateImageParams {
   focus_x?: number
   focus_y?: number
   category_id: string
-  image: Buffer | File | ReadableStream
+  image: Buffer | File | Blob | ReadableStream
 }
 
 export interface UpdateImageParams extends Partial<CreateImageParams> {
