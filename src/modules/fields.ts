@@ -146,4 +146,8 @@ export class GroupsApi extends ApiGroup {
         return data
     }
 
+    async destroy(id: string): Promise<void> {
+        await this.axios.delete(`/${this.type}/fields/groups/${id}`)
+    }
+
 }
