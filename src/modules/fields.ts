@@ -71,8 +71,8 @@ export interface CreateFieldGroupRequest {
     label: string
 }
 
-export interface UpdateFieldGroupRequest extends CreateFieldGroupRequest {
-    ordering: ReorderCommand
+export interface UpdateFieldGroupRequest extends Partial<CreateFieldGroupRequest> {
+    ordering?: ReorderCommand
 }
 
 export class FieldsApi extends ApiGroup {
