@@ -122,6 +122,10 @@ export class Images extends ApiGroup {
       payload.set("description", params.description)
     }
 
+    if (params.tags) {
+      params.tags.forEach(t => payload.append('tags[]', t));
+    }
+
     if (params.focus_x) {
       payload.set("focus_x", params.focus_x.toString())
     }
