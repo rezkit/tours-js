@@ -95,9 +95,7 @@ export type SortImage = 'title' | 'id' | 'created_at' | 'updated_at'
 
 export interface ListImageParams extends PaginatedQuery, SortableQuery<SortImage> {
   search?: string
-  title?: string
 }
-
 export class Images extends ApiGroup {
 
   async list(params?: ListImageParams): Promise<Paginated<Image>> {
