@@ -25,6 +25,7 @@ export interface IImage extends Entity {
   file_path: string
   file_size: string
   category: ICategory
+  tags: string[]
   readonly thumbnail: string
 }
 
@@ -36,8 +37,8 @@ export interface CreateImageParams {
   focus_y?: number
   category_id: string
   image: File | Blob
+  tags?: string[]
 }
-
 export interface UpdateImageParams extends Partial<CreateImageParams> {
 
 }
@@ -93,6 +94,7 @@ export class Image implements IImage {
   }
 
   published!: boolean;
+  tags!: string[];
 }
 
 export type SortImage = 'title' | 'id' | 'created_at' | 'updated_at'
