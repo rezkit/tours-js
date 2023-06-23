@@ -18,6 +18,7 @@ export interface Point {
 
 export interface IImage extends Entity {
   title: string
+  published: boolean
   content: string | null
   dimensions: ImageDimensions
   focus: Point
@@ -30,6 +31,7 @@ export interface IImage extends Entity {
 export interface CreateImageParams {
   title: string
   description?: string
+  published?: boolean
   focus_x?: number
   focus_y?: number
   category_id: string
@@ -89,6 +91,8 @@ export class Image implements IImage {
     const { data } = await this.axios.get(`/images/${this.id}/link`, { params })
     return data.link
   }
+
+  published!: boolean;
 }
 
 export type SortImage = 'title' | 'id' | 'created_at' | 'updated_at'
