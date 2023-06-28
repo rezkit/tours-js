@@ -58,8 +58,8 @@ export interface CreateFieldRequest extends Omit<Omit<FieldDefinition, 'id'>, 'o
     group_id: string
 }
 
-export interface UpdateFieldRequest extends Omit<Omit<CreateFieldRequest, 'name'>, 'type'> {
-    ordering: ReorderCommand
+export interface UpdateFieldRequest extends Partial<Omit<CreateFieldRequest, 'name'>> {
+    ordering?: ReorderCommand
 }
 
 export interface FieldGroup extends Entity {
