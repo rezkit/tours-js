@@ -48,11 +48,7 @@ export interface UpdateHolidayInput extends Partial<CreateHolidayInput> {
     ordering?: ReorderCommand
 }
 
-<<<<<<< HEAD
 export class Holiday implements IHoliday, Categorized<Holiday>, Contentized<Holiday>, Imagable<Holiday> {
-=======
-export class Holiday implements IHoliday, Categorized<Holiday>, Contentized<Holiday> {
->>>>>>> origin/feature/content-items
 
     private readonly axios: AxiosInstance;
 
