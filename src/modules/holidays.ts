@@ -7,7 +7,7 @@ import {
     type ReorderCommand,
     type SortableQuery
 } from "./common.js";
-import type {FieldData} from "./fields.js";
+import type { FieldData, FieldDefinition } from "./fields.js";
 import type {AxiosInstance} from "axios";
 import {HolidayVersions} from "./holidayVersion.js";
 import {Categories, type Categorized, CategoryAttachment} from "./categories.js";
@@ -38,10 +38,9 @@ export interface CreateHolidayInput {
 
     introduction?: string | null
     description?: string | null
-
-    rank?: number
-
     published?: boolean
+
+    fields?: FieldData
 }
 
 export interface UpdateHolidayInput extends Partial<CreateHolidayInput> {
