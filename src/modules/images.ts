@@ -1,4 +1,13 @@
-import type { Entity, EntityType, ID, Paginated, PaginatedQuery, SortableQuery, AttachmentResponse } from "./common.js";
+import type {
+  Entity,
+  EntityType,
+  ID,
+  Paginated,
+  PaginatedQuery,
+  SortableQuery,
+  AttachmentResponse,
+  ReorderCommand
+} from "./common.js";
 import type { ICategory } from "./categories.js";
 import { ApiGroup } from "./common.js";
 import timestamp from "../annotations/timestamp.js";
@@ -26,6 +35,7 @@ export interface IImage extends Entity {
   file_size: string
   category: ICategory
   tags: string[]
+  ordering?: number
   readonly thumbnail: string
 }
 
@@ -74,6 +84,7 @@ export class Image implements IImage {
   readonly id!: string;
   readonly thumbnail!: string;
   title!: string;
+  ordering?: number;
 
   async update(params: UpdateImageParams): Promise<Image> {
     const { data } = await this.axios.patch<IImage>(`/images/${this.id}`, params, {
@@ -97,7 +108,7 @@ export class Image implements IImage {
   tags!: string[];
 }
 
-export type SortImage = 'title' | 'id' | 'created_at' | 'updated_at'
+export type SortImage = 'ordering' | 'title' | 'id' | 'created_at' | 'updated_at'
 
 export interface ListImageParams extends PaginatedQuery, SortableQuery<SortImage> {
   search?: string
@@ -173,6 +184,15 @@ export class ImageAttachment<T extends ID> extends ApiGroup {
 
   async detach(ids: string[]): Promise<void> {
     await this.axios.delete(this.path, { params: { ids }})
+  }
+
+  /**
+   * Move an image attachment up or down
+   * @param id
+   * @param ordering
+   */
+  async move(id: string, ordering: ReorderCommand): Promise<void> {
+    await this.axios.post(this.path + `/${id}/order`, { ordering })
   }
 
   get path(): string {
