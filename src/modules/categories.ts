@@ -1,10 +1,20 @@
-import type {Entity, EntityType, Paginated, PaginatedQuery, QueryBoolean, SortableQuery, ID} from "./common.js";
+import type {
+    Entity,
+    EntityType,
+    Paginated,
+    PaginatedQuery,
+    QueryBoolean,
+    SortableQuery,
+    ID,
+    Fields
+} from "./common.js";
 import type {AxiosInstance} from "axios";
 import {ApiGroup} from "./common.js";
 import type {TreeNode} from "../helpers";
 import timestamp from "../annotations/timestamp.js";
+import type { FieldData } from "./fields";
 
-export interface ICategory extends Entity, TreeNode {
+export interface ICategory extends Entity, TreeNode, Fields {
     type: EntityType;
     name: string;
     parent_id: string | null;
@@ -71,7 +81,8 @@ export class Category implements ICategory {
     description!: string | null;
     published!: boolean;
     searchable!: boolean;
-    readonly children!: Category[]
+    readonly children!: Category[];
+    fields!: FieldData;
 
     readonly ordering!: number;
 
@@ -102,7 +113,7 @@ export interface ListCategoriesQuery extends PaginatedQuery, SortableQuery<Categ
      */
     parent_id?: string | null
 }
-export interface CreateCategoryParams {
+export interface CreateCategoryParams extends Partial<Fields> {
     name: string
     parent_id?: string
     description?: string

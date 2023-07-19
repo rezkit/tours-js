@@ -1,10 +1,15 @@
 import type { AxiosInstance } from "axios";
+import type { FieldData, FieldDefinition } from "./fields";
 
 export abstract class ApiGroup {
    protected axios: AxiosInstance
     constructor(axios: AxiosInstance) {
        this.axios = axios
     }
+}
+
+export interface Fields {
+    fields: FieldData
 }
 
 export interface ID {

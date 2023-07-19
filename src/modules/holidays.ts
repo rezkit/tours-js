@@ -1,6 +1,7 @@
 import {
     ApiGroup,
     type Entity,
+    type Fields,
     type Paginated,
     type PaginatedQuery,
     type QueryBoolean,
@@ -16,7 +17,7 @@ import {Departures} from "./departures.js";
 import { Content, ContentAttachment, type Contentized } from "./content.js";
 import type { Imagable } from "./images.js";
 import { ImageAttachment } from "./images.js";
-export interface IHoliday extends Entity {
+export interface IHoliday extends Entity, Fields {
     name: string
 
     code: string
@@ -28,20 +29,16 @@ export interface IHoliday extends Entity {
     published: boolean
 
     ordering: number
-
-    fields: FieldData
 }
 
 
-export interface CreateHolidayInput {
+export interface CreateHolidayInput extends Partial<Fields> {
     name: string
     code: string
 
     introduction?: string | null
     description?: string | null
     published?: boolean
-
-    fields?: FieldData
 }
 
 export interface UpdateHolidayInput extends Partial<CreateHolidayInput> {

@@ -1,15 +1,16 @@
-import type {Entity, Inventory, Paginated, PaginatedQuery, SortableQuery} from "./common.js";
+import type { Entity, Fields, Inventory, Paginated, PaginatedQuery, SortableQuery } from "./common.js";
 import type {Categorized} from "./categories.js";
 import {Category, CategoryAttachment} from "./categories.js";
 import type {AxiosInstance} from "axios";
 import timestamp from "../annotations/timestamp.js";
 import {ApiGroup} from "./common.js";
 import type {IElementOption, PriceUnit} from "./elements.js";
+import type { FieldData } from "./fields";
 
 
 export type DepartureRangeType = 'fixed' | 'fixed_duration' | 'flexible'
 
-export interface IDeparture extends Entity {
+export interface IDeparture extends Entity, Fields {
     start: Date
     end: Date
 
@@ -24,7 +25,7 @@ export interface IDeparture extends Entity {
     readonly elements: IDepartureElement[]
 }
 
-export interface CreateDepartureRequest {
+export interface CreateDepartureRequest extends Partial<Fields> {
     version_id?: string
     range_type: DepartureRangeType
     start: Date
@@ -72,6 +73,7 @@ export class Departure implements IDeparture, Categorized<Departure> {
     readonly source_id!: string | null;
     @timestamp() readonly start!: Date;
     readonly version_id!: string;
+    fields!: FieldData;
 
     elements!: DepartureElement[]
     readonly range_type!: DepartureRangeType;

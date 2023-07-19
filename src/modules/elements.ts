@@ -1,10 +1,11 @@
 import {Category, type ICategory} from "./categories.js";
 import type {AxiosInstance} from "axios";
-import type {Entity, Inventory, Paginated, PaginatedQuery, SortableQuery} from "./common.js";
+import type { Entity, Fields, Inventory, Paginated, PaginatedQuery, SortableQuery } from "./common.js";
 import {ApiGroup} from "./common.js";
 import timestamp from "../annotations/timestamp.js";
+import type { FieldData } from "./fields";
 
-export interface IElement extends Entity {
+export interface IElement extends Entity, Fields {
 
     version_id: string
     is_package: boolean
@@ -34,7 +35,7 @@ export interface IElementOption extends Entity {
     occupancy: { from: number, to: number }
 }
 
-export interface CreateElementParams {
+export interface CreateElementParams extends Partial<Fields> {
     category_id: string
     name: string
     default_inventory: Inventory
@@ -91,6 +92,7 @@ export class Element implements IElement {
     published!: boolean;
     @timestamp() readonly updated_at!: Date;
     version_id!: string;
+    fields!: FieldData;
 
     deleted_at?: string | Date;
     options!: ElementOption[];
