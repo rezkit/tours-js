@@ -7,11 +7,13 @@ import {Elements} from "./elements.js";
 import timestamp from "../annotations/timestamp.js";
 import {Departures} from "./departures.js";
 import {Itinerary} from "./itinerary.js";
+import type { Locatable } from "./locations";
+import { LocationAttachment } from "./locations";
 
 export interface IHolidayVersion extends IHoliday {
     holiday_id: string
 }
-export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersion> {
+export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersion>, Locatable<HolidayVersion> {
 
     private readonly axios: AxiosInstance
 
@@ -53,6 +55,10 @@ export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersi
     }
     get elements(): Elements {
         return new Elements(this.axios, this.id)
+    }
+
+    locations(): LocationAttachment<this> {
+        return new LocationAttachment<this>(this.axios, 'holiday_version', this);
     }
 }
 export class HolidayVersions extends ApiGroup {

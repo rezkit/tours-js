@@ -3,6 +3,8 @@ import type {AxiosInstance} from "axios";
 import {ApiGroup} from "./common.js";
 import timestamp from "../annotations/timestamp.js";
 import type { FieldData } from "./fields";
+import type { Locatable } from "./locations";
+import { LocationAttachment } from "./locations";
 
 export interface IItineraryEntry extends Entity, Fields {
 
@@ -49,7 +51,7 @@ export interface CreateItineraryEntry extends Partial<Fields> {
 
 export type UpdateItineraryEntry = Partial<CreateItineraryEntry>
 
-export class ItineraryEntry implements IItineraryEntry {
+export class ItineraryEntry implements IItineraryEntry, Locatable<ItineraryEntry> {
 
     private axios: AxiosInstance
 
@@ -88,6 +90,10 @@ export class ItineraryEntry implements IItineraryEntry {
 
     get path(): string {
         return `/holidays/versions/${this.version_id}/itinerary/${this.id}`
+    }
+
+    locations(): LocationAttachment<ItineraryEntry> {
+        return new LocationAttachment<ItineraryEntry>(this.axios, 'itinerary', this);
     }
 
 }

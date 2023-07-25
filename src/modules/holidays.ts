@@ -17,6 +17,8 @@ import {Departures} from "./departures.js";
 import { Content, ContentAttachment, type Contentized } from "./content.js";
 import type { Imagable } from "./images.js";
 import { ImageAttachment } from "./images.js";
+import type { Locatable } from "./locations";
+import { LocationAttachment } from "./locations";
 export interface IHoliday extends Entity, Fields {
     name: string
 
@@ -45,7 +47,7 @@ export interface UpdateHolidayInput extends Partial<CreateHolidayInput> {
     ordering?: ReorderCommand
 }
 
-export class Holiday implements IHoliday, Categorized<Holiday>, Contentized<Holiday>, Imagable<Holiday> {
+export class Holiday implements IHoliday, Categorized<Holiday>, Contentized<Holiday>, Imagable<Holiday>, Locatable<Holiday> {
 
     private readonly axios: AxiosInstance;
 
@@ -112,6 +114,10 @@ export class Holiday implements IHoliday, Categorized<Holiday>, Contentized<Holi
 
     content(): ContentAttachment<this> {
         return new ContentAttachment<this>(this.axios, 'holiday', this)
+    }
+
+    locations(): LocationAttachment<this> {
+        return new LocationAttachment<this>(this.axios, 'holiday', this)
     }
 
     code!: string;

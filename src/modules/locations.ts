@@ -1,0 +1,220 @@
+import type {
+    Entity,
+    EntityType,
+    Paginated,
+    PaginatedQuery,
+    QueryBoolean,
+    SortableQuery,
+    ID,
+    Fields
+} from "./common.js";
+import type {AxiosInstance} from "axios";
+import {ApiGroup} from "./common.js";
+import type {TreeNode} from "../helpers";
+import timestamp from "../annotations/timestamp.js";
+import type { FieldData } from "./fields";
+import { Category, type ICategory } from "./categories";
+
+export interface ILocation extends Entity, TreeNode, Fields {
+    name: string;
+    parent_id: string | null;
+
+    published: boolean;
+
+    description: string | null
+
+    children: ILocation[]
+    category: ICategory
+
+    ordering: number
+}
+
+
+export class Location implements ILocation {
+    private readonly axios: AxiosInstance;
+    constructor(values: ILocation, axios: AxiosInstance) {
+        Object.assign(this, values);
+        this.axios = axios;
+        this.category = new Category(values.category, axios);
+
+        if (values.children) {
+            this.children = values.children.map(c => new Location(c, axios))
+        } else {
+            this.children = []
+        }
+    }
+
+    async destroy(): Promise<void> {
+        await this.axios.delete(this.path)
+        this.deleted_at = new Date();
+    }
+
+    async update(params: UpdateLocationParams): Promise<Location> {
+        const response = (await this.axios.patch<ILocation>(this.path, params)).data
+
+        Object.assign(this, response)
+
+        return new Location(response, this.axios)
+    }
+
+    async moveUp(): Promise<number> {
+        const response = (await this.axios.patch<ILocation>(this.path, { ordering: 'up' })).data
+
+        Object.assign(this, response)
+        return response.ordering
+    }
+
+    async moveDown(): Promise<number> {
+        const response = (await this.axios.patch<ILocation>(this.path, { ordering: 'down' })).data
+
+        Object.assign(this, response)
+        return response.ordering
+    }
+
+    @timestamp() readonly created_at!: Date
+    readonly id!: string
+    name!: string
+    parent_id!: string | null
+    @timestamp() readonly updated_at!: Date
+    deleted_at?: Date
+    description!: string | null;
+    published!: boolean;
+    readonly children!: Location[];
+    category: Category;
+    fields!: FieldData;
+
+    readonly ordering!: number;
+
+    get path(): string {
+        return `locations/${this.id}`
+    }
+}
+
+export type LocationSortFields = 'name' | 'parent_id'
+export interface ListLocationsQuery extends PaginatedQuery, SortableQuery<LocationSortFields> {
+    name?: string
+    search?: string
+    published?: QueryBoolean
+
+    /**
+     * Include each category's children in the response
+     */
+    children?: QueryBoolean
+
+    /**
+     * Include each category's ancestors
+     */
+    ancestors?: QueryBoolean
+
+    /**
+     * Filter by parent ID
+     */
+    parent_id?: string | null
+}
+export interface CreateLocationParams extends Partial<Fields> {
+    name: string
+    category_id: string
+    parent_id?: string
+    description?: string
+    published?: boolean
+}
+
+export interface UpdateLocationParams extends Partial<CreateLocationParams> {
+    ordering?: 'up' | 'down'
+}
+
+export class Locations extends ApiGroup {
+    constructor(axios: AxiosInstance) {
+        super(axios)
+    }
+
+    async list(params?: ListLocationsQuery): Promise<Paginated<Location>> {
+        const response = (await this.axios.get<Paginated<ILocation>>('/locations', { params })).data
+
+        response.data = response.data.map(c => new Location(c, this.axios))
+
+        return response as Paginated<Location>
+    }
+
+    async create(params: CreateLocationParams): Promise<Location> {
+        const response = (await this.axios.post<ILocation>('/locations', params)).data
+        return new Location(response, this.axios)
+    }
+
+    async find(id: string): Promise<Location> {
+        const response = (await this.axios.get<ILocation>(`/locations/${id}`)).data
+        return new Location(response, this.axios)
+    }
+
+    async destroy(id: string): Promise<void> {
+        await this.axios.delete(`/locations/${id}`)
+    }
+
+    async restore(id: string): Promise<Location> {
+        const { data } = await this.axios.put<ILocation>(`/locations/${id}/restore`);
+        return new Location(data, this.axios);
+    }
+}
+
+export class LocationAttachment<T extends ID> extends ApiGroup {
+    readonly type: EntityType
+    readonly entity: T
+
+    constructor(axios: AxiosInstance, type: EntityType, entity: T) {
+        super(axios);
+        this.type = type
+        this.entity = entity
+    }
+
+    /**
+     * List the attached categories
+     * @param params
+     */
+    async list(params?: ListLocationsQuery): Promise<Paginated<Location>> {
+        const response = (await this.axios.get<Paginated<ILocation>>(this.path, { params })).data
+
+        response.data = response.data.map(c => new Location(c, this.axios))
+
+        return response as Paginated<Location>
+    }
+
+    /**
+     * Attach additional categories. Preserving existing attachment.
+     * @param ids
+     */
+    async attach(ids: string[]): Promise<Location[]> {
+        const response = (await this.axios.patch<ILocation[]>(this.path, { ids })).data
+
+        return response.map(c => new Location(c, this.axios))
+    }
+
+    /**
+     * Replace attached categories. Replaces all attached categories with the given categories
+     * @param ids
+     */
+    async replace(ids: string[]): Promise<Location[]> {
+        const response = (await this.axios.put<ILocation[]>(this.path, { ids })).data
+
+        return response.map(c => new Location(c, this.axios))
+    }
+
+    /**
+     * Remove categories.
+     * @param ids
+     */
+    async detach(ids: string[]): Promise<void> {
+        await this.axios.delete<ILocation[]>(this.path, { params: { ids }});
+        return
+    }
+
+    /**
+     * Get the path to the categories resources
+     */
+    get path(): string {
+        return `/${this.type}/${this.entity.id}/locations`
+    }
+}
+
+export interface Locatable<T extends ID> {
+    locations(): LocationAttachment<T>;
+}
