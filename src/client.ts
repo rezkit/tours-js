@@ -90,6 +90,9 @@ export default class TourManager {
         return new Modules.Images.Images(this.axios)
     }
 
+    get locations(): Modules.Locations.Locations {
+        return new Modules.Locations.Locations(this.axios)
+    }
     /**
      * Category Management
      * @param type
