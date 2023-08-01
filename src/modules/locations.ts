@@ -24,7 +24,7 @@ export interface ILocation extends Entity, TreeNode, Fields {
     description: string | null
 
     children: ILocation[]
-    category: ICategory
+    category?: ICategory
 
     ordering: number
 }
@@ -35,7 +35,9 @@ export class Location implements ILocation {
     constructor(values: ILocation, axios: AxiosInstance) {
         Object.assign(this, values);
         this.axios = axios;
-        this.category = new Category(values.category, axios);
+        if (values.category) {
+            this.category = new Category(values.category, axios);
+        }
 
         if (values.children) {
             this.children = values.children.map(c => new Location(c, axios))
@@ -80,7 +82,7 @@ export class Location implements ILocation {
     description!: string | null;
     published!: boolean;
     readonly children!: Location[];
-    category: Category;
+    category?: Category;
     fields!: FieldData;
 
     readonly ordering!: number;
@@ -137,8 +139,8 @@ export class Locations extends ApiGroup {
     }
 
     async create(params: CreateLocationParams): Promise<Location> {
-        const response = (await this.axios.post<ILocation>('/locations', params)).data
-        return new Location(response, this.axios)
+        const { data } = await this.axios.post<ILocation>('/locations', params)
+        return new Location(data, this.axios)
     }
 
     async find(id: string): Promise<Location> {
