@@ -37,6 +37,7 @@ export interface IImage extends Entity {
   tags: string[]
   ordering?: number
   readonly thumbnail: string
+  readonly original: string
 }
 
 export interface CreateImageParams {
@@ -83,6 +84,7 @@ export class Image implements IImage {
   focus!: Point;
   readonly id!: string;
   readonly thumbnail!: string;
+  readonly original!: string;
   title!: string;
   ordering?: number;
 
