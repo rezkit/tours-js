@@ -158,15 +158,17 @@ export class Locations extends ApiGroup {
     }
 
     attached(id: string): LocationAttachment<ID> {
-        return new LocationAttachment(this.axios, { id })
+        return new LocationAttachment(this.axios, 'location',{ id })
     }
 }
 
 export class LocationAttachment<T extends ID> extends ApiGroup {
+    readonly type: EntityType
     readonly entity: T
 
-    constructor(axios: AxiosInstance, entity: T) {
+    constructor(axios: AxiosInstance, type: EntityType, entity: T) {
         super(axios);
+        this.type = type
         this.entity = entity
     }
 
@@ -215,7 +217,7 @@ export class LocationAttachment<T extends ID> extends ApiGroup {
      * Get the path to the location resources
      */
     get path(): string {
-        return `/locations/${this.entity.id}/locations`
+        return `/${this.type}/${this.entity.id}/locations`
     }
 }
 
