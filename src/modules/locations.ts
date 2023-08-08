@@ -157,8 +157,8 @@ export class Locations extends ApiGroup {
         return new Location(data, this.axios);
     }
 
-    attached(id: string): LocationAttachment<ID> {
-        return new LocationAttachment(this.axios, 'location',{ id })
+    attached(type: EntityType, id: string): LocationAttachment<ID> {
+        return new LocationAttachment(this.axios, type, { id })
     }
 }
 
