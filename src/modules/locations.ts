@@ -13,7 +13,7 @@ import {ApiGroup} from "./common.js";
 import type {TreeNode} from "../helpers";
 import timestamp from "../annotations/timestamp.js";
 import type { FieldData } from "./fields";
-import { Category, type ICategory } from "./categories";
+import {Category, CategoryAttachment, type ICategory} from "./categories";
 
 export interface ILocation extends Entity, TreeNode, Fields {
     name: string;
@@ -99,12 +99,12 @@ export interface ListLocationsQuery extends PaginatedQuery, SortableQuery<Locati
     published?: QueryBoolean
 
     /**
-     * Include each category's children in the response
+     * Include each locations children in the response
      */
     children?: QueryBoolean
 
     /**
-     * Include each category's ancestors
+     * Include each locations ancestors
      */
     ancestors?: QueryBoolean
 
@@ -133,7 +133,7 @@ export class Locations extends ApiGroup {
     async list(params?: ListLocationsQuery): Promise<Paginated<Location>> {
         const response = (await this.axios.get<Paginated<ILocation>>('/locations', { params })).data
 
-        response.data = response.data.map(c => new Location(c, this.axios))
+        response.data = response.data.map((l: any) => new Location(l, this.axios))
 
         return response as Paginated<Location>
     }
@@ -156,6 +156,10 @@ export class Locations extends ApiGroup {
         const { data } = await this.axios.put<ILocation>(`/locations/${id}/restore`);
         return new Location(data, this.axios);
     }
+
+    attached(type: EntityType, id: string): LocationAttachment<ID> {
+        return new LocationAttachment(this.axios, type, { id })
+    }
 }
 
 export class LocationAttachment<T extends ID> extends ApiGroup {
@@ -169,39 +173,39 @@ export class LocationAttachment<T extends ID> extends ApiGroup {
     }
 
     /**
-     * List the attached categories
+     * List the attached locations
      * @param params
      */
     async list(params?: ListLocationsQuery): Promise<Paginated<Location>> {
         const response = (await this.axios.get<Paginated<ILocation>>(this.path, { params })).data
 
-        response.data = response.data.map(c => new Location(c, this.axios))
+        response.data = response.data.map((l: any) => new Location(l, this.axios))
 
         return response as Paginated<Location>
     }
 
     /**
-     * Attach additional categories. Preserving existing attachment.
+     * Attach additional locations. Preserving existing attachment.
      * @param ids
      */
     async attach(ids: string[]): Promise<Location[]> {
         const response = (await this.axios.patch<ILocation[]>(this.path, { ids })).data
 
-        return response.map(c => new Location(c, this.axios))
+        return response.map((l: any) => new Location(l, this.axios))
     }
 
     /**
-     * Replace attached categories. Replaces all attached categories with the given categories
+     * Replace attached locations. Replaces all attached locations with the given locations
      * @param ids
      */
     async replace(ids: string[]): Promise<Location[]> {
         const response = (await this.axios.put<ILocation[]>(this.path, { ids })).data
 
-        return response.map(c => new Location(c, this.axios))
+        return response.map((l: any) => new Location(l, this.axios))
     }
 
     /**
-     * Remove categories.
+     * Remove locations.
      * @param ids
      */
     async detach(ids: string[]): Promise<void> {
@@ -210,7 +214,7 @@ export class LocationAttachment<T extends ID> extends ApiGroup {
     }
 
     /**
-     * Get the path to the categories resources
+     * Get the path to the location resources
      */
     get path(): string {
         return `/${this.type}/${this.entity.id}/locations`
