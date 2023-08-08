@@ -191,7 +191,7 @@ export class LocationAttachment<T extends ID> extends ApiGroup {
     async attach(ids: string[]): Promise<Location[]> {
         const response = (await this.axios.patch<ILocation[]>(this.path, { ids })).data
 
-        return response.map((l: any) => new Location(l, this.axios))
+        return response.map(l => new Location(l, this.axios))
     }
 
     /**
