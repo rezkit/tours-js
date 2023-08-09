@@ -1,4 +1,5 @@
 import {ApiGroup, type Entity} from "./common.js";
+import {Organization} from "./organizations";
 import type {AxiosInstance} from "axios";
 import timestamp from "../annotations/timestamp.js";
 
@@ -62,31 +63,6 @@ export type UpdateOrganizationSettings = Partial<OrganizationSettings>;
 export interface IOrganization extends Entity, OrganizationSettings {
     name: string
     rezkit_id: string
-}
-
-export class Organization implements IOrganization {
-
-    private readonly axios: AxiosInstance
-
-    constructor(data: IOrganization, axios: AxiosInstance) {
-        Object.assign(this, data)
-        this.axios = axios
-    }
-
-    async update(params: UpdateOrganizationSettings): Promise<Organization> {
-        const { data } = await this.axios.put<IOrganization>(`/organization/settings`, params)
-        Object.assign(this, data)
-
-        return this
-    }
-
-    @timestamp() readonly created_at!: Date;
-    currencies!: string[];
-    deposit_defaults!: { balance_due: number; percentage: number };
-    readonly id!: string;
-    name!: string;
-    rezkit_id!: string;
-    readonly updated_at!: Date;
 }
 
 export class Api extends ApiGroup {
