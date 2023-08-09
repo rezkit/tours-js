@@ -3,23 +3,12 @@ import type {
     Paginated,
     PaginatedQuery,
     SortableQuery,
-    Fields
 } from "./common.js";
 import type {AxiosInstance} from "axios";
 import {ApiGroup} from "./common.js";
-import type {TreeNode} from "../helpers";
 import timestamp from "../annotations/timestamp";
-import type {UpdateOrganizationSettings} from "./user";
+import type {UpdateOrganizationSettings, IOrganization} from "./user";
 import type { FieldData } from "./fields.js";
-
-export interface IOrganization extends Entity, TreeNode, Fields {
-    rezkit_id: string;
-    name: string;
-
-    parent_id: string | null;
-
-    children: IOrganization[];
-}
 
 export class Organization implements IOrganization {
     private readonly axios: AxiosInstance;
@@ -44,9 +33,6 @@ export class Organization implements IOrganization {
     name!: string;
     rezkit_id!: string;
     readonly updated_at!: Date;
-    readonly children!: IOrganization[];
-    fields!: FieldData;
-    parent_id!: string | null;
 }
 
 export type OrganizationSortFields = 'id' | 'rezkit_id' | 'name'

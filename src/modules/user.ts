@@ -1,6 +1,5 @@
 import {ApiGroup, type Entity} from "./common.js";
 import {Organization} from "./organizations";
-import type {IOrganization} from "./organizations"
 import type {AxiosInstance} from "axios";
 import timestamp from "../annotations/timestamp.js";
 
@@ -61,6 +60,10 @@ export interface OrganizationSettings {
 
 export type UpdateOrganizationSettings = Partial<OrganizationSettings>;
 
+export interface IOrganization extends Entity {
+    rezkit_id: string;
+    name: string;
+}
 export class Api extends ApiGroup {
 
     /**
