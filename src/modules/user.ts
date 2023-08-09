@@ -77,6 +77,6 @@ export class Api extends ApiGroup {
 
     async organization(): Promise<Organization> {
         const { data } = await this.axios.get<IOrganization>('/organization')
-        return new Organization(data, this.axios)
+        return new Organization(data)
     }
 }
