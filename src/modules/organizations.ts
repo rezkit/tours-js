@@ -15,14 +15,20 @@ import type { FieldData } from "./fields.js";
 export interface IOrganization extends Entity, TreeNode, Fields {
     rezkit_id: string;
     name: string;
+
+    parent_id: string | null;
+
+    children: IOrganization[];
 }
 
 export class Organization implements IOrganization {
     private readonly axios: AxiosInstance;
 
-    constructor(values: IOrganization) {
+    constructor(values: IOrganization, axios: AxiosInstance) {
         Object.assign(this, values)
+        this.axios = axios
     }
+
 
     async update(params: UpdateOrganizationSettings): Promise<Organization> {
         const { data } = await this.axios.put<IOrganization>(`/organization/settings`, params)
@@ -38,6 +44,9 @@ export class Organization implements IOrganization {
     name!: string;
     rezkit_id!: string;
     readonly updated_at!: Date;
+    readonly children!: IOrganization[];
+    fields!: FieldData;
+    parent_id!: string | null;
 }
 
 export type OrganizationSortFields = 'id' | 'rezkit_id' | 'name'
@@ -52,7 +61,7 @@ export class Api extends ApiGroup {
     async list(params?: OrganizationListQuery): Promise<Paginated<Organization>> {
         const response = (await this.axios.get<Paginated<IOrganization>>(`/organizations`, { params })).data
 
-        response.data = response.data.map(o => new Organization(o))
+        response.data = response.data.map(o => new Organization(o, this.axios))
 
         return response as Paginated<Organization>
     }
