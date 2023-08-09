@@ -17,8 +17,8 @@ import {Departures} from "./departures.js";
 import { Content, ContentAttachment, type Contentized } from "./content.js";
 import type { Imagable } from "./images.js";
 import { ImageAttachment } from "./images.js";
-import type { Locatable } from "./locations";
-import { LocationAttachment } from "./locations";
+import type { Locatable } from "./locations.js";
+import { LocationAttachment } from "./locations.js";
 export interface IHoliday extends Entity, Fields {
     name: string
 

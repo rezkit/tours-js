@@ -7,12 +7,22 @@ import {Elements} from "./elements.js";
 import timestamp from "../annotations/timestamp.js";
 import {Departures} from "./departures.js";
 import {Itinerary} from "./itinerary.js";
-import type { Locatable } from "./locations";
-import { LocationAttachment } from "./locations";
+import type { Locatable } from "./locations.js";
+import { LocationAttachment } from "./locations.js";
 
 export interface IHolidayVersion extends IHoliday {
     holiday_id: string
+    duration?: number
 }
+
+export interface UpdateHolidayVersionInput extends UpdateHolidayInput {
+    duration?: number | null
+}
+
+export interface CreateHolidayVersionInput extends CreateHolidayInput {
+    duration?: number | null
+}
+
 export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersion>, Locatable<HolidayVersion> {
 
     private readonly axios: AxiosInstance
@@ -21,7 +31,7 @@ export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersi
         this.axios = axios
         Object.assign(this, values)
     }
-    async update(params: UpdateHolidayInput): Promise<HolidayVersion> {
+    async update(params: UpdateHolidayVersionInput): Promise<HolidayVersion> {
         const response = (await this.axios.patch<IHolidayVersion>(this.path, params)).data
         Object.assign(this, response)
         return this
@@ -50,6 +60,7 @@ export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersi
     readonly name!: string;
     readonly ordering!: number;
     readonly published!: boolean;
+    duration?: number
     get path(): string {
         return `/holidays/${this.holiday_id}/versions/${this.id}`
     }
@@ -89,7 +100,7 @@ export class HolidayVersions extends ApiGroup {
      * Create a new Version for this holiday
      * @param params
      */
-    async create(params: CreateHolidayInput): Promise<HolidayVersion> {
+    async create(params: CreateHolidayVersionInput): Promise<HolidayVersion> {
         const response = (await this.axios.post<IHolidayVersion>(`/holidays/${this.holidayId}/versions`, params)).data
         return new HolidayVersion(response, this.axios)
     }

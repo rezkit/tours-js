@@ -2,9 +2,9 @@ import type { Entity, Fields, Paginated, PaginatedQuery, SortableQuery } from ".
 import type {AxiosInstance} from "axios";
 import {ApiGroup} from "./common.js";
 import timestamp from "../annotations/timestamp.js";
-import type { FieldData } from "./fields";
-import type { Locatable } from "./locations";
-import { LocationAttachment } from "./locations";
+import type { FieldData } from "./fields.js";
+import type { Locatable } from "./locations.js";
+import { LocationAttachment } from "./locations.js";
 
 export interface IItineraryEntry extends Entity, Fields {
 
