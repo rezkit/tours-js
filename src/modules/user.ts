@@ -1,5 +1,5 @@
-import {ApiGroup, type Entity, Paginated} from "./common.js";
-import {Organization, OrganizationListQuery} from "./organizations";
+import {ApiGroup, type Entity, type Paginated} from "./common.js";
+import {Organization, type OrganizationListQuery} from "./organizations";
 import type {AxiosInstance} from "axios";
 import timestamp from "../annotations/timestamp.js";
 

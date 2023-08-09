@@ -1,18 +1,10 @@
 import type {
-    Entity,
     PaginatedQuery,
     SortableQuery,
-    Fields
 } from "./common.js";
 import type {AxiosInstance} from "axios";
-import type {TreeNode} from "../helpers";
 import timestamp from "../annotations/timestamp";
-import type {UpdateOrganizationSettings} from "./user";
-
-export interface IOrganization extends Entity, TreeNode, Fields {
-    rezkit_id: string;
-    name: string;
-}
+import type {UpdateOrganizationSettings, IOrganization} from "./user";
 
 export class Organization implements IOrganization {
     private readonly axios: AxiosInstance;
