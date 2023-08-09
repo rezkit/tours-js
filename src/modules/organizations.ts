@@ -13,8 +13,8 @@ import type { FieldData } from "./fields.js";
 export class Organization implements IOrganization {
     private readonly axios: AxiosInstance;
 
-    constructor(axios: AxiosInstance) {
-        Object.assign(this)
+    constructor(data: IOrganization, axios: AxiosInstance) {
+        Object.assign(this, data)
         this.axios = axios
     }
 
@@ -47,7 +47,7 @@ export class Api extends ApiGroup {
     async list(params?: OrganizationListQuery): Promise<Paginated<Organization>> {
         const response = (await this.axios.get<Paginated<IOrganization>>(`/organizations`, { params })).data
 
-        response.data = response.data.map(new Organization(this.axios))
+        response.data = response.data.map(o => new Organization(o, this.axios))
 
         return response as Paginated<Organization>
     }
