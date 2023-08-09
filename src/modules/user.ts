@@ -64,6 +64,7 @@ export interface IOrganization extends Entity, OrganizationSettings {
     name: string
     rezkit_id: string
 }
+
 export class Api extends ApiGroup {
 
     /**
