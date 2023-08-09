@@ -61,8 +61,8 @@ export interface OrganizationSettings {
 export type UpdateOrganizationSettings = Partial<OrganizationSettings>;
 
 export interface IOrganization extends Entity, OrganizationSettings {
-    rezkit_id: string;
     name: string;
+    rezkit_id: string;
 }
 export class Api extends ApiGroup {
 
