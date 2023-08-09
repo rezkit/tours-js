@@ -93,6 +93,10 @@ export default class TourManager {
     get locations(): Modules.Locations.Locations {
         return new Modules.Locations.Locations(this.axios)
     }
+
+    get organizations(): Modules.Organizations.Organization {
+        return new Modules.Organizations.Organization(this.axios)
+    }
     /**
      * Category Management
      * @param type
