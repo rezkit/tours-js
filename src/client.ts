@@ -7,6 +7,7 @@ export * from './modules.js';
 import {NotFoundError, ValidationError} from "./errors.js";
 import type {EntityType} from "./modules/common.js";
 import type { ListDeparturesQuery } from "./modules/departures";
+import type {IOrganization} from "./modules/user";
 
 export const BASE_URL = 'https://api.tours.rezkit.app';
 
