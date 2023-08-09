@@ -5,6 +5,7 @@ import type {
     PaginatedQuery,
     QueryBoolean,
     SortableQuery,
+    AttachmentResponse,
     ID,
     Fields
 } from "./common.js";
@@ -188,20 +189,18 @@ export class LocationAttachment<T extends ID> extends ApiGroup {
      * Attach additional locations. Preserving existing attachment.
      * @param ids
      */
-    async attach(ids: string[]): Promise<Location[]> {
-        const response = (await this.axios.patch<ILocation[]>(this.path, { ids })).data
-
-        return response.map(l => new Location(l, this.axios))
+    async attach(ids: string[]): Promise<AttachmentResponse> {
+        const { data } = await this.axios.patch<AttachmentResponse>(this.path, { ids })
+        return data
     }
 
     /**
      * Replace attached locations. Replaces all attached locations with the given locations
      * @param ids
      */
-    async replace(ids: string[]): Promise<Location[]> {
-        const response = (await this.axios.put<ILocation[]>(this.path, { ids })).data
-
-        return response.map((l: any) => new Location(l, this.axios))
+    async replace(ids: string[]): Promise<AttachmentResponse> {
+        const { data } = await this.axios.put<AttachmentResponse>(this.path, { ids })
+        return data
     }
 
     /**
