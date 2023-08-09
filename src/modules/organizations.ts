@@ -24,8 +24,8 @@ export interface IOrganization extends Entity, TreeNode, Fields {
 export class Organization implements IOrganization {
     private readonly axios: AxiosInstance;
 
-    constructor(values: IOrganization, axios: AxiosInstance) {
-        Object.assign(this, values)
+    constructor(axios: AxiosInstance) {
+        Object.assign(this)
         this.axios = axios
     }
 
@@ -61,7 +61,7 @@ export class Api extends ApiGroup {
     async list(params?: OrganizationListQuery): Promise<Paginated<Organization>> {
         const response = (await this.axios.get<Paginated<IOrganization>>(`/organizations`, { params })).data
 
-        response.data = response.data.map(o => new Organization(o, this.axios))
+        response.data = response.data.map(this.axios)
 
         return response as Paginated<Organization>
     }
