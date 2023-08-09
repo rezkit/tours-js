@@ -1,5 +1,5 @@
 import {ApiGroup, type Entity, Paginated} from "./common.js";
-import {Organization} from "./organizations";
+import {Organization, OrganizationListQuery} from "./organizations";
 import type {AxiosInstance} from "axios";
 import timestamp from "../annotations/timestamp.js";
 
@@ -80,8 +80,8 @@ export class Api extends ApiGroup {
         return new Organization(data, this.axios)
     }
 
-    async organizationList(): Promise<Paginated<Organization>> {
-        const { data } = await this.axios.get<Paginated<IOrganization>>('/organization')
+    async organizationList(params?: OrganizationListQuery): Promise<Paginated<Organization>> {
+        const data = (await this.axios.get<Paginated<IOrganization>>(`/organizations`, { params })).data
 
         data.data = data.data.map(o => new Organization(o, this.axios))
         return data as Paginated<Organization>

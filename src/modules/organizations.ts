@@ -1,16 +1,13 @@
 import type {
     Entity,
-    Paginated,
     PaginatedQuery,
     SortableQuery,
     Fields
 } from "./common.js";
 import type {AxiosInstance} from "axios";
-import {ApiGroup} from "./common.js";
 import type {TreeNode} from "../helpers";
 import timestamp from "../annotations/timestamp";
 import type {UpdateOrganizationSettings} from "./user";
-import type { FieldData } from "./fields.js";
 
 export interface IOrganization extends Entity, TreeNode, Fields {
     rezkit_id: string;
@@ -47,14 +44,4 @@ export interface OrganizationListQuery extends PaginatedQuery, SortableQuery<Org
     id?: string
     reskit_id?: string
     name?: string
-}
-
-export class Api extends ApiGroup {
-    async list(params?: OrganizationListQuery): Promise<Paginated<Organization>> {
-        const response = (await this.axios.get<Paginated<IOrganization>>(`/organizations`, { params })).data
-
-        response.data = response.data.map(o => new Organization(o, this.axios))
-
-        return response as Paginated<Organization>
-    }
 }
