@@ -14,7 +14,11 @@ export class Organization implements IOrganization {
     private readonly axios: AxiosInstance;
 
     constructor(axios: AxiosInstance, data?: IOrganization) {
+        if (data) {
         Object.assign(this, data)
+        } else {
+        Object.assign(this)
+        }
         this.axios = axios
     }
 
