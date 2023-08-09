@@ -60,7 +60,7 @@ export interface OrganizationSettings {
 
 export type UpdateOrganizationSettings = Partial<OrganizationSettings>;
 
-export interface IOrganization extends Entity {
+export interface IOrganization extends Entity, OrganizationSettings{
     rezkit_id: string;
     name: string;
 }
