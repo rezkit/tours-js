@@ -11,10 +11,10 @@ import type {
 } from "./common.js";
 import type {AxiosInstance} from "axios";
 import {ApiGroup} from "./common.js";
-import type {TreeNode} from "../helpers";
+import type {TreeNode} from "../helpers.js";
 import timestamp from "../annotations/timestamp.js";
-import type { FieldData } from "./fields";
-import {Category, CategoryAttachment, type ICategory} from "./categories";
+import type { FieldData } from "./fields.js";
+import {Category, CategoryAttachment, type ICategory} from "./categories.js";
 
 export interface ILocation extends Entity, TreeNode, Fields {
     name: string;
