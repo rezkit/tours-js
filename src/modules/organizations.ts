@@ -1,10 +1,6 @@
-import type {
-    PaginatedQuery,
-    SortableQuery,
-} from "./common.js";
 import type {AxiosInstance} from "axios";
-import timestamp from "../annotations/timestamp";
-import type {UpdateOrganizationSettings, IOrganization} from "./user";
+import timestamp from "../annotations/timestamp.js";
+import type {UpdateOrganizationSettings, IOrganization} from "./user.js";
 
 export class Organization implements IOrganization {
     private readonly axios: AxiosInstance;
@@ -28,12 +24,4 @@ export class Organization implements IOrganization {
     name!: string;
     rezkit_id!: string;
     readonly updated_at!: Date;
-}
-
-export type OrganizationSortFields = 'id' | 'rezkit_id' | 'name'
-
-export interface OrganizationListQuery extends PaginatedQuery, SortableQuery<OrganizationSortFields> {
-    id?: string
-    reskit_id?: string
-    name?: string
 }
