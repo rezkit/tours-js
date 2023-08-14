@@ -56,6 +56,7 @@ export interface OrganizationSettings {
         balance_due: number
         percentage: number
     }
+    image_formats: Object[]
 }
 
 export type UpdateOrganizationSettings = Partial<OrganizationSettings>;
