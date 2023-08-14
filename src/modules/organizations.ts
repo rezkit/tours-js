@@ -24,7 +24,6 @@ export class Organization implements IOrganization {
     @timestamp() readonly created_at!: Date;
     currencies!: string[];
     deposit_defaults!: { balance_due: number; percentage: number };
-    image_formats!: Object[];
     readonly id!: string;
     name!: string;
     rezkit_id!: string;
