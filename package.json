@@ -15,9 +15,9 @@
   "author": "Leo Adamek <leo.adamek@mrzen.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rezkit/tour-manager-js/issues"
+    "url": "https://github.com/rezkit/tours-js/issues"
   },
-  "homepage": "https://github.com/rezkit/tour-manager-js#readme",
+  "homepage": "https://github.com/rezkit/tours-js#readme",
   "dependencies": {
     "axios": "^1.2.3",
     "axios-logger": "^2.6.2"
