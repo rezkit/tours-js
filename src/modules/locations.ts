@@ -15,6 +15,8 @@ import type {TreeNode} from "../helpers.js";
 import timestamp from "../annotations/timestamp.js";
 import type { FieldData } from "./fields.js";
 import {Category, CategoryAttachment, type ICategory} from "./categories.js";
+import axios from "axios";
+import { ImageAttachment, type Imagable } from "./images";
 
 export interface ILocation extends Entity, TreeNode, Fields {
     name: string;
@@ -31,7 +33,7 @@ export interface ILocation extends Entity, TreeNode, Fields {
 }
 
 
-export class Location implements ILocation {
+export class Location implements ILocation, Imagable<Location> {
     private readonly axios: AxiosInstance;
     constructor(values: ILocation, axios: AxiosInstance) {
         Object.assign(this, values);
@@ -90,6 +92,10 @@ export class Location implements ILocation {
 
     get path(): string {
         return `locations/${this.id}`
+    }
+
+    images(): ImageAttachment<Location> {
+        return new ImageAttachment<Location>(this.axios, 'location', this);
     }
 }
 
