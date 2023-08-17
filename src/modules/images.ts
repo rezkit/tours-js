@@ -35,6 +35,7 @@ export interface IImage extends Entity {
   file_size: string
   category: ICategory
   tags: string[]
+  settings: any
   ordering?: number
   readonly thumbnail: string
   readonly original: string
@@ -48,6 +49,7 @@ export interface CreateImageParams {
   focus_y?: number
   category_id: string
   image: File | Blob
+  settings: any
   tags?: string[]
 }
 export interface UpdateImageParams extends Partial<CreateImageParams> {
