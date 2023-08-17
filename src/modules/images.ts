@@ -120,6 +120,11 @@ export class Images extends ApiGroup {
     return data as Paginated<Image>
   }
 
+  async link(params?: ImageLinkParams): Promise<string> {
+    const { data } = await this.axios.get(`/images/${this.id}/link`, { params })
+    return data
+  }
+
   async create(params: CreateImageParams): Promise<Image> {
 
     const payload = new FormData();
@@ -152,11 +157,6 @@ export class Images extends ApiGroup {
     const { data } = await this.axios.patch<IImage>(`/images/${id}`, params)
     return new Image(data, this.axios)
   }
-
-  async link(params?: ImageLinkParams): Promise<string> {
-    const { data } = await this.axios.get(`/images/${this.id}/link`, { params })
-    return data.link
-  }
 }
 
 export class ImageAttachment<T extends ID> extends ApiGroup {
@@ -167,6 +167,11 @@ export class ImageAttachment<T extends ID> extends ApiGroup {
     super(axios)
     this.type = type
     this.entity = entity
+  }
+
+  async link(params?: ImageLinkParams): Promise<string> {
+    const { data } = await this.axios.get(`/images/${this.id}/link`, { params })
+    return data.link
   }
 
   async list(): Promise<Paginated<Image>> {
