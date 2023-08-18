@@ -120,9 +120,9 @@ export class Images extends ApiGroup {
     return data as Paginated<Image>
   }
 
-  async link(params?: ImageLinkParams): Promise<string> {
-    const { data } = await this.axios.get(`/images/${this.id}/link`, { params })
-    return data
+  async link(id: string, params?: ImageLinkParams): Promise<string> {
+    const { data } = await this.axios.get(`/images/${id}/link`, { params })
+    return data.link
   }
 
   async create(params: CreateImageParams): Promise<Image> {

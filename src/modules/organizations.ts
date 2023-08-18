@@ -23,6 +23,16 @@ export class Organization implements IOrganization {
     image_settings!: Object[];
     readonly id!: string;
     name!: string;
-    rezkit_id!: string;
+    rezkit_id!: string;async link(id: string, params?: ImageLinkParams): Promise<string> {
+        console.log('kms', params)
+        const { data } = await this.axios.get(`/images/${id}/link`, { params })
+        console.log('data is here', data)
+        return data.link
+    }async link(id: string, params?: ImageLinkParams): Promise<string> {
+        console.log('kms', params)
+        const { data } = await this.axios.get(`/images/${id}/link`, { params })
+        console.log('data is here', data)
+        return data.link
+    }
     readonly updated_at!: Date;
 }
