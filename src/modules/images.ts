@@ -35,6 +35,7 @@ export interface IImage extends Entity {
   file_size: string
   category: ICategory
   tags: string[]
+  settings: any
   ordering?: number
   readonly thumbnail: string
   readonly original: string
@@ -48,6 +49,7 @@ export interface CreateImageParams {
   focus_y?: number
   category_id: string
   image: File | Blob
+  settings: any
   tags?: string[]
 }
 export interface UpdateImageParams extends Partial<CreateImageParams> {
@@ -121,6 +123,11 @@ export class Images extends ApiGroup {
     const { data } = await this.axios.get<Paginated<IImage>>(`/images`, { params })
     data.data = data.data.map(i => new Image(i, this.axios))
     return data as Paginated<Image>
+  }
+
+  async link(id: string, params?: ImageLinkParams): Promise<string> {
+    const { data } = await this.axios.get(`/images/${id}/link`, { params })
+    return data.link
   }
 
   async create(params: CreateImageParams): Promise<Image> {
