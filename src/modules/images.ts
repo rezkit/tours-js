@@ -103,6 +103,11 @@ export class Image implements IImage {
     return this
   }
 
+  async link(params?: ImageLinkParams): Promise<string> {
+    const { data } = await this.axios.get(`/images/${this.id}/link`, { params })
+    return data.link
+  }
+
   published!: boolean;
   tags!: string[];
 }
@@ -167,11 +172,6 @@ export class ImageAttachment<T extends ID> extends ApiGroup {
     super(axios)
     this.type = type
     this.entity = entity
-  }
-
-  async link(params?: ImageLinkParams): Promise<string> {
-    const { data } = await this.axios.get(`/images/${this.id}/link`, { params })
-    return data.link
   }
 
   async list(): Promise<Paginated<Image>> {
