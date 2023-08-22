@@ -11,7 +11,7 @@ export class Organization implements IOrganization {
     }
 
     async update(params: UpdateOrganizationSettings): Promise<Organization> {
-        const { data } = await this.axios.put<IOrganization>(`/organizations/settings`, params)
+        const { data } = await this.axios.put<IOrganization>(`/organization/settings`, params)
         Object.assign(this, data)
 
         return this
