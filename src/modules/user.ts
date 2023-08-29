@@ -81,10 +81,10 @@ export class Api extends ApiGroup {
         return new Organization(data, this.axios)
     }
 
-    async organizationList(): Promise<Paginated<Organization>> {
-        const { data } = await this.axios.get<Paginated<IOrganization>>(`/organizations`)
+    async organizationList(): Promise<Organization[]> {
+        const { data } = await this.axios.get<Organization[]>(`/organizations`)
 
-        data.data = data.data.map((o: any) => new Organization(o, this.axios))
-        return data as Paginated<Organization>
+        data.data = data.map((o: any) => new Organization(o, this.axios))
+        return data as Organization[]
     }
 }
