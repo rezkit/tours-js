@@ -1,6 +1,6 @@
 import {ApiGroup, type Entity, type Paginated} from "./common.js";
-import {Organization, type OrganizationListQuery} from "./organizations";
-import type {AxiosInstance} from "axios";
+import { Organization } from "./organizations.js";
+import type { AxiosInstance } from "axios";
 import timestamp from "../annotations/timestamp.js";
 
 interface IUser extends Entity {
@@ -56,6 +56,7 @@ export interface OrganizationSettings {
         balance_due: number
         percentage: number
     }
+    image_settings: Object[]
 }
 
 export type UpdateOrganizationSettings = Partial<OrganizationSettings>;
@@ -81,9 +82,9 @@ export class Api extends ApiGroup {
     }
 
     async organizationList(): Promise<Paginated<Organization>> {
-        const data = await this.axios.get<Paginated<IOrganization>>(`/organizations`)
+        const { data } = await this.axios.get<Paginated<IOrganization>>(`/organizations`)
 
-        data.data = data.data.map(o => new Organization(o, this.axios))
+        data.data = data.map((o: any) => new Organization(o, this.axios))
         return data as Paginated<Organization>
     }
 }
