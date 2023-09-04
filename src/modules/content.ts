@@ -9,6 +9,7 @@ import type {
   ReorderCommand,
   SortableQuery
 } from "./common.js";
+import { ImageAttachment } from "./images.js";
 import { Category, CategoryAttachment, type ICategory } from "./categories.js";
 import type { AxiosInstance } from "axios";
 import timestamp from "../annotations/timestamp.js";
@@ -122,6 +123,12 @@ export class Content extends ApiGroup {
     data.data = data.data.map(i => new ContentItem(i, this.axios))
 
     return data as Paginated<ContentItem>
+  }
+
+  async images(id: string): Promise<ImageAttachment<ContentItem>> {
+    const { data } = await this.axios.get<ImageAttachment<ContentItem>>(`${this.type}/content/image/${id}`)
+
+    return new ImageAttachment<ContentItem>(data, 'content', this.axios)
   }
 
   async create(params: CreateContentItemParams): Promise<ContentItem> {
