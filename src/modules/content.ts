@@ -126,7 +126,7 @@ export class Content extends ApiGroup {
   }
 
   async images(id: string): Promise<ImageAttachment<ContentItem>> {
-    const { data } = await this.axios.get<ImageAttachment<ContentItem>>(`${this.type}/content/image/${id}`)
+    const { data } = await this.axios.get<ImageAttachment<ContentItem>>(`${this.type}/content/${id}/images`)
 
     return new ImageAttachment<ContentItem>(data, 'content', this.axios)
   }
