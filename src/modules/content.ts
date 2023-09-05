@@ -9,6 +9,7 @@ import type {
   ReorderCommand,
   SortableQuery
 } from "./common.js";
+import type { Imagable } from "./images.js";
 import { ImageAttachment } from "./images.js";
 import { Category, CategoryAttachment, type ICategory } from "./categories.js";
 import type { AxiosInstance } from "axios";
@@ -41,7 +42,7 @@ export interface ListContentsQuery extends PaginatedQuery, SortableQuery<Content
   search?: string
 }
 
-export class ContentItem implements IContentItem {
+export class ContentItem implements IContentItem, Imagable<ContentItem> {
   private readonly axios: AxiosInstance;
 
   constructor(data: IContentItem, axios: AxiosInstance) {
@@ -102,6 +103,9 @@ export class ContentItem implements IContentItem {
   get path(): string {
     return `/${this.type}/content/${this.id}`
   }
+  images(): ImageAttachment<ContentItem> {
+    return new ImageAttachment(this.axios, 'content', this)
+  }
 }
 
 export class Content extends ApiGroup {
@@ -125,11 +129,6 @@ export class Content extends ApiGroup {
     return data as Paginated<ContentItem>
   }
 
-  async images(id: string): Promise<ImageAttachment<ContentItem>> {
-    const { data } = await this.axios.get<ImageAttachment<ContentItem>>(`${this.type}/content/${id}/images`)
-
-    return new ImageAttachment<ContentItem>(data, 'content', this.axios)
-  }
 
   async create(params: CreateContentItemParams): Promise<ContentItem> {
     const { data } = await this.axios.post<IContentItem>(`/${this.type}/content`, params)
