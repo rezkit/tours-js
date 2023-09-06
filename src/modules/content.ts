@@ -129,7 +129,6 @@ export class Content extends ApiGroup {
     return data as Paginated<ContentItem>
   }
 
-
   async create(params: CreateContentItemParams): Promise<ContentItem> {
     const { data } = await this.axios.post<IContentItem>(`/${this.type}/content`, params)
     return new ContentItem(data, this.axios)
