@@ -9,6 +9,8 @@ import type {
   ReorderCommand,
   SortableQuery
 } from "./common.js";
+import type { Imagable } from "./images.js";
+import { ImageAttachment } from "./images.js";
 import { Category, CategoryAttachment, type ICategory } from "./categories.js";
 import type { AxiosInstance } from "axios";
 import timestamp from "../annotations/timestamp.js";
@@ -40,7 +42,7 @@ export interface ListContentsQuery extends PaginatedQuery, SortableQuery<Content
   search?: string
 }
 
-export class ContentItem implements IContentItem {
+export class ContentItem implements IContentItem, Imagable<ContentItem> {
   private readonly axios: AxiosInstance;
 
   constructor(data: IContentItem, axios: AxiosInstance) {
@@ -100,6 +102,9 @@ export class ContentItem implements IContentItem {
 
   get path(): string {
     return `/${this.type}/content/${this.id}`
+  }
+  images(): ImageAttachment<ContentItem> {
+    return new ImageAttachment(this.axios, 'content', this)
   }
 }
 
