@@ -22,10 +22,13 @@ export interface IContentItem extends Entity {
   content: string
   ordering: number
   published: boolean
+  alias: string
   category: ICategory
 }
 
-export type UpdateContentItemParams = Partial<CreateContentItemParams> & { ordering?: ReorderCommand }
+export type UpdateContentItemParams = Partial<CreateContentItemParams> &
+    { ordering?: ReorderCommand } &
+    { alias?: string }
 
 export interface CreateContentItemParams {
   title: string
@@ -95,6 +98,7 @@ export class ContentItem implements IContentItem, Imagable<ContentItem> {
   readonly id!: string;
   ordering!: number;
   published!: boolean;
+  alias!: string;
   title!: string;
   readonly type!: EntityType;
   @timestamp() readonly updated_at!: Date;
