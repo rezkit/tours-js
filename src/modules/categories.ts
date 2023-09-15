@@ -17,6 +17,7 @@ import type { FieldData } from "./fields";
 export interface ICategory extends Entity, TreeNode, Fields {
     type: EntityType;
     name: string;
+    alias: string | null;
     parent_id: string | null;
 
     published: boolean;
@@ -74,6 +75,7 @@ export class Category implements ICategory {
     @timestamp() readonly created_at!: Date
     readonly id!: string
     name!: string
+    alias!: string | null
     parent_id!: string | null
     type!: EntityType
     @timestamp() readonly updated_at!: Date
@@ -94,6 +96,7 @@ export class Category implements ICategory {
 export type CategorySortFields = 'name' | 'parent_id'
 export interface ListCategoriesQuery extends PaginatedQuery, SortableQuery<CategorySortFields> {
     name?: string
+    alias?: string
     search?: string
     published?: QueryBoolean
     searchable?: QueryBoolean
@@ -122,6 +125,7 @@ export interface CreateCategoryParams extends Partial<Fields> {
 }
 
 export interface UpdateCategoryParams extends Partial<CreateCategoryParams> {
+    alias?: string
     ordering?: 'up' | 'down'
 }
 
