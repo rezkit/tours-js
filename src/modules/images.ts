@@ -35,7 +35,6 @@ export interface IImage extends Entity {
   file_size: string
   category: ICategory
   tags: string[]
-  settings: any
   ordering?: number
   readonly thumbnail: string
   readonly original: string

@@ -84,7 +84,6 @@ export class Api extends ApiGroup {
     async organizationList(): Promise<Organization[]> {
         const { data } = await this.axios.get<Organization[]>(`/organizations`)
 
-        data.data = data.map((o: any) => new Organization(o, this.axios))
-        return data as Organization[]
+        return data.map((o: any) => new Organization(o, this.axios))
     }
 }
