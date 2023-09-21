@@ -1,8 +1,12 @@
 {
   "name": "@rezkit/tour-manager",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tour Manager API Client",
   "module": "lib/client.js",
+  "files": [
+	  "lib/*",
+	  "src/*"
+  ],
   "exports": {
 	  ".": {
 		  "import": "./lib/client.js"
@@ -19,6 +23,7 @@
   },
   "author": "Leo Adamek <leo.adamek@mrzen.com>",
   "license": "MIT",
+  "private": false,
   "bugs": {
     "url": "https://github.com/rezkit/tours-js/issues"
   },
