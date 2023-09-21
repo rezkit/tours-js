@@ -16,7 +16,7 @@ import timestamp from "../annotations/timestamp.js";
 import type { FieldData } from "./fields.js";
 import {Category, CategoryAttachment, type ICategory} from "./categories.js";
 import axios from "axios";
-import { ImageAttachment, type Imagable } from "./images";
+import { ImageAttachment, type Imagable } from "./images.js";
 
 export interface ILocation extends Entity, TreeNode, Fields {
     name: string;
