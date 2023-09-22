@@ -1,60 +1,60 @@
-import type { AxiosInstance } from "axios";
-import type { FieldData, FieldDefinition } from "./fields";
+import type { AxiosInstance } from 'axios'
+import type { FieldData, FieldDefinition } from './fields'
 
 export abstract class ApiGroup {
-   protected axios: AxiosInstance
-    constructor(axios: AxiosInstance) {
-       this.axios = axios
-    }
+  protected axios: AxiosInstance
+  constructor (axios: AxiosInstance) {
+    this.axios = axios
+  }
 }
 
 export interface Fields {
-    fields: FieldData
+  fields: FieldData
 }
 
 export interface ID {
-    readonly id: string
+  readonly id: string
 }
 export interface Entity extends ID {
-    readonly created_at: Date
+  readonly created_at: Date
 
-    readonly updated_at: Date
+  readonly updated_at: Date
 }
 
 /**
  * A paginated response
  */
 export interface Paginated<T> {
-    /**
+  /**
      * Total number of results
      */
-    total: number
-    /**
+  total: number
+  /**
      * Current page number
      */
-    current_page: number
-    /**
+  current_page: number
+  /**
      * Total number of pages
      */
-    last_page: number
-    /**
+  last_page: number
+  /**
      * Index of first item in `data`
      */
-    from: number
-    /**
+  from: number
+  /**
      * Index of last item in `data`
      */
-    to: number
-    /**
+  to: number
+  /**
      * Page of results
      */
-    data: T[]
+  data: T[]
 }
 
 export interface PaginatedQuery {
-    page?: number
-    limit?: number
-    trash?: QueryBoolean
+  page?: number
+  limit?: number
+  trash?: QueryBoolean
 }
 
 /**
@@ -62,9 +62,9 @@ export interface PaginatedQuery {
  * Attributes which can be sorted are given by the type-param T
  */
 export interface SortableQuery<T> {
-    sort?: T
+  sort?: T
 
-    order?: 'asc' | 'desc'
+  order?: 'asc' | 'desc'
 
 }
 
@@ -73,20 +73,20 @@ export interface SortableQuery<T> {
  * operation
  */
 export interface AttachmentResponse {
-    /**
+  /**
      * IDs of items which were attached
      */
-    attached: string[]
+  attached: string[]
 
-    /**
+  /**
      * IDs of items which were detached
      */
-    detached: string[]
+  detached: string[]
 
-    /**
+  /**
      * IDs of items which were updated
      */
-    updated: string[]
+  updated: string[]
 }
 
 /**
@@ -118,14 +118,14 @@ export type QueryBooleanUndefined = null | ''
  * The names of entity types
  */
 export type EntityType = 'holiday' | 'category' | 'holiday_version'
-                       | 'element' | 'element_option' | 'departure'
-                       | 'content' | 'image' | 'itinerary' | 'location'
+| 'element' | 'element_option' | 'departure'
+| 'content' | 'image' | 'itinerary' | 'location'
 
 /**
  * Inventory Interface
  */
 export interface Inventory {
-    type: string
+  type: string
 }
 
 /**
@@ -136,8 +136,8 @@ export interface Inventory {
  * a reservation cannot be made if the remaining allocation is too low.
  */
 export interface AllocationInventory extends Inventory {
-    type: 'allocation'
-    capacity: number
+  type: 'allocation'
+  capacity: number
 }
 
 /**
@@ -148,13 +148,13 @@ export interface AllocationInventory extends Inventory {
  * into a queue of reservations to be verified and updated.
  */
 export interface OnRequestInventory extends Inventory {
-    type: 'on_request'
-    errata: string
+  type: 'on_request'
+  errata: string
 }
 
 /**
  * Free-sell inventory has a type of 'free_sell' and no additional properties.
  */
 export interface FreeSellInventory extends Inventory {
-    type: 'free_sell'
+  type: 'free_sell'
 }

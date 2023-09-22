@@ -1,28 +1,28 @@
-import type {AxiosInstance} from "axios";
-import timestamp from "../annotations/timestamp.js";
-import type {UpdateOrganizationSettings, IOrganization} from "./user.js";
+import type { AxiosInstance } from 'axios'
+import timestamp from '../annotations/timestamp.js'
+import type { UpdateOrganizationSettings, IOrganization } from './user.js'
 
 export class Organization implements IOrganization {
-    private readonly axios: AxiosInstance;
+  private readonly axios: AxiosInstance
 
-    constructor(data: IOrganization, axios: AxiosInstance) {
-        Object.assign(this, data)
-        this.axios = axios
-    }
+  constructor (data: IOrganization, axios: AxiosInstance) {
+    Object.assign(this, data)
+    this.axios = axios
+  }
 
-    async update(params: UpdateOrganizationSettings): Promise<Organization> {
-        const { data } = await this.axios.put<IOrganization>(`/organization/settings`, params)
-        Object.assign(this, data)
+  async update (params: UpdateOrganizationSettings): Promise<Organization> {
+    const { data } = await this.axios.put<IOrganization>('/organization/settings', params)
+    Object.assign(this, data)
 
-        return this
-    }
+    return this
+  }
 
-    @timestamp() readonly created_at!: Date;
-    currencies!: string[];
-    deposit_defaults!: { balance_due: number; percentage: number };
-    image_settings!: Object[];
-    readonly id!: string;
-    name!: string;
-    rezkit_id!: string;
-    readonly updated_at!: Date;
+  @timestamp() readonly created_at!: Date
+  currencies!: string[]
+  deposit_defaults!: { balance_due: number, percentage: number }
+  image_settings!: Object[]
+  readonly id!: string
+  name!: string
+  rezkit_id!: string
+  readonly updated_at!: Date
 }

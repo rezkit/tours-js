@@ -1,286 +1,282 @@
-import type { Entity, Fields, Inventory, Paginated, PaginatedQuery, SortableQuery } from "./common.js";
-import type {Categorized} from "./categories.js";
-import {Category, CategoryAttachment} from "./categories.js";
-import type {AxiosInstance} from "axios";
-import timestamp from "../annotations/timestamp.js";
-import {ApiGroup} from "./common.js";
-import type {IElementOption, PriceUnit} from "./elements.js";
-import type { FieldData } from "./fields";
-
+import type { Entity, Fields, Inventory, Paginated, PaginatedQuery, SortableQuery } from './common.js'
+import type { Categorized } from './categories.js'
+import { Category, CategoryAttachment } from './categories.js'
+import type { AxiosInstance } from 'axios'
+import timestamp from '../annotations/timestamp.js'
+import { ApiGroup } from './common.js'
+import type { IElementOption, PriceUnit } from './elements.js'
+import type { FieldData } from './fields'
 
 export type DepartureRangeType = 'fixed' | 'fixed_duration' | 'flexible'
 
 export interface IDeparture extends Entity, Fields {
-    start: Date
-    end: Date
+  start: Date
+  end: Date
 
-    range_type: DepartureRangeType
+  range_type: DepartureRangeType
 
-    version_id: string
+  version_id: string
 
-    source_id: string | null
+  source_id: string | null
 
-    inventory: Inventory
+  inventory: Inventory
 
-    readonly elements: IDepartureElement[]
+  readonly elements: IDepartureElement[]
 }
 
 export interface CreateDepartureRequest extends Partial<Fields> {
-    version_id?: string
-    range_type: DepartureRangeType
-    start: Date
-    end: Date
-    inventory: Inventory
-    published: boolean
+  version_id?: string
+  range_type: DepartureRangeType
+  start: Date
+  end: Date
+  inventory: Inventory
+  published: boolean
 }
 
 export type UpdateDepartureRequest = Partial<Omit<CreateDepartureRequest, 'version_id'>>
 
 export class Departure implements IDeparture, Categorized<Departure> {
-    @timestamp() readonly created_at!: Date;
-    readonly id!: string;
+  @timestamp() readonly created_at!: Date
+  readonly id!: string
 
-    @timestamp() readonly updated_at!: Date;
+  @timestamp() readonly updated_at!: Date
 
-    private readonly axios: AxiosInstance
+  private readonly axios: AxiosInstance
 
-    constructor(data: IDeparture, axios: AxiosInstance) {
-        this.axios = axios
-        this.apply(data)
-    }
+  constructor (data: IDeparture, axios: AxiosInstance) {
+    this.axios = axios
+    this.apply(data)
+  }
 
-    private apply(data: IDeparture) {
-        Object.assign(this, data)
-        this.elements = data.elements.map(e => new DepartureElement(e, this.axios))
-    }
+  private apply (data: IDeparture): void {
+    Object.assign(this, data)
+    this.elements = data.elements.map(e => new DepartureElement(e, this.axios))
+  }
 
-    async update(params: UpdateDepartureRequest): Promise<Departure> {
-        const { data } = await this.axios.patch<IDeparture>(this.path, params)
-        this.apply(data)
-        return this
-    }
+  async update (params: UpdateDepartureRequest): Promise<Departure> {
+    const { data } = await this.axios.patch<IDeparture>(this.path, params)
+    this.apply(data)
+    return this
+  }
 
-    async destroy(): Promise<void> {
-        await this.axios.delete(this.path)
-    }
+  async destroy (): Promise<void> {
+    await this.axios.delete(this.path)
+  }
 
-    categories(): CategoryAttachment<Departure> {
-        return new CategoryAttachment<Departure>(this.axios, 'departure', this);
-    }
+  categories (): CategoryAttachment<Departure> {
+    return new CategoryAttachment<Departure>(this.axios, 'departure', this)
+  }
 
-    @timestamp() readonly end!: Date;
-    readonly inventory!: Inventory;
-    readonly source_id!: string | null;
-    @timestamp() readonly start!: Date;
-    readonly version_id!: string;
-    fields!: FieldData;
+  @timestamp() readonly end!: Date
+  readonly inventory!: Inventory
+  readonly source_id!: string | null
+  @timestamp() readonly start!: Date
+  readonly version_id!: string
+  fields!: FieldData
 
-    elements!: DepartureElement[]
-    readonly range_type!: DepartureRangeType;
+  elements!: DepartureElement[]
+  readonly range_type!: DepartureRangeType
 
-    get path(): string {
-        return `/holidays/departures/${this.id}`
-    }
+  get path (): string {
+    return `/holidays/departures/${this.id}`
+  }
 }
 
 export interface IDepartureElement extends Entity {
-    readonly inventory: Inventory
-    readonly departure_id: string
+  readonly inventory: Inventory
+  readonly departure_id: string
 
-    readonly balance_due: {
-        calculated: boolean
-        date: Date
-    }
+  readonly balance_due: {
+    calculated: boolean
+    date: Date
+  }
 
-    readonly options: IDepartureElementOption[]
-    readonly element: DepartureElementRel;
+  readonly options: IDepartureElementOption[]
+  readonly element: DepartureElementRel
 }
 
 interface DepartureElementRel {
-    readonly id: string
-    readonly name: string
-    readonly is_package: boolean
-    readonly published: boolean
+  readonly id: string
+  readonly name: string
+  readonly is_package: boolean
+  readonly published: boolean
 }
 
 export class DepartureElement implements IDepartureElement {
+  private readonly axios: AxiosInstance
 
-    private readonly axios: AxiosInstance
+  constructor (data: IDepartureElement, axios: AxiosInstance) {
+    Object.assign(this, data)
+    this.options = data.options.map(o => new DepartureElementOption(o, axios))
+    this.axios = axios
+  }
 
-    constructor(data: IDepartureElement, axios: AxiosInstance) {
-        Object.assign(this, data)
-        this.options = data.options.map(o => new DepartureElementOption(o, axios))
-        this.axios = axios
-    }
+  readonly balance_due!: {
+    calculated: boolean
+    date: Date
+  }
 
-    readonly balance_due!: {
-        calculated: boolean;
-        date: Date
-    };
+  @timestamp() readonly created_at!: Date
+  id!: string
+  inventory!: Inventory
+  options!: DepartureElementOption[]
+  element!: DepartureElementRel
+  readonly departure_id!: string
+  @timestamp() readonly updated_at!: Date
 
-    @timestamp() readonly created_at!: Date;
-    id!: string;
-    inventory!: Inventory;
-    options!: DepartureElementOption[];
-    element!: DepartureElementRel;
-    readonly departure_id!: string;
-    @timestamp() readonly updated_at!: Date;
-
-    /**
+  /**
      * Update a Departure Element
      * @param params
      */
-    async update(params: UpdateDepartureElementParams): Promise<this> {
-        const { data } = await this.axios.patch<IDepartureElement>(
+  async update (params: UpdateDepartureElementParams): Promise<this> {
+    const { data } = await this.axios.patch<IDepartureElement>(
           `/holidays/departures/${this.departure_id}/elements/${this.id}`,
-          params,
-        )
-        Object.assign(this, data)
-        this.options = data.options.map(o => new DepartureElementOption(o, this.axios))
-        return this
-    }
+          params
+    )
+    Object.assign(this, data)
+    this.options = data.options.map(o => new DepartureElementOption(o, this.axios))
+    return this
+  }
 }
 
 export interface UpdateDepartureElementParams {
-    inventory?: Inventory
-    balance_due?: Date | null
+  inventory?: Inventory
+  balance_due?: Date | null
 }
 
 export interface IDepartureElementOption extends IElementOption {
-    prices: IPrice[]
+  prices: IPrice[]
 }
 
 export class DepartureElementOption implements IDepartureElementOption {
-    readonly category!: Category;
-    readonly constraints!: { [p: string]: any };
-    @timestamp() readonly created_at!: Date;
-    readonly id!: string;
-    readonly is_lead!: boolean;
-    readonly name!: string;
-    readonly occupancy!: { from: number; to: number };
-    readonly price_unit!: PriceUnit;
-    readonly prices!: Price[];
-    readonly published!: boolean;
-    @timestamp() readonly updated_at!: Date;
-    readonly web_bookable!: boolean;
+  readonly category!: Category
+  readonly constraints!: Record<string, any>
+  @timestamp() readonly created_at!: Date
+  readonly id!: string
+  readonly is_lead!: boolean
+  readonly name!: string
+  readonly occupancy!: { from: number, to: number }
+  readonly price_unit!: PriceUnit
+  readonly prices!: Price[]
+  readonly published!: boolean
+  @timestamp() readonly updated_at!: Date
+  readonly web_bookable!: boolean
 
-    private readonly axios: AxiosInstance
+  private readonly axios: AxiosInstance
 
-    constructor(data: IDepartureElementOption, axios: AxiosInstance) {
-        Object.assign(this, data)
-        this.prices = data.prices?.map(p => new Price(p, axios)) || []
-        this.category = new Category(data.category, axios)
-        this.axios = axios
-    }
+  constructor (data: IDepartureElementOption, axios: AxiosInstance) {
+    Object.assign(this, data)
+    this.prices = data.prices?.map(p => new Price(p, axios)) || []
+    this.category = new Category(data.category, axios)
+    this.axios = axios
+  }
 
-    /**
+  /**
      * Get the price for a given currency
      * @param currency
      */
-    price(currency: string): Price | undefined {
-        return this.prices.find(p => p.currency === currency)
-    }
+  price (currency: string): Price | undefined {
+    return this.prices.find(p => p.currency === currency)
+  }
 }
 
 export interface IPrice extends Entity {
-    readonly currency: string
-    readonly on_sale: boolean
-    readonly initialized: boolean
-    readonly value: string
-    readonly previous_value: string | null
+  readonly currency: string
+  readonly on_sale: boolean
+  readonly initialized: boolean
+  readonly value: string
+  readonly previous_value: string | null
 
-    readonly deposit: {
-        calculated: boolean
-        value: string
-    }
+  readonly deposit: {
+    calculated: boolean
+    value: string
+  }
 }
 
 export interface UpdatePriceParams {
-    value?: string | number
-    previous_value?: string | number
-    on_sale?: boolean
-    deposit?: string | number | null
+  value?: string | number
+  previous_value?: string | number
+  on_sale?: boolean
+  deposit?: string | number | null
 }
 
 export class Price implements IPrice {
-    @timestamp() readonly created_at!: Date;
-    readonly currency!: string;
-    readonly deposit!: { calculated: boolean; value: string };
-    readonly id!: string;
-    readonly initialized!: boolean;
-    readonly on_sale!: boolean;
-    readonly previous_value!: string | null;
-    @timestamp() readonly updated_at!: Date;
-    readonly value!: string;
+  @timestamp() readonly created_at!: Date
+  readonly currency!: string
+  readonly deposit!: { calculated: boolean, value: string }
+  readonly id!: string
+  readonly initialized!: boolean
+  readonly on_sale!: boolean
+  readonly previous_value!: string | null
+  @timestamp() readonly updated_at!: Date
+  readonly value!: string
 
-    private readonly axios: AxiosInstance
+  private readonly axios: AxiosInstance
 
-    constructor(data: IPrice, axios: AxiosInstance) {
-        Object.assign(this, data)
-        this.axios = axios
-    }
+  constructor (data: IPrice, axios: AxiosInstance) {
+    Object.assign(this, data)
+    this.axios = axios
+  }
 
-    async update(params: UpdatePriceParams): Promise<Price> {
-        const { data } = await this.axios.patch<IPrice>(`/holidays/prices/${this.id}`, params)
-        Object.assign(this, data)
-        return this
-    }
+  async update (params: UpdatePriceParams): Promise<Price> {
+    const { data } = await this.axios.patch<IPrice>(`/holidays/prices/${this.id}`, params)
+    Object.assign(this, data)
+    return this
+  }
 }
 
 export type DepartureSort = 'id' | 'created_at' | 'updated_at' | 'start' | 'end'
 
 export interface ListDeparturesQuery extends PaginatedQuery, SortableQuery<DepartureSort> {
-    after?: Date
-    before?: Date
+  after?: Date
+  before?: Date
 
-    version?: string
+  version?: string
 
-    holiday?: string
+  holiday?: string
 }
 
 export class Departures extends ApiGroup {
+  private readonly constraints: Partial<ListDeparturesQuery>
 
-    private readonly constraints: Partial<ListDeparturesQuery>
+  constructor (axios: AxiosInstance, constraints?: Partial<ListDeparturesQuery>) {
+    super(axios)
+    this.constraints = constraints || {}
+  }
 
-    constructor(axios: AxiosInstance, constraints?: Partial<ListDeparturesQuery>) {
-        super(axios);
-        this.constraints = constraints || {}
+  async list (params: ListDeparturesQuery): Promise<Paginated<Departure>> {
+    params ||= {}
+    Object.assign(params, this.constraints)
+
+    const { data } = await this.axios.get<Paginated<IDeparture>>('/holidays/departures', { params })
+    data.data = data.data.map(d => new Departure(d, this.axios))
+    return data as Paginated<Departure>
+  }
+
+  async find (id: string): Promise<Departure> {
+    const { data } = await this.axios.get<IDeparture>(`/holidays/departures/${id}`)
+    return new Departure(data, this.axios)
+  }
+
+  async create (params: CreateDepartureRequest): Promise<Departure> {
+    if (typeof this.constraints.version === 'string') {
+      params.version_id = this.constraints.version
     }
 
-    async list(params: ListDeparturesQuery): Promise<Paginated<Departure>> {
-        params ||= {}
-        Object.assign(params, this.constraints)
+    const { data } = await this.axios.post<IDeparture>('/holidays/departures', params)
+    return new Departure(data, this.axios)
+  }
 
-        const { data } = await this.axios.get<Paginated<IDeparture>>(`/holidays/departures`, { params })
-        data.data = data.data.map(d => new Departure(d, this.axios))
-        return data as Paginated<Departure>
-    }
-
-    async find(id: string): Promise<Departure> {
-        const { data } = await this.axios.get<IDeparture>(`/holidays/departures/${id}`)
-        return new Departure(data, this.axios)
-    }
-
-    async create(params: CreateDepartureRequest): Promise<Departure> {
-
-        if (typeof this.constraints.version === 'string') {
-            params.version_id = this.constraints.version
-        }
-
-        const { data } = await this.axios.post<IDeparture>(`/holidays/departures`, params)
-        return new Departure(data, this.axios)
-    }
-
-    /**
+  /**
      * Delete a departure
      * @param id Departure ID
      */
-    async delete(id: string): Promise<void> {
-        await this.axios.delete(`/holidays/departures/${id}`)
-    }
+  async delete (id: string): Promise<void> {
+    await this.axios.delete(`/holidays/departures/${id}`)
+  }
 
-    async restore(id: string): Promise<Departure> {
-        const { data } = await this.axios.put<IDeparture>(`/holidays/departures/${id}/restore`)
-        return new Departure(data, this.axios)
-    }
+  async restore (id: string): Promise<Departure> {
+    const { data } = await this.axios.put<IDeparture>(`/holidays/departures/${id}/restore`)
+    return new Departure(data, this.axios)
+  }
 }
