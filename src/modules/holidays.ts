@@ -276,7 +276,7 @@ export class Api extends ApiGroup {
     return new Content(this.axios, 'holiday')
   }
 
-  async search(params: SearchRequest): Promise<Record<string, unknown>> {
+  async search (params: SearchRequest): Promise<Record<string, unknown>> {
     const { data } = await this.axios.get('/holiday/search', { params })
     return data
   }
