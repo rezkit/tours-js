@@ -133,19 +133,19 @@ export class Images extends ApiGroup {
     payload.set('category_id', params.category_id)
     payload.set('image', params.image)
 
-    if (params.description) {
+    if (typeof params.description === 'string') {
       payload.set('description', params.description)
     }
 
-    if (params.tags) {
+    if (typeof params.tags === 'object' && params.tags.length > 0) {
       params.tags.forEach(t => { payload.append('tags[]', t) })
     }
 
-    if (params.focus_x) {
+    if (typeof params.focus_x === 'number' && !isNaN(params.focus_x)) {
       payload.set('focus_x', params.focus_x.toString())
     }
 
-    if (params.focus_y) {
+    if (typeof params.focus_y === 'number' && !isNaN(params.focus_y)) {
       payload.set('focus_y', params.focus_y.toString())
     }
 

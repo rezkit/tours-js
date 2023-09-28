@@ -37,11 +37,11 @@ export class Location implements ILocation, Imagable<Location> {
   constructor (values: ILocation, axios: AxiosInstance) {
     Object.assign(this, values)
     this.axios = axios
-    if (values.category) {
+    if (typeof (values?.category) === 'object') {
       this.category = new Category(values.category, axios)
     }
 
-    if (values.children) {
+    if (values?.children.length > 0) {
       this.children = values.children.map(c => new Location(c, axios))
     } else {
       this.children = []
@@ -134,10 +134,6 @@ export interface UpdateLocationParams extends Partial<CreateLocationParams> {
 }
 
 export class Locations extends ApiGroup {
-  constructor (axios: AxiosInstance) {
-    super(axios)
-  }
-
   async list (params?: ListLocationsQuery): Promise<Paginated<Location>> {
     const response = (await this.axios.get<Paginated<ILocation>>('/locations', { params })).data
 

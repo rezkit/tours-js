@@ -1,6 +1,6 @@
 import type { AxiosInstance } from 'axios'
 import timestamp from '../annotations/timestamp.js'
-import type { UpdateOrganizationSettings, IOrganization } from './user.js'
+import type { UpdateOrganizationSettings, IOrganization, ImagePreset } from './user.js'
 
 export class Organization implements IOrganization {
   private readonly axios: AxiosInstance
@@ -20,7 +20,7 @@ export class Organization implements IOrganization {
   @timestamp() readonly created_at!: Date
   currencies!: string[]
   deposit_defaults!: { balance_due: number, percentage: number }
-  image_settings!: Object[]
+  image_settings!: ImagePreset[]
   readonly id!: string
   name!: string
   rezkit_id!: string

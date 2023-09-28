@@ -6,8 +6,7 @@ import type { EntityType } from './modules/common.js'
 import type { ListDeparturesQuery } from './modules/departures'
 export * from './config.js'
 export * as helpers from './helpers.js'
-export * from './modules.js'
-
+export * as Modules from './modules.js'
 export const BASE_URL = 'https://api.tours.rezkit.app'
 
 /**
@@ -33,13 +32,13 @@ export default class TourManager {
       Accept: 'application/json'
     }
 
-    if (typeof (process) !== 'undefined' && process.hasOwnProperty('version')) {
+    if (process?.version !== null) {
       this.axios.defaults.headers.common['User-Agent'] = `RezKit/Tours (js/runtime:${process.version})`
     }
 
     this.axios.interceptors.response.use(null, handleResponseError)
 
-    if (config.api_key) {
+    if (typeof config.api_key === 'string' && config.api_key.length > 0) {
       this.axios.interceptors.request.use(async (req) => {
         if (typeof config.api_key === 'string') {
           req.headers.set({
@@ -116,7 +115,7 @@ export default class TourManager {
  * @private
  */
 function handleResponseError (error: any): void {
-  if (error.hasOwnProperty('response')) {
+  if (error?.response !== undefined) {
     const { response }: { response: AxiosResponse } = error
 
     switch (response.status) {

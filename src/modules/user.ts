@@ -1,4 +1,4 @@
-import { ApiGroup, type Entity, type Paginated } from './common.js'
+import { ApiGroup, type Entity } from './common.js'
 import { Organization } from './organizations.js'
 import type { AxiosInstance } from 'axios'
 import timestamp from '../annotations/timestamp.js'
@@ -6,28 +6,28 @@ import timestamp from '../annotations/timestamp.js'
 interface IUser extends Entity {
 
   /**
-     * User's full name
-     */
+   * User's full name
+   */
   name: string
 
   /**
-     * User's RezKit ID
-     */
+   * User's RezKit ID
+   */
   rezkit_id: string
 
   /**
-     * User's Organization ID (tour manager ID)
-     */
+   * User's Organization ID (tour manager ID)
+   */
   organization_id: string
 
   /**
-     * User email
-     */
+   * User email
+   */
   email: string
 
   /**
-     * User's preferences
-     */
+   * User's preferences
+   */
   preferences: null
 }
 
@@ -49,13 +49,19 @@ export class User implements IUser {
   @timestamp() readonly updated_at!: Date
 }
 
+export interface ImagePreset {
+  x: number
+  y: number
+  name: string
+}
+
 export interface OrganizationSettings {
   currencies: string[]
   deposit_defaults: {
     balance_due: number
     percentage: number
   }
-  image_settings: Object[]
+  image_settings: ImagePreset[]
 }
 
 export type UpdateOrganizationSettings = Partial<OrganizationSettings>
@@ -67,8 +73,8 @@ export interface IOrganization extends Entity, OrganizationSettings {
 
 export class Api extends ApiGroup {
   /**
-     * Get the user profile of the API caller
-     */
+   * Get the user profile of the API caller
+   */
   async user (): Promise<User> {
     const user = (await this.axios.get<IUser>('/user')).data
     return new User(user, this.axios)

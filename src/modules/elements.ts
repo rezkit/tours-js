@@ -47,7 +47,7 @@ export interface UpdateElementParams extends Partial<CreateElementParams> {
 export class Element implements IElement {
   private readonly axios: AxiosInstance
 
-  private apply (data: IElement) {
+  private apply (data: IElement): void {
     Object.assign(this, data)
     this.category = new Category(data.category, this.axios)
     this.options = data.options.map(o => new ElementOption(this.id, o, this.axios))
@@ -119,8 +119,8 @@ export class ElementOption implements IElementOption {
 
   readonly element_id: string
 
-  constructor (element_id: string, data: IElementOption, axios: AxiosInstance) {
-    this.element_id = element_id
+  constructor (elementId: string, data: IElementOption, axios: AxiosInstance) {
+    this.element_id = elementId
     Object.assign(this, data)
 
     this.axios = axios
@@ -167,9 +167,9 @@ export interface ListElementParams extends PaginatedQuery, SortableQuery<Element
 export class Elements extends ApiGroup {
   private readonly version_id: string
 
-  constructor (axios: AxiosInstance, version_id: string) {
+  constructor (axios: AxiosInstance, versionId: string) {
     super(axios)
-    this.version_id = version_id
+    this.version_id = versionId
   }
 
   async list (params: ListElementParams): Promise<Paginated<Element>> {

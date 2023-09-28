@@ -8,7 +8,7 @@ import {
   type ReorderCommand,
   type SortableQuery
 } from './common.js'
-import type { FieldData, FieldDefinition } from './fields.js'
+import type { FieldData } from './fields.js'
 import type { AxiosInstance } from 'axios'
 import { HolidayVersions } from './holidayVersion.js'
 import { Categories, type Categorized, CategoryAttachment } from './categories.js'

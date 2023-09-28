@@ -1,7 +1,7 @@
 /**
  * Annotation which will always return the given property as a `Date`
  */
-export default function timestamp (): Function {
+export default function timestamp () {
   return (target: any, name: PropertyKey) => {
     // Internal name of the property to actually store the value against
     const internalName = Symbol.for('__timestamp_' + String(name))

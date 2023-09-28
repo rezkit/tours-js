@@ -1,5 +1,5 @@
 import type { AxiosInstance } from 'axios'
-import type { FieldData, FieldDefinition } from './fields'
+import type { FieldData } from './fields'
 
 export abstract class ApiGroup {
   protected axios: AxiosInstance

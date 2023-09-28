@@ -9,12 +9,12 @@ import type {
   ReorderCommand,
   SortableQuery
 } from './common.js'
+import { ApiGroup } from './common.js'
 import type { Imagable } from './images.js'
 import { ImageAttachment } from './images.js'
-import { Category, CategoryAttachment, type ICategory } from './categories.js'
+import { Category, type ICategory } from './categories.js'
 import type { AxiosInstance } from 'axios'
 import timestamp from '../annotations/timestamp.js'
-import { ApiGroup } from './common.js'
 
 export interface IContentItem extends Entity {
   type: EntityType
@@ -35,6 +35,7 @@ export interface CreateContentItemParams {
 }
 
 export type ContentSort = 'title' | 'ordering' | 'created_at' | 'updated_at'
+
 export interface ListContentsQuery extends PaginatedQuery, SortableQuery<ContentSort> {
   published?: QueryBoolean
   title?: string

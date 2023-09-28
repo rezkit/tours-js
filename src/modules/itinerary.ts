@@ -104,9 +104,9 @@ export interface ListItineraryParams extends PaginatedQuery, SortableQuery<SortI
 export class Itinerary extends ApiGroup {
   readonly version_id: string
 
-  constructor (axios: AxiosInstance, version_id: string) {
+  constructor (axios: AxiosInstance, versionId: string) {
     super(axios)
-    this.version_id = version_id
+    this.version_id = versionId
   }
 
   async list (params: ListItineraryParams): Promise<Paginated<ItineraryEntry>> {

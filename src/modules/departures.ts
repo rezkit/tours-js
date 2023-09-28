@@ -5,7 +5,7 @@ import type { AxiosInstance } from 'axios'
 import timestamp from '../annotations/timestamp.js'
 import { ApiGroup } from './common.js'
 import type { IElementOption, PriceUnit } from './elements.js'
-import type { FieldData } from './fields'
+import type { FieldData } from './fields.js'
 
 export type DepartureRangeType = 'fixed' | 'fixed_duration' | 'flexible'
 
@@ -166,7 +166,7 @@ export class DepartureElementOption implements IDepartureElementOption {
 
   constructor (data: IDepartureElementOption, axios: AxiosInstance) {
     Object.assign(this, data)
-    this.prices = data.prices?.map(p => new Price(p, axios)) || []
+    this.prices = data.prices.map(p => new Price(p, axios))
     this.category = new Category(data.category, axios)
     this.axios = axios
   }
@@ -241,7 +241,7 @@ export class Departures extends ApiGroup {
 
   constructor (axios: AxiosInstance, constraints?: Partial<ListDeparturesQuery>) {
     super(axios)
-    this.constraints = constraints || {}
+    this.constraints = constraints ?? {}
   }
 
   async list (params: ListDeparturesQuery): Promise<Paginated<Departure>> {

@@ -36,7 +36,7 @@ export class Category implements ICategory {
     Object.assign(this, values)
     this.axios = axios
 
-    if (values.children) {
+    if (values.children.length > 0) {
       this.children = values.children.map(c => new Category(c, axios))
     } else {
       this.children = []

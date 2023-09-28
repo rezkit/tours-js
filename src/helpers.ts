@@ -27,7 +27,8 @@ export function reconstructTree<T extends TreeNode> (flat: T[]): T[] {
     if (node.parent_id !== null) {
       // If you have dangling branches check that map[node.parentId] exists.
       //
-      if (flat[map[node.parent_id]]) {
+      const parentId = flat[map[node.parent_id]]
+      if (parentId !== null && parentId !== undefined) {
         flat[map[node.parent_id]].children.push(node)
       }
     } else {

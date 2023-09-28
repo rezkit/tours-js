@@ -13,11 +13,11 @@ export interface FieldDefinition extends Entity {
   required: boolean
 
   /**
-     * Field Name,
-     *
-     * Must contain only letters, numbers, and underscores.
-     * Cannot start with a number.
-     */
+   * Field Name,
+   *
+   * Must contain only letters, numbers, and underscores.
+   * Cannot start with a number.
+   */
   name: string
   label: string
   ordering: number
@@ -99,12 +99,14 @@ export class FieldsApi extends ApiGroup {
   }
 
   async moveUp (id: string): Promise<number> {
-    const { data } = await this.axios.patch<FieldDefinition>(`/${this.type}/fields/${id}`, ({ ordering: 'up' } as UpdateFieldRequest))
+    const params: UpdateFieldRequest = { ordering: 'up' }
+    const { data } = await this.axios.patch<FieldDefinition>(`/${this.type}/fields/${id}`, params)
     return data.ordering
   }
 
   async moveDown (id: string): Promise<number> {
-    const { data } = await this.axios.patch<FieldDefinition>(`/${this.type}/fields/${id}`, ({ ordering: 'down' } as UpdateFieldRequest))
+    const params: UpdateFieldRequest = { ordering: 'down' }
+    const { data } = await this.axios.patch<FieldDefinition>(`/${this.type}/fields/${id}`, params)
     return data.ordering
   }
 
