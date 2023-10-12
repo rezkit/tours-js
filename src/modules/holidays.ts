@@ -19,6 +19,7 @@ import type { Imagable } from './images.js'
 import { ImageAttachment } from './images.js'
 import type { Locatable } from './locations.js'
 import { LocationAttachment } from './locations.js'
+import { Map } from './maps'
 export interface IHoliday extends Entity, Fields {
   name: string
 
@@ -279,5 +280,9 @@ export class Api extends ApiGroup {
   async search (params: SearchRequest): Promise<Record<string, unknown>> {
     const { data } = await this.axios.get('/holiday/search', { params })
     return data
+  }
+
+  get map(): Map {
+    return new Map(this.axios, 'holiday')
   }
 }
