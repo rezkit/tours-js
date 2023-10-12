@@ -32,9 +32,9 @@ export default class TourManager {
       Accept: 'application/json'
     }
 
-    if (process?.version !== null) {
-      this.axios.defaults.headers.common['User-Agent'] = `RezKit/Tours (js/runtime:${process.version})`
-    }
+    // if (process?.version !== null) {
+    //   this.axios.defaults.headers.common['User-Agent'] = `RezKit/Tours (js/runtime:${process.version})`
+    // }
 
     this.axios.interceptors.response.use(null, handleResponseError)
 
