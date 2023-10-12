@@ -12,6 +12,8 @@ import {ApiGroup } from './common.js'
 import timestamp from '../annotations/timestamp.js'
 import type {CategorySortFields, ICategory, ListCategoriesQuery} from "./categories";
 import {Category} from "./categories";
+import type {CreateHolidayInput, HolidayListQuery, IHoliday, UpdateHolidayInput} from "./holidays";
+import {Holiday} from "./holidays";
 
 
 export interface IMap extends Entity {
@@ -28,26 +30,10 @@ export interface CreateMapInput extends IMap {
 
 export type UpdateMapInput = Partial<CreateMapInput>
 
-export interface ListMapsQuery extends PaginatedQuery, SortableQuery<CategorySortFields> {
+export interface ListMapsQuery extends PaginatedQuery {
     name?: string
-    search?: string
     published?: QueryBoolean
-    searchable?: QueryBoolean
-
-    /**
-     * Include each category's children in the response
-     */
-    children?: QueryBoolean
-
-    /**
-     * Include each category's ancestors
-     */
-    ancestors?: QueryBoolean
-
-    /**
-     * Filter by parent ID
-     */
-    parent_id?: string | null
+    data?: string
 }
 
 export class Map implements IMap {
@@ -67,7 +53,7 @@ export class Map implements IMap {
         Object.assign(this, data)
     }
 
-    async list (params?: ListCategoriesQuery): Promise<Paginated<Map>> {
+    async list (params?: ListMapsQuery): Promise<Paginated<Map>> {
         const response = (await this.axios.get<Paginated<IMap>>(`/${this.path}`, { params })).data
 
         response.data = response.data.map(c => new Map(c, this.axios))
@@ -104,6 +90,36 @@ export class Map implements IMap {
 
 }
 
+export class Api extends ApiGroup {
+    async list (params?: ListMapsQuery): Promise<Paginated<Map>> {
+        const response = (await this.axios.get<Paginated<IMap>>('/holidays/maps', { params })).data
+
+        response.data = response.data.map(h => new Map(h, this.axios))
+
+        return response as Paginated<Map>
+    }
+
+    async find (id: string): Promise<Map> {
+        const m = (await this.axios.get<IMap>(`/holidays/maps/${id}`)).data
+        return new Map(m, this.axios)
+    }
+
+    async create (params: CreateMapInput): Promise<Map> {
+        const m = (await this.axios.post<IMap>('/holidays/maps', params)).data
+        return new Map(m, this.axios)
+    }
+
+    async update (id: string, params: UpdateMapInput): Promise<Holiday> {
+        const m = (await this.axios.patch<IMap>(`/holidays/maps/${id}`, params)).data
+
+        return new Holiday(m, this.axios)
+    }
+
+    async delete (id: string): Promise<void> {
+        await this.axios.delete(`/holidays/${id}`)
+    }
+}
+
 export class MapAttachment<T extends ID> extends ApiGroup {
     readonly type: EntityType
     readonly entity: T
@@ -115,7 +131,7 @@ export class MapAttachment<T extends ID> extends ApiGroup {
 
     }
 
-    async list (params?: ListCategoriesQuery): Promise<Paginated<Map>> {
+    async list (params?: ListMapsQuery): Promise<Paginated<Map>> {
         const response = (await this.axios.get<Paginated<IMap>>(`/${this.path}`, { params })).data
 
         response.data = response.data.map(c => new Map(c, this.axios))
