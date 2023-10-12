@@ -41,7 +41,7 @@ export class Location implements ILocation, Imagable<Location> {
       this.category = new Category(values.category, axios)
     }
 
-    if (values?.children.length > 0) {
+    if (values?.children?.length > 0) {
       this.children = values.children.map(c => new Location(c, axios))
     } else {
       this.children = []
