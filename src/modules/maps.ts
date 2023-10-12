@@ -1,8 +1,7 @@
-import type { Entity, EntityType } from './common.js'
+import type { Entity, EntityType, ID } from './common.js'
 import type { AxiosInstance } from 'axios'
-import {ApiGroup } from './common.js'
+import {ApiGroup} from './common.js'
 import timestamp from '../annotations/timestamp.js'
-
 
 
 export interface IMap extends Entity {
@@ -20,7 +19,7 @@ export interface CreateMapInput extends IMap {
 
 export type UpdateMapInput = Partial<CreateMapInput>
 
-export class MapItem implements IMap {
+export class Map implements IMap {
     private readonly axios: AxiosInstance
     readonly type: EntityType
 
@@ -43,7 +42,7 @@ export class MapItem implements IMap {
         this.deleted_at = new Date()
     }
 
-    async update (params: UpdateMapInput): Promise<MapItem> {
+    async update (params: UpdateMapInput): Promise<Map> {
         const { data } = await this.axios.patch<IMap>(this.path, params)
 
         Object.assign(this, data)
@@ -57,20 +56,24 @@ export class MapItem implements IMap {
 
 }
 
-export class Map extends ApiGroup {
+export class MapAttachment<T extends ID> extends ApiGroup {
     readonly type: EntityType
-    constructor (axios: AxiosInstance, type: EntityType) {
+    readonly entity: T
+
+    constructor (axios: AxiosInstance, type: EntityType, entity: T) {
         super(axios)
         this.type = type
+        this.entity = entity
+
     }
-    async create (params: CreateMapInput): Promise<MapItem> {
+    async create (params: CreateMapInput): Promise<Map> {
         const { data } = await this.axios.post<IMap>(`/holidays/maps/`, params)
-        return new MapItem(data, this.axios)
+        return new Map(data, this.axios)
     }
 
     async update (id: string, params: UpdateMapInput): Promise<IMap> {
         const { data } = await this.axios.patch<IMap>(`/holidays/maps/${id}`, params)
-        return new MapItem(data, this.axios)
+        return new Map(data, this.axios)
 
     }
 
