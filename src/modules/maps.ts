@@ -5,7 +5,6 @@ import timestamp from '../annotations/timestamp.js'
 
 
 export interface IMap extends Entity {
-    type: EntityType
     name: string
     published: boolean
     data: string
@@ -21,7 +20,6 @@ export type UpdateMapInput = Partial<CreateMapInput>
 
 export class Map implements IMap {
     private readonly axios: AxiosInstance
-    readonly type: EntityType
 
     @timestamp() readonly created_at!: Date
     @timestamp() readonly updated_at!: Date
@@ -32,9 +30,9 @@ export class Map implements IMap {
     readonly data!: string
     deleted_at!: null | string | Date
 
-    constructor (axios: AxiosInstance, type: EntityType) {
+    constructor (data: IMap, axios: AxiosInstance) {
         this.axios = axios
-        this.type = type
+        Object.assign(this, data)
     }
 
     async destroy (): Promise<void> {
