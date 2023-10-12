@@ -4,7 +4,7 @@
   "description": "Tour Manager API Client",
   "module": "lib/client.js",
   "types": "lib/client.d.ts",
-  "files": [ "lib/*" ],
+  "files": [ "lib/*", "src/*" ],
   "exports": {
     ".": {
       "import": "./lib/client.js"
