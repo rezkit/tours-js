@@ -1,4 +1,4 @@
-import type { Entity, EntityType, ID } from './common.js'
+import type {AttachmentResponse, Entity, EntityType, ID} from './common.js'
 import type { AxiosInstance } from 'axios'
 import {ApiGroup} from './common.js'
 import timestamp from '../annotations/timestamp.js'
@@ -49,6 +49,10 @@ export class Map implements IMap {
 
         return this
     }
+    async create (params: CreateMapInput): Promise<Map> {
+        const { data } = await this.axios.post<IMap>(`/holidays/maps/`, params)
+        return new Map(data, this.axios)
+    }
 
     get path () {
         return `/holidays/maps/${this.id}`
@@ -66,12 +70,8 @@ export class MapAttachment<T extends ID> extends ApiGroup {
         this.entity = entity
 
     }
-    async create (params: CreateMapInput): Promise<Map> {
-        const { data } = await this.axios.post<IMap>(`/holidays/maps/`, params)
-        return new Map(data, this.axios)
-    }
 
-    async update (id: string, params: UpdateMapInput): Promise<IMap> {
+    async update (id: string, params: UpdateMapInput): Promise<Map> {
         const { data } = await this.axios.patch<IMap>(`/holidays/maps/${id}`, params)
         return new Map(data, this.axios)
 
