@@ -2,7 +2,6 @@ import type {
     Paginated,
     PaginatedQuery,
     QueryBoolean,
-    SortableQuery,
     Entity,
     EntityType,
     ID
@@ -10,10 +9,6 @@ import type {
 import type { AxiosInstance } from 'axios'
 import {ApiGroup } from './common.js'
 import timestamp from '../annotations/timestamp.js'
-import type {CategorySortFields, ICategory, ListCategoriesQuery} from "./categories";
-import {Category} from "./categories";
-import type {CreateHolidayInput, HolidayListQuery, IHoliday, UpdateHolidayInput} from "./holidays";
-import {Holiday} from "./holidays";
 
 
 export interface IMap extends Entity {
@@ -109,10 +104,10 @@ export class Api extends ApiGroup {
         return new Map(m, this.axios)
     }
 
-    async update (id: string, params: UpdateMapInput): Promise<Holiday> {
+    async update (id: string, params: UpdateMapInput): Promise<Map> {
         const m = (await this.axios.patch<IMap>(`/holidays/maps/${id}`, params)).data
 
-        return new Holiday(m, this.axios)
+        return new Map(m, this.axios)
     }
 
     async delete (id: string): Promise<void> {
