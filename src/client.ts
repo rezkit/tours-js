@@ -107,6 +107,10 @@ export default class TourManager {
   departures (params: Partial<ListDeparturesQuery>): Modules.Departures.Departures {
     return new Modules.Departures.Departures(this.axios, params)
   }
+
+  maps (): Modules.Maps.Api {
+    return new Modules.Maps.Api(this.axios)
+  }
 }
 
 /**
