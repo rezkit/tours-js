@@ -70,7 +70,7 @@ export class Map implements IMap {
     }
 
     async find (id: string): Promise<Map> {
-        const response = (await this.axios.get<IMap>(`/holidays/maps/${id}`)).data
+        const response = (await this.axios.get<IMap>(`/maps/${id}`)).data
         return new Map(response, this.axios)
     }
 
@@ -80,14 +80,14 @@ export class Map implements IMap {
     }
 
     get path () {
-        return `/holidays/maps/${this.id}`
+        return `/maps/${this.id}`
     }
 
 }
 
 export class Api extends ApiGroup {
     async list (params?: ListMapsQuery): Promise<Paginated<Map>> {
-        const response = (await this.axios.get<Paginated<IMap>>('/holidays/maps', { params })).data
+        const response = (await this.axios.get<Paginated<IMap>>('/maps', { params })).data
 
         response.data = response.data.map(h => new Map(h, this.axios))
 
@@ -95,23 +95,23 @@ export class Api extends ApiGroup {
     }
 
     async find (id: string): Promise<Map> {
-        const m = (await this.axios.get<IMap>(`/holidays/maps/${id}`)).data
+        const m = (await this.axios.get<IMap>(`/maps/${id}`)).data
         return new Map(m, this.axios)
     }
 
     async create (params: CreateMapInput): Promise<Map> {
-        const m = (await this.axios.post<IMap>('/holidays/maps', params)).data
+        const m = (await this.axios.post<IMap>('/maps', params)).data
         return new Map(m, this.axios)
     }
 
     async update (id: string, params: UpdateMapInput): Promise<Map> {
-        const m = (await this.axios.patch<IMap>(`/holidays/maps/${id}`, params)).data
+        const m = (await this.axios.patch<IMap>(`/maps/${id}`, params)).data
 
         return new Map(m, this.axios)
     }
 
     async delete (id: string): Promise<void> {
-        await this.axios.delete(`/holidays/${id}`)
+        await this.axios.delete(`/maps/${id}`)
     }
 }
 
@@ -145,7 +145,7 @@ export class MapAttachment<T extends ID> extends ApiGroup {
     }
 
     get path () {
-        return `/holidays/maps`
+        return `/maps`
     }
 
 }
