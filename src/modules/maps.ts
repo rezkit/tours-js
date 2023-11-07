@@ -12,13 +12,13 @@ import timestamp from '../annotations/timestamp.js'
 
 
 export interface IMap extends Entity {
-    name: string
+    title: string
     published: boolean
     data: string
 }
 
 export interface CreateMapInput extends IMap {
-    name: string
+    title: string
     published: boolean
     data: string
 }
@@ -26,7 +26,7 @@ export interface CreateMapInput extends IMap {
 export type UpdateMapInput = Partial<CreateMapInput>
 
 export interface ListMapsQuery extends PaginatedQuery {
-    name?: string
+    title?: string
     published?: QueryBoolean
     data?: string
 }
@@ -38,7 +38,7 @@ export class Map implements IMap {
     @timestamp() readonly updated_at!: Date
 
     readonly id!: string
-    readonly name!: string
+    readonly title!: string
     readonly published!: boolean
     readonly data!: string
     deleted_at!: null | string | Date
