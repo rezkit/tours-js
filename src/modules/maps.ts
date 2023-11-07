@@ -79,6 +79,11 @@ export class Map implements IMap {
         this.deleted_at = new Date()
     }
 
+    async restore (): Promise<void> {
+        await this.axios.restore(this.path)
+        this.deleted_at = null
+    }
+
     get path () {
         return `/maps/${this.id}`
     }
@@ -113,6 +118,10 @@ export class Api extends ApiGroup {
     async delete (id: string): Promise<void> {
         await this.axios.delete(`/maps/${id}`)
     }
+
+    async restore (id: string): Promise<void> {
+        await this.axios.restore(`/maps/${id}`)
+    }
 }
 
 export class MapAttachment<T extends ID> extends ApiGroup {
@@ -142,6 +151,10 @@ export class MapAttachment<T extends ID> extends ApiGroup {
 
     async delete (id: string): Promise<void> {
         await this.axios.delete(`${this.path}/${id}`)
+    }
+
+    async restore (id: string): Promise<void> {
+        await this.axios.restore(`${this.path}/${id}`)
     }
 
     get path () {
