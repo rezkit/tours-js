@@ -9,18 +9,22 @@ import { Departures } from './departures.js'
 import { Itinerary } from './itinerary.js'
 import type { Locatable } from './locations.js'
 import { LocationAttachment } from './locations.js'
+import {type IMap, Map} from "./maps";
 
 export interface IHolidayVersion extends IHoliday {
   holiday_id: string
   duration?: number
+  map_id?: string
 }
 
 export interface UpdateHolidayVersionInput extends UpdateHolidayInput {
   duration?: number | null
+  map_id?: string | null
 }
 
 export interface CreateHolidayVersionInput extends CreateHolidayInput {
   duration?: number | null
+  map_id?: string | null
 }
 
 export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersion>, Locatable<HolidayVersion> {
@@ -45,6 +49,10 @@ export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersi
     return new CategoryAttachment(this.axios, 'holiday_version', this)
   }
 
+  async map (): Promise<Map> {
+    const response = (await this.axios.get<IMap>(`/maps/${this.map_id}`)).data
+    return new Map(response, this.axios)  }
+
   get itinerary (): Itinerary {
     return new Itinerary(this.axios, this.id)
   }
@@ -65,6 +73,7 @@ export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersi
   readonly ordering!: number
   readonly published!: boolean
   duration?: number
+  readonly map_id?: string
   get path (): string {
     return `/holidays/${this.holiday_id}/versions/${this.id}`
   }
@@ -131,5 +140,9 @@ export class HolidayVersions extends ApiGroup {
 
   get categories (): Categories {
     return new Categories(this.axios, 'holiday_version')
+  }
+  async map(id: string): Promise<Map> {
+    const response = (await this.axios.get<IMap>(`/maps/${id}`)).data
+    return new Map(response, this.axios)
   }
 }
