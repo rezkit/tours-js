@@ -17,7 +17,7 @@ export interface IMap extends Entity {
     data: string
 }
 
-export interface CreateMapInput extends IMap {
+export interface CreateMapInput {
     title: string
     published: boolean
     data: string
