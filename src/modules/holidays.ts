@@ -64,6 +64,14 @@ export interface SearchRequest {
   s?: string[]
 }
 
+interface CopyHolidayInput {
+  name: string
+  code: string
+  copy_images: boolean
+  copy_content_items: boolean
+  version: object[]
+}
+
 export class Holiday implements IHoliday, Categorized<Holiday>, Contentized<Holiday>, Imagable<Holiday>, Locatable<Holiday> {
   private readonly axios: AxiosInstance
 
@@ -231,6 +239,11 @@ export class Api extends ApiGroup {
     const h = (await this.axios.patch<IHoliday>(`/holidays/${id}`, params)).data
 
     return new Holiday(h, this.axios)
+  }
+
+  async copy (id: string, params: CopyHolidayInput): Promise<Holiday> {
+    const { data } = await this.axios.put(`/holidays/${id}/copy`)
+    return new Holiday(data, this.axios)
   }
 
   /**
