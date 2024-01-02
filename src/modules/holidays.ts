@@ -242,8 +242,8 @@ export class Api extends ApiGroup {
   }
 
   async copy (id: string, params: CopyHolidayInput): Promise<Holiday> {
-    const { data } = await this.axios.put(`/holidays/${id}/copy`)
-    return new Holiday(data, this.axios)
+    const h = (await this.axios.put<IHoliday>(`/holidays/${id}/copy`, params)).data
+    return new Holiday(h, this.axios)
   }
 
   /**
