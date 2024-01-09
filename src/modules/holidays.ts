@@ -40,6 +40,7 @@ export interface CreateHolidayInput extends Partial<Fields> {
   introduction?: string | null
   description?: string | null
   published?: boolean
+  search_public?: boolean
 }
 
 export interface UpdateHolidayInput extends Partial<CreateHolidayInput> {
