@@ -30,6 +30,8 @@ export interface IHoliday extends Entity, Fields {
 
   published: boolean
 
+  search_public: boolean | null
+
   ordering: number
 }
 
@@ -39,7 +41,7 @@ export interface CreateHolidayInput extends Partial<Fields> {
 
   introduction?: string | null
   description?: string | null
-  published?: boolean
+  published?: boolean | null
   search_public?: boolean
 }
 
@@ -154,6 +156,7 @@ export class Holiday implements IHoliday, Categorized<Holiday>, Contentized<Holi
   introduction!: string | null
   name!: string
   published!: boolean
+  search_public!: boolean | null
   ordering!: number
   deleted_at!: null | string | Date
 
