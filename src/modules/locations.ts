@@ -193,7 +193,7 @@ export class LocationAttachment<T extends ID> extends ApiGroup {
    * @param ids
    */
   async attach (ids: string[]): Promise<AttachmentResponse> {
-    const { data } = await this.axios.patch<AttachmentResponse>(this.path, { ids })
+    const { data } = await this.axios.post<AttachmentResponse>(this.path, { ids })
     return data
   }
 
