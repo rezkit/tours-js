@@ -240,7 +240,7 @@ export class Api extends ApiGroup {
   }
 
   async update (id: string, params: UpdateHolidayInput): Promise<Holiday> {
-    const h = (await this.axios.patch<IHoliday>(`/holidays/${id}`, params)).data
+    const h = (await this.axios.post<IHoliday>(`/holidays/${id}`, params)).data
 
     return new Holiday(h, this.axios)
   }
