@@ -111,7 +111,7 @@ export class FieldsApi extends ApiGroup {
   }
 
   async update (id: string, params: UpdateFieldRequest): Promise<FieldDefinition> {
-    const { data } = await this.axios.patch<FieldDefinition>(`/${this.type}/fields/${id}`, params)
+    const { data } = await this.axios.post<FieldDefinition>(`/${this.type}/fields/${id}`, params)
     return data
   }
 
