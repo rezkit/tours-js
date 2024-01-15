@@ -113,7 +113,7 @@ export class Holiday implements IHoliday, Categorized<Holiday>, Contentized<Holi
      *  await holiday.update({ name: 'New Name' })
      */
   async update (params: UpdateHolidayInput): Promise<Holiday> {
-    const rsp = (await this.axios.post<IHoliday>(`/holidays/${this.id}`, params)).data
+    const rsp = (await this.axios.patch<IHoliday>(`/holidays/${this.id}`, params)).data
     Object.assign(this, rsp)
     return this
   }
@@ -240,7 +240,7 @@ export class Api extends ApiGroup {
   }
 
   async update (id: string, params: UpdateHolidayInput): Promise<Holiday> {
-    const h = (await this.axios.post<IHoliday>(`/holidays/${id}`, params)).data
+    const h = (await this.axios.patch<IHoliday>(`/holidays/${id}`, params)).data
 
     return new Holiday(h, this.axios)
   }
