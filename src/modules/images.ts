@@ -169,8 +169,8 @@ export class ImageAttachment<T extends ID> extends ApiGroup {
     this.entity = entity
   }
 
-  async list (): Promise<Paginated<Image>> {
-    const { data } = await this.axios.get<Paginated<IImage>>(this.path)
+  async list (params?: ListImageParams): Promise<Paginated<Image>> {
+    const { data } = await this.axios.get<Paginated<IImage>>(this.path, { params })
 
     data.data = data.data.map(i => new Image(i, this.axios))
     return data as Paginated<Image>
