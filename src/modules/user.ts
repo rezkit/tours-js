@@ -55,6 +55,13 @@ export interface ImagePreset {
   name: string
 }
 
+export interface MapPreset {
+  thickness: number
+  hue: number
+  name: string
+}
+
+
 export interface OrganizationSettings {
   currencies: string[]
   deposit_defaults: {
@@ -62,6 +69,7 @@ export interface OrganizationSettings {
     percentage: number
   }
   image_settings: ImagePreset[]
+  map_settings: MapPreset[]
 }
 
 export type UpdateOrganizationSettings = Partial<OrganizationSettings>
