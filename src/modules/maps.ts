@@ -7,8 +7,9 @@ import type {
     ID
 } from './common.js'
 import type { AxiosInstance } from 'axios'
-import {ApiGroup } from './common.js'
+import { ApiGroup } from './common.js'
 import timestamp from '../annotations/timestamp.js'
+import { MapSettings, type IMapSettings } from "./mapSettings";
 
 
 export interface IMap extends Entity {
@@ -113,6 +114,11 @@ export class Api extends ApiGroup {
         const m = (await this.axios.patch<IMap>(`/maps/${id}`, params)).data
 
         return new Map(m, this.axios)
+    }
+
+    async options (): Promise<MapSettings> {
+        const { data } = await this.axios.get<IMapSettings>(`maps/settings`)
+        return new MapSettings(data, this.axios)
     }
 
     async delete (id: string): Promise<void> {
