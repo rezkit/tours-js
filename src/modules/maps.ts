@@ -9,7 +9,7 @@ import type {
 import type { AxiosInstance } from 'axios'
 import { ApiGroup } from './common.js'
 import timestamp from '../annotations/timestamp.js'
-import { MapSettings, type IMapSettings } from "./mapSettings";
+import { type IMapSettings, MapSettings } from "./mapSettings";
 
 
 export interface IMap extends Entity {

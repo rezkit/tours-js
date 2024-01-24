@@ -16,7 +16,7 @@ export interface IMapSettings extends Entity {
     }[] | null
 }
 
-export interface MapSettings {
+export interface CreateMapSettings {
     lines: {
         name: string,
         hue: number,
@@ -24,12 +24,11 @@ export interface MapSettings {
     }[] | null
     markers: {
         name: string
-        file_path: string
-        file_size: string
+        image: File | Blob
     }[] | null
 }
 
-export type UpdateMapSettings = Partial<MapSettings>
+export type UpdateMapSettings = Partial<CreateMapSettings>
 
 export class MapSettings implements IMapSettings {
     private readonly axios: AxiosInstance
@@ -45,11 +44,6 @@ export class MapSettings implements IMapSettings {
     constructor (data: IMapSettings, axios: AxiosInstance) {
         this.axios = axios
         Object.assign(this, data)
-    }
-
-    async create (params: Partial<MapSettings>): Promise<MapSettings> {
-        const { data } = await this.axios.post<IMapSettings>(`/maps/settings`, params)
-        return new MapSettings(data, this.axios)
     }
 
     async get (): Promise<MapSettings> {
@@ -81,7 +75,7 @@ export class Api extends ApiGroup {
         return new MapSettings(response, this.axios)
     }
 
-    async create (params: Partial<MapSettings>): Promise<MapSettings> {
+    async create (params: Partial<CreateMapSettings>): Promise<MapSettings> {
         const { data } = await this.axios.post<IMapSettings>(`/maps/settings`, params)
         return new MapSettings(data, this.axios)
     }
