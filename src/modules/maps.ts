@@ -9,6 +9,8 @@ import type {
 import type { AxiosInstance } from 'axios'
 import { ApiGroup } from './common.js'
 import timestamp from '../annotations/timestamp.js'
+import {type IMapLines, MapLines} from "./mapLines";
+import {type IMapMarkers, MapMarkers} from "./mapMarkers";
 
 
 export interface IMap extends Entity {
@@ -159,6 +161,16 @@ export class MapAttachment<T extends ID> extends ApiGroup {
 
     get path () {
         return `/maps`
+    }
+
+    async markers (): Promise<MapMarkers> {
+        const response = (await this.axios.get<IMapMarkers>(`/maps/settings/markers`)).data
+        return new MapMarkers(response, this.axios)
+    }
+
+    async lines (): Promise<MapLines> {
+        const response = (await this.axios.get<IMapLines>(`/maps/settings/markers`)).data
+        return new MapLines(response, this.axios)
     }
 
 }
