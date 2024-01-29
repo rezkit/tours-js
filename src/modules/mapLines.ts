@@ -51,8 +51,8 @@ export class MapLines implements IMapLines {
         return new MapLines(data, this.axios)
     }
 
-    async update (id: string, params: UpdateMapLinesInput): Promise<MapLines> {
-        const data = await this.axios.patch<IMapLines>(`/maps/settings/lines/${id}`, params)
+    async update (params: UpdateMapLinesInput): Promise<MapLines> {
+        const data = await this.axios.patch<IMapLines>(`/maps/settings/lines/${this.id}`, params)
         Object.assign(this, data)
 
         return this
@@ -63,13 +63,13 @@ export class MapLines implements IMapLines {
         return new MapLines(response, this.axios)
     }
 
-    async delete (id: string): Promise<void> {
-        await this.axios.delete(`/maps/settings/lines/${id}`)
+    async delete (): Promise<void> {
+        await this.axios.delete(`/maps/settings/lines/${this.id}`)
         this.deleted_at = new Date()
     }
 
-    async restore (id: string): Promise<void> {
-        await this.axios.restore(`/maps/settings/lines/${id}`)
+    async restore (): Promise<void> {
+        await this.axios.restore(`/maps/settings/lines/${this.id}`)
         this.deleted_at = null
     }
 }
