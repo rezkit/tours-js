@@ -4,13 +4,13 @@ import { ApiGroup } from './common.js'
 import timestamp from '../annotations/timestamp.js'
 
 export interface IMapLines extends Entity {
-    name: string
+    title: string
     hue: number
     thickness: number
 }
 
 export interface CreateMapLinesInput {
-    name: string
+    title: string
     hue: number
     thickness: number
 }
@@ -18,7 +18,7 @@ export interface CreateMapLinesInput {
 export type UpdateMapLinesInput = Partial<IMapLines>
 
 export interface ListMapLinesQuery extends PaginatedQuery {
-    name?: string
+    title?: string
     hue?: number
     thickness?: number
 }
@@ -30,7 +30,7 @@ export class MapLines implements IMapLines {
     @timestamp() readonly updated_at!: Date;
 
     readonly id!: string;
-    readonly name!: string
+    readonly title!: string
     readonly hue!: number
     readonly thickness!: number
     deleted_at!: null | string | Date

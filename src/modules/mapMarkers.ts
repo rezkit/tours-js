@@ -4,19 +4,19 @@ import { ApiGroup } from './common.js'
 import timestamp from '../annotations/timestamp.js'
 
 export interface IMapMarkers extends Entity {
-    name: string
+    title: string
     file_path: string
 }
 
 export interface CreateMapMarkersInput {
-    name: string
+    title: string
     image: File | Blob
 }
 
 export type UpdateMapMarkersInput = Partial<IMapMarkers>
 
 export interface ListMapMarkersQuery extends PaginatedQuery {
-    name?: string
+    title?: string
 }
 
 export class MapMarkers implements IMapMarkers {
@@ -26,7 +26,7 @@ export class MapMarkers implements IMapMarkers {
     @timestamp() readonly updated_at!: Date;
 
     readonly id!: string;
-    readonly name!: string
+    readonly title!: string
     file_path!: string
     deleted_at!: null | string | Date
 
