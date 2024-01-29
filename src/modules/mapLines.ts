@@ -63,13 +63,13 @@ export class MapLines implements IMapLines {
         return new MapLines(response, this.axios)
     }
 
-    async delete (): Promise<void> {
-        await this.axios.delete('/maps/settings/lines')
+    async delete (id: string): Promise<void> {
+        await this.axios.delete(`/maps/settings/lines/${id}`)
         this.deleted_at = new Date()
     }
 
-    async restore (): Promise<void> {
-        await this.axios.restore('/maps/settings/lines')
+    async restore (id: string): Promise<void> {
+        await this.axios.restore(`/maps/settings/lines/${id}`)
         this.deleted_at = null
     }
 }

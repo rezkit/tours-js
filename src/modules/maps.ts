@@ -131,7 +131,7 @@ export class Api extends ApiGroup {
     }
 
     async lines (): Promise<MapLines> {
-        const response = (await this.axios.get<IMapLines>(`/maps/settings/markers`)).data
+        const response = (await this.axios.get<IMapLines>(`/maps/settings/lines`)).data
         return new MapLines(response, this.axios)
     }
 }
