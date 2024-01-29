@@ -111,10 +111,6 @@ export default class TourManager {
   maps (): Modules.Maps.Api {
     return new Modules.Maps.Api(this.axios)
   }
-
-  mapSettings (): Modules.MapSettings.Api {
-    return new Modules.MapSettings.Api(this.axios)
-  }
 }
 
 /**
