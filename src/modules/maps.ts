@@ -124,6 +124,16 @@ export class Api extends ApiGroup {
     async restore (id: string): Promise<void> {
         await this.axios.restore(`/maps/${id}`)
     }
+
+    async markers (): Promise<MapMarkers> {
+        const response = (await this.axios.get<IMapMarkers>(`/maps/settings/markers`)).data
+        return new MapMarkers(response, this.axios)
+    }
+
+    async lines (): Promise<MapLines> {
+        const response = (await this.axios.get<IMapLines>(`/maps/settings/markers`)).data
+        return new MapLines(response, this.axios)
+    }
 }
 
 export class MapAttachment<T extends ID> extends ApiGroup {
@@ -162,15 +172,4 @@ export class MapAttachment<T extends ID> extends ApiGroup {
     get path () {
         return `/maps`
     }
-
-    async markers (): Promise<MapMarkers> {
-        const response = (await this.axios.get<IMapMarkers>(`/maps/settings/markers`)).data
-        return new MapMarkers(response, this.axios)
-    }
-
-    async lines (): Promise<MapLines> {
-        const response = (await this.axios.get<IMapLines>(`/maps/settings/markers`)).data
-        return new MapLines(response, this.axios)
-    }
-
 }
