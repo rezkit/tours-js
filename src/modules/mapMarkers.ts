@@ -84,7 +84,12 @@ export class Api extends ApiGroup {
     }
 
     async create (params: CreateMapMarkersInput): Promise<MapMarkers> {
-        const m = (await this.axios.post<IMapMarkers>('/maps/settings/markers', params)).data
+        const payload = new FormData()
+
+        payload.set('title', params.title)
+        payload.set('image', params.image)
+
+        const m = (await this.axios.post<IMapMarkers>('/maps/settings/markers', payload)).data
         return new MapMarkers(m, this.axios)
     }
 
