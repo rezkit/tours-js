@@ -52,7 +52,7 @@ export class MapLines implements IMapLines {
     }
 
     async update (id: string, params: UpdateMapLinesInput): Promise<MapLines> {
-        const { data } = await this.axios.put<IMapLines>(`/maps/settings/lines/${id}`, params)
+        const { data } = await this.axios.patch<IMapLines>(`/maps/settings/lines/${id}`, params)
         Object.assign(this, data)
 
         return this
