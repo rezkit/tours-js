@@ -51,8 +51,8 @@ export class MapMarkers implements IMapMarkers {
         return new MapMarkers(data, this.axios)
     }
 
-    async update (params: UpdateMapMarkersInput): Promise<MapMarkers> {
-        const { data } = await this.axios.put<IMapMarkers>('/maps/settings/markers', params)
+    async update (id: string, params: UpdateMapMarkersInput): Promise<MapMarkers> {
+        const { data } = await this.axios.put<IMapMarkers>(`/maps/settings/markers/${id}`, params)
         Object.assign(this, data)
 
         return this
@@ -63,13 +63,13 @@ export class MapMarkers implements IMapMarkers {
         return new MapMarkers(response, this.axios)
     }
 
-    async delete (): Promise<void> {
-        await this.axios.delete('/maps/settings/markers')
+    async delete (id: string): Promise<void> {
+        await this.axios.delete(`/maps/settings/markers/${id}`)
         this.deleted_at = new Date()
     }
 
-    async restore (): Promise<void> {
-        await this.axios.restore('/maps/settings/markers')
+    async restore (id: string): Promise<void> {
+        await this.axios.restore(`/maps/settings/markers/${id}`)
         this.deleted_at = null
     }
 }
