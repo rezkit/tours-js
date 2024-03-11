@@ -153,6 +153,10 @@ export class Images extends ApiGroup {
     return new Image(data, this.axios)
   }
 
+  async detach (id: string): Promise<void> {
+    await this.axios.delete(`/images/${id}/`)
+  }
+
   async update (id: string, params: UpdateImageParams): Promise<Image> {
     const { data } = await this.axios.patch<IImage>(`/images/${id}`, params)
     return new Image(data, this.axios)
