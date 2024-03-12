@@ -9,22 +9,26 @@ import { Departures } from './departures.js'
 import { Itinerary } from './itinerary.js'
 import type { Locatable } from './locations.js'
 import { LocationAttachment } from './locations.js'
-import {type IMap, Map} from "./maps";
+import {type IMap, Map} from './maps'
+import { Accommodation, type IAccommodation } from './accommodations'
 
 export interface IHolidayVersion extends IHoliday {
   holiday_id: string
   duration?: number
   map_id?: string
+  accommodation_id?: string
 }
 
 export interface UpdateHolidayVersionInput extends UpdateHolidayInput {
   duration?: number | null
   map_id?: string | null
+  accommodation_id?: string | null
 }
 
 export interface CreateHolidayVersionInput extends CreateHolidayInput {
   duration?: number | null
   map_id?: string | null
+  accommodation_id?: string | null
 }
 
 export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersion>, Locatable<HolidayVersion> {
@@ -51,10 +55,16 @@ export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersi
 
   async map (): Promise<Map> {
     const response = (await this.axios.get<IMap>(`/maps/${this.map_id}`)).data
-    return new Map(response, this.axios)  }
+    return new Map(response, this.axios)
+  }
 
   get itinerary (): Itinerary {
     return new Itinerary(this.axios, this.id)
+  }
+
+  async accommodation (): Promise<Accommodation> {
+    const response = (await this.axios.get<IAccommodation>(`/accommodations/${this.accommodation_id}`)).data
+    return new Accommodation(response, this.axios)
   }
 
   get departures (): Departures {
@@ -74,6 +84,8 @@ export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersi
   readonly published!: boolean
   duration?: number
   readonly map_id?: string
+  readonly accommodation_id?: string
+
   get path (): string {
     return `/holidays/${this.holiday_id}/versions/${this.id}`
   }
@@ -144,5 +156,10 @@ export class HolidayVersions extends ApiGroup {
   async map(id: string): Promise<Map> {
     const response = (await this.axios.get<IMap>(`/maps/${id}`)).data
     return new Map(response, this.axios)
+  }
+
+  async accommodation (id: string): Promise<Accommodation> {
+    const response = (await this.axios.get<IAccommodation>(`/accommodations/${id}`)).data
+    return new Accommodation(response, this.axios)
   }
 }
