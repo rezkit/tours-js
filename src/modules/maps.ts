@@ -50,30 +50,12 @@ export class Map implements IMap {
         Object.assign(this, data)
     }
 
-    async list (params?: ListMapsQuery): Promise<Paginated<Map>> {
-        const response = (await this.axios.get<Paginated<IMap>>(`/${this.path}`, { params })).data
-
-        response.data = response.data.map(c => new Map(c, this.axios))
-
-        return response as Paginated<Map>
-    }
-
-    async create (params: CreateMapInput): Promise<Map> {
-        const { data } = await this.axios.post<IMap>(this.path, params)
-        return new Map(data, this.axios)
-    }
-
     async update (params: UpdateMapInput): Promise<Map> {
         const { data } = await this.axios.patch<IMap>(this.path, params)
 
         Object.assign(this, data)
 
         return this
-    }
-
-    async find (id: string): Promise<Map> {
-        const response = (await this.axios.get<IMap>(`/maps/${id}`)).data
-        return new Map(response, this.axios)
     }
 
     async delete (): Promise<void> {
@@ -89,7 +71,6 @@ export class Map implements IMap {
     get path () {
         return `/maps/${this.id}`
     }
-
 }
 
 export class Api extends ApiGroup {
