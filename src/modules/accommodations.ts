@@ -76,7 +76,7 @@ export class Accommodation implements IAccommodation {
     }
 
     async restore (): Promise<void> {
-        await this.axios.restore(this.path)
+        await this.axios.put(this.path + '/restore')
         this.deleted_at = null
     }
 
@@ -114,7 +114,7 @@ export class Accommodations extends ApiGroup {
     }
 
     async restore (id: string): Promise<Accommodation> {
-        const a = await this.axios.put(`/accommodations/${id}/restore`)
-        return new Accommodation(a, this.axios)
+        const a = await this.axios.put<IAccommodation>(`/accommodations/${id}/restore`)
+        return new Accommodation(a.data, this.axios)
     }
 }

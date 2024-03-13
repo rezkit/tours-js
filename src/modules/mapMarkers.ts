@@ -69,7 +69,7 @@ export class MapMarkers implements IMapMarkers {
     }
 
     async restore (id: string): Promise<void> {
-        await this.axios.restore(`/maps/settings/markers/${id}`)
+        await this.axios.put(`/maps/settings/markers/${id}/restore`)
         this.deleted_at = null
     }
 }
@@ -109,6 +109,6 @@ export class Api extends ApiGroup {
     }
 
     async restore (id: string): Promise<void> {
-        await this.axios.restore(`/maps/settings/markers/${id}`)
+        await this.axios.put(`/maps/settings/markers/${id}/restore`)
     }
 }

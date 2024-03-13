@@ -69,7 +69,7 @@ export class MapLines implements IMapLines {
     }
 
     async restore (id: string): Promise<void> {
-        await this.axios.restore(`/maps/settings/lines/${id}`)
+        await this.axios.put(`/maps/settings/lines/${id}/restore`)
         this.deleted_at = null
     }
 }
@@ -104,6 +104,6 @@ export class Api extends ApiGroup {
     }
 
     async restore (id: string): Promise<void> {
-        await this.axios.restore(`/maps/settings/lines/${id}`)
+        await this.axios.put(`/maps/settings/lines/${id}/restore`)
     }
 }

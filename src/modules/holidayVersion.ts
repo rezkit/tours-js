@@ -12,7 +12,7 @@ import { LocationAttachment } from './locations.js'
 import {type IMap, Map} from './maps'
 import { Accommodation, type IAccommodation } from './accommodations'
 
-export interface IHolidayVersion extends IHoliday {
+export interface IHolidayVersion extends Omit<IHoliday, 'search_public'> {
   holiday_id: string
   duration?: number
   map_id?: string

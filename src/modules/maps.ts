@@ -64,7 +64,7 @@ export class Map implements IMap {
     }
 
     async restore (): Promise<void> {
-        await this.axios.restore(this.path)
+        await this.axios.put(this.path + '/restore')
         this.deleted_at = null
     }
 
@@ -103,7 +103,7 @@ export class Api extends ApiGroup {
     }
 
     async restore (id: string): Promise<void> {
-        await this.axios.restore(`/maps/${id}`)
+        await this.axios.put(`/maps/${id}/restore`)
     }
 
     async markers (): Promise<MapMarkers> {
@@ -144,10 +144,6 @@ export class MapAttachment<T extends ID> extends ApiGroup {
 
     async delete (id: string): Promise<void> {
         await this.axios.delete(`${this.path}/${id}`)
-    }
-
-    async restore (id: string): Promise<void> {
-        await this.axios.restore(`${this.path}/${id}`)
     }
 
     get path () {
