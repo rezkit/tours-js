@@ -1,109 +1,109 @@
-import type {Entity, Paginated, PaginatedQuery} from './common.js'
+import type { Entity, Paginated, PaginatedQuery } from './common.js'
 import type { AxiosInstance } from 'axios'
 import { ApiGroup } from './common.js'
 import timestamp from '../annotations/timestamp.js'
 
 export interface IMapLines extends Entity {
-    title: string
-    hue: string
-    thickness: number
+  title: string
+  hue: string
+  thickness: number
 }
 
 export interface CreateMapLinesInput {
-    title: string
-    hue: string
-    thickness: number
+  title: string
+  hue: string
+  thickness: number
 }
 
 export type UpdateMapLinesInput = Partial<IMapLines>
 
 export interface ListMapLinesQuery extends PaginatedQuery {
-    title?: string
-    hue?: string
-    thickness?: number
+  title?: string
+  hue?: string
+  thickness?: number
 }
 
 export class MapLines implements IMapLines {
-    private readonly axios: AxiosInstance
+  private readonly axios: AxiosInstance
 
-    @timestamp() readonly created_at!: Date;
-    @timestamp() readonly updated_at!: Date;
+  @timestamp() readonly created_at!: Date
+  @timestamp() readonly updated_at!: Date
 
-    readonly id!: string;
-    readonly title!: string
-    readonly hue!: string
-    readonly thickness!: number
-    deleted_at!: null | string | Date
+  readonly id!: string
+  readonly title!: string
+  readonly hue!: string
+  readonly thickness!: number
+  deleted_at!: null | string | Date
 
-    constructor (data: IMapLines, axios: AxiosInstance) {
-        this.axios = axios
-        Object.assign(this, data)
-    }
+  constructor (data: IMapLines, axios: AxiosInstance) {
+    this.axios = axios
+    Object.assign(this, data)
+  }
 
-    async list (params?: ListMapLinesQuery): Promise<Paginated<MapLines>> {
-        const response = (await this.axios.get<Paginated<IMapLines>>(`/maps/settings/lines`, { params })).data
-        response.data = response.data.map(l => new MapLines(l, this.axios))
-        return response as Paginated<MapLines>
-    }
+  async list (params?: ListMapLinesQuery): Promise<Paginated<MapLines>> {
+    const response = (await this.axios.get<Paginated<IMapLines>>('/maps/settings/lines', { params })).data
+    response.data = response.data.map(l => new MapLines(l, this.axios))
+    return response as Paginated<MapLines>
+  }
 
-    async create (params: CreateMapLinesInput): Promise<MapLines> {
-        const { data } = await this.axios.post<IMapLines>('/maps/settings/lines', params)
-        return new MapLines(data, this.axios)
-    }
+  async create (params: CreateMapLinesInput): Promise<MapLines> {
+    const { data } = await this.axios.post<IMapLines>('/maps/settings/lines', params)
+    return new MapLines(data, this.axios)
+  }
 
-    async update (id: string, params: UpdateMapLinesInput): Promise<MapLines> {
-        const data = await this.axios.patch<IMapLines>(`/maps/settings/lines/${id}`, params)
-        Object.assign(this, data)
+  async update (id: string, params: UpdateMapLinesInput): Promise<MapLines> {
+    const data = await this.axios.patch<IMapLines>(`/maps/settings/lines/${id}`, params)
+    Object.assign(this, data)
 
-        return this
-    }
+    return this
+  }
 
-    async find (id: string): Promise<MapLines> {
-        const response = (await this.axios.get<IMapLines>(`/maps/settings/lines/${id}`)).data
-        return new MapLines(response, this.axios)
-    }
+  async find (id: string): Promise<MapLines> {
+    const response = (await this.axios.get<IMapLines>(`/maps/settings/lines/${id}`)).data
+    return new MapLines(response, this.axios)
+  }
 
-    async delete (id: string): Promise<void> {
-        await this.axios.delete(`/maps/settings/lines/${id}`)
-        this.deleted_at = new Date()
-    }
+  async delete (id: string): Promise<void> {
+    await this.axios.delete(`/maps/settings/lines/${id}`)
+    this.deleted_at = new Date()
+  }
 
-    async restore (id: string): Promise<void> {
-        await this.axios.put(`/maps/settings/lines/${id}/restore`)
-        this.deleted_at = null
-    }
+  async restore (id: string): Promise<void> {
+    await this.axios.put(`/maps/settings/lines/${id}/restore`)
+    this.deleted_at = null
+  }
 }
 
 export class Api extends ApiGroup {
-    async list (params?: ListMapLinesQuery): Promise<Paginated<MapLines>> {
-        const response = (await this.axios.get<Paginated<IMapLines>>('/maps/settings/lines', { params })).data
+  async list (params?: ListMapLinesQuery): Promise<Paginated<MapLines>> {
+    const response = (await this.axios.get<Paginated<IMapLines>>('/maps/settings/lines', { params })).data
 
-        response.data = response.data.map(h => new MapLines(h, this.axios))
+    response.data = response.data.map(h => new MapLines(h, this.axios))
 
-        return response as Paginated<MapLines>
-    }
+    return response as Paginated<MapLines>
+  }
 
-    async find (id: string): Promise<MapLines> {
-        const m = (await this.axios.get<IMapLines>(`/maps/settings/lines/${id}`)).data
-        return new MapLines(m, this.axios)
-    }
+  async find (id: string): Promise<MapLines> {
+    const m = (await this.axios.get<IMapLines>(`/maps/settings/lines/${id}`)).data
+    return new MapLines(m, this.axios)
+  }
 
-    async create (params: CreateMapLinesInput): Promise<MapLines> {
-        const m = (await this.axios.post<IMapLines>('/maps/settings/lines', params)).data
-        return new MapLines(m, this.axios)
-    }
+  async create (params: CreateMapLinesInput): Promise<MapLines> {
+    const m = (await this.axios.post<IMapLines>('/maps/settings/lines', params)).data
+    return new MapLines(m, this.axios)
+  }
 
-    async update (id: string, params: UpdateMapLinesInput): Promise<MapLines> {
-        const m = (await this.axios.patch<IMapLines>(`/maps/settings/lines/${id}`, params)).data
+  async update (id: string, params: UpdateMapLinesInput): Promise<MapLines> {
+    const m = (await this.axios.patch<IMapLines>(`/maps/settings/lines/${id}`, params)).data
 
-        return new MapLines(m, this.axios)
-    }
+    return new MapLines(m, this.axios)
+  }
 
-    async delete (id: string): Promise<void> {
-        await this.axios.delete(`/maps/settings/lines/${id}`)
-    }
+  async delete (id: string): Promise<void> {
+    await this.axios.delete(`/maps/settings/lines/${id}`)
+  }
 
-    async restore (id: string): Promise<void> {
-        await this.axios.put(`/maps/settings/lines/${id}/restore`)
-    }
+  async restore (id: string): Promise<void> {
+    await this.axios.put(`/maps/settings/lines/${id}/restore`)
+  }
 }

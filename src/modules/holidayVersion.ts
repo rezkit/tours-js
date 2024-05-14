@@ -9,7 +9,7 @@ import { Departures } from './departures.js'
 import { Itinerary } from './itinerary.js'
 import type { Locatable } from './locations.js'
 import { LocationAttachment } from './locations.js'
-import {type IMap, Map} from './maps'
+import { type IMap, Map } from './maps'
 import { Accommodation, type IAccommodation } from './accommodations'
 
 export interface IHolidayVersion extends Omit<IHoliday, 'search_public'> {
@@ -153,7 +153,8 @@ export class HolidayVersions extends ApiGroup {
   get categories (): Categories {
     return new Categories(this.axios, 'holiday_version')
   }
-  async map(id: string): Promise<Map> {
+
+  async map (id: string): Promise<Map> {
     const response = (await this.axios.get<IMap>(`/maps/${id}`)).data
     return new Map(response, this.axios)
   }
