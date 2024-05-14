@@ -9,8 +9,8 @@ import type {
 import type { AxiosInstance } from 'axios'
 import { ApiGroup } from './common.js'
 import timestamp from '../annotations/timestamp.js'
-import { type IMapLines, MapLines } from './mapLines'
-import { type IMapMarkers, MapMarkers } from './mapMarkers'
+import { type IMapLines, MapLines } from './mapLines.js'
+import { type IMapMarkers, MapMarkers } from './mapMarkers.js'
 
 export interface IMap extends Entity {
   title: string

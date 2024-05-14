@@ -9,8 +9,8 @@ import { Departures } from './departures.js'
 import { Itinerary } from './itinerary.js'
 import type { Locatable } from './locations.js'
 import { LocationAttachment } from './locations.js'
-import { type IMap, Map } from './maps'
-import { Accommodation, type IAccommodation } from './accommodations'
+import { type IMap, Map } from './maps.js'
+import { Accommodation, type IAccommodation } from './accommodations.js'
 
 export interface IHolidayVersion extends Omit<IHoliday, 'search_public'> {
   holiday_id: string
