@@ -10,9 +10,9 @@ import type {
 } from './common.js'
 import type { AxiosInstance } from 'axios'
 import { ApiGroup } from './common.js'
-import type { TreeNode } from '../helpers'
+import type { TreeNode } from '../helpers.js'
 import timestamp from '../annotations/timestamp.js'
-import type { FieldData } from './fields'
+import type { FieldData } from './fields.js'
 
 export interface ICategory extends Entity, TreeNode, Fields {
   type: EntityType

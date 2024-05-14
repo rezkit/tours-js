@@ -1,5 +1,5 @@
 import type { AxiosInstance } from 'axios'
-import type { FieldData } from './fields'
+import type { FieldData } from './fields.js'
 
 export abstract class ApiGroup {
   protected axios: AxiosInstance

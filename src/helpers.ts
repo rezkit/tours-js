@@ -1,4 +1,4 @@
-import type { ID } from './modules/common'
+import type { ID } from './modules/common.js'
 
 export interface TreeNode extends ID {
   parent_id: string | null

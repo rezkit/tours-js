@@ -3,7 +3,7 @@ import type { AxiosInstance } from 'axios'
 import type { Entity, Fields, Inventory, Paginated, PaginatedQuery, SortableQuery } from './common.js'
 import { ApiGroup } from './common.js'
 import timestamp from '../annotations/timestamp.js'
-import type { FieldData } from './fields'
+import type { FieldData } from './fields.js'
 
 export interface IElement extends Entity, Fields {
 
