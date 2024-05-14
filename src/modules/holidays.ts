@@ -1,5 +1,6 @@
 import {
   ApiGroup,
+  type FieldsQuery,
   type Entity,
   type Fields,
   type Paginated,
@@ -19,6 +20,9 @@ import type { Imagable } from './images.js'
 import { ImageAttachment } from './images.js'
 import type { Locatable } from './locations.js'
 import { LocationAttachment } from './locations.js'
+
+export * as Versions from './holidayVersion.js'
+
 export interface IHoliday extends Entity, Fields {
   name: string
 
@@ -167,7 +171,7 @@ export class Holiday implements IHoliday, Categorized<Holiday>, Contentized<Holi
 
 export type HolidaySortFields = 'id' | 'name' | 'code' | 'ordering' | 'created_at' | 'updated_at'
 
-export interface HolidayListQuery extends PaginatedQuery, SortableQuery<HolidaySortFields> {
+export interface HolidayListQuery extends PaginatedQuery, SortableQuery<HolidaySortFields>, FieldsQuery {
 
   /**
      * Filter holidays by name

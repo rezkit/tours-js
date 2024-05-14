@@ -1,4 +1,4 @@
-import type { Entity, Fields, Inventory, Paginated, PaginatedQuery, SortableQuery } from './common.js'
+import type { Entity, Fields, FieldsQuery, Inventory, Paginated, PaginatedQuery, SortableQuery } from './common.js'
 import type { Categorized } from './categories.js'
 import { Category, CategoryAttachment } from './categories.js'
 import type { AxiosInstance } from 'axios'
@@ -227,7 +227,7 @@ export class Price implements IPrice {
 
 export type DepartureSort = 'id' | 'created_at' | 'updated_at' | 'start' | 'end'
 
-export interface ListDeparturesQuery extends PaginatedQuery, SortableQuery<DepartureSort> {
+export interface ListDeparturesQuery extends PaginatedQuery, SortableQuery<DepartureSort>, FieldsQuery {
   after?: Date
   before?: Date
 

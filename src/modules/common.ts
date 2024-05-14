@@ -21,6 +21,10 @@ export interface Entity extends ID {
   readonly updated_at: Date
 }
 
+export interface FieldsQuery {
+  fields?: Record<string, string | string[]>
+}
+
 /**
  * A paginated response
  */
