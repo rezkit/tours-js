@@ -23,6 +23,6 @@ module.exports = {
         "sourceType": "module"
     },
     "rules": {
-        "import/extensions": ['error', "always"]
+        "import/extensions": ['error', 'always']
     }
 }

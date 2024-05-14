@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@faker-js/faker": "^8.0.1",
-    "@rezkit/tours": "file:..",
+    "@rezkit/tour-manager": "file:..",
     "@types/node": "^18.15.3",
     "chalk": "^5.2.0",
     "inquirer": "^8.2.5",

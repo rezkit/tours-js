@@ -5,8 +5,9 @@ import { NotFoundError, ValidationError } from './errors.js'
 import type { EntityType } from './modules/common.js'
 import type { ListDeparturesQuery } from './modules/departures'
 export * from './config.js'
+export * from './modules.js'
 export * as helpers from './helpers.js'
-export * as Modules from './modules.js'
+
 export const BASE_URL = 'https://api.tours.rezkit.app'
 
 /**

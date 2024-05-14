@@ -17,7 +17,8 @@
     "declaration": true
   },
   "include": [
-    "./src"
+    "./src",
+    "./.eslintsrc.cjs",
   ],
   "exclude": [
     "./node_modules/",
