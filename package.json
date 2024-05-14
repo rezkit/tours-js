@@ -1,6 +1,6 @@
 {
   "name": "@rezkit/tour-manager",
-  "version": "0.3.0-beta.4",
+  "version": "0.3.0-beta.5",
   "description": "Tour Manager API Client",
   "module": "lib/client.js",
   "types": "lib/client.d.ts",
