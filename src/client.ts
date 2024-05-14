@@ -8,7 +8,7 @@ export * from './config.js'
 export * from './modules.js'
 export * as helpers from './helpers.js'
 
-export const BASE_URL = 'https://api.tours.rezkit.app'
+export const BASE_URL = 'https://tours.api.rezkit.app'
 
 /**
  * Tour Manager API Client
