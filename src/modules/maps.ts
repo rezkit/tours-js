@@ -4,6 +4,7 @@ import type {
   QueryBoolean,
   Entity,
   EntityType,
+  SortableQuery,
   ID
 } from './common.js'
 import type { AxiosInstance } from 'axios'
@@ -26,10 +27,13 @@ export interface CreateMapInput {
 
 export type UpdateMapInput = Partial<CreateMapInput>
 
-export interface ListMapsQuery extends PaginatedQuery {
+export type SortMap = 'title' | 'id' | 'created_at' | 'updated_at'
+
+export interface ListMapsQuery extends PaginatedQuery, SortableQuery<SortMap> {
   title?: string
   published?: QueryBoolean
   data?: string
+  search?: string
 }
 
 export class Map implements IMap {
