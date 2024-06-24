@@ -33,6 +33,7 @@ export type UpdateAccommodationInput = Partial<CreateAccommodationInput>
 
 export interface ListAccommodationsQuery extends PaginatedQuery {
   name?: string
+  search?: string
   published?: QueryBoolean
   description?: string
 }
