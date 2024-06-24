@@ -85,7 +85,7 @@ export class Accommodation implements IAccommodation {
   }
 }
 
-export class Accommodations extends ApiGroup {
+export class Api extends ApiGroup {
   async list (params?: ListAccommodationsQuery): Promise<Paginated<Accommodation>> {
     const response = (await this.axios.get<Paginated<IAccommodation>>('/accommodations', { params })).data
 
