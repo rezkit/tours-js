@@ -10,25 +10,21 @@ import { Itinerary } from './itinerary.js'
 import type { Locatable } from './locations.js'
 import { LocationAttachment } from './locations.js'
 import {type IMap, Map} from './maps'
-import { Accommodation, type IAccommodation } from './accommodations'
 
 export interface IHolidayVersion extends Omit<IHoliday, 'search_public'> {
   holiday_id: string
   duration?: number
   map_id?: string
-  accommodation_id?: string
 }
 
 export interface UpdateHolidayVersionInput extends UpdateHolidayInput {
   duration?: number | null
   map_id?: string | null
-  accommodation_id?: string | null
 }
 
 export interface CreateHolidayVersionInput extends CreateHolidayInput {
   duration?: number | null
   map_id?: string | null
-  accommodation_id?: string | null
 }
 
 export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersion>, Locatable<HolidayVersion> {
@@ -62,11 +58,6 @@ export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersi
     return new Itinerary(this.axios, this.id)
   }
 
-  async accommodation (): Promise<Accommodation> {
-    const response = (await this.axios.get<IAccommodation>(`/accommodations/${this.accommodation_id}`)).data
-    return new Accommodation(response, this.axios)
-  }
-
   get departures (): Departures {
     return new Departures(this.axios, { version: this.id })
   }
@@ -84,7 +75,6 @@ export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersi
   readonly published!: boolean
   duration?: number
   readonly map_id?: string
-  readonly accommodation_id?: string
 
   get path (): string {
     return `/holidays/${this.holiday_id}/versions/${this.id}`
@@ -156,10 +146,5 @@ export class HolidayVersions extends ApiGroup {
   async map(id: string): Promise<Map> {
     const response = (await this.axios.get<IMap>(`/maps/${id}`)).data
     return new Map(response, this.axios)
-  }
-
-  async accommodation (id: string): Promise<Accommodation> {
-    const response = (await this.axios.get<IAccommodation>(`/accommodations/${id}`)).data
-    return new Accommodation(response, this.axios)
   }
 }
