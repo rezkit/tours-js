@@ -115,10 +115,6 @@ export default class TourManager {
   products (): Modules.Products.Api {
     return new Modules.Products.Api(this.axios)
   }
-
-  accommodations (): Modules.Accommodations.Api {
-    return new Modules.Accommodations.Api(this.axios)
-  }
 }
 
 /**
