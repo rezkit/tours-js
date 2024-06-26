@@ -3,7 +3,8 @@ import type {
   PaginatedQuery,
   QueryBoolean,
   Entity,
-  Fields
+  Fields,
+  ReorderCommand
 } from './common.js'
 import type { AxiosInstance } from 'axios'
 import { ApiGroup } from './common.js'
@@ -15,6 +16,7 @@ export interface IAccommodation extends Entity {
   introduction: string | null
   description: string | null
   published: boolean
+  ordering: number
 }
 
 export interface CreateAccommodationInput extends Partial<Fields> {
@@ -25,7 +27,7 @@ export interface CreateAccommodationInput extends Partial<Fields> {
   published?: boolean
 }
 
-export type UpdateAccommodationInput = Partial<CreateAccommodationInput>
+export type UpdateAccommodationInput = Partial<CreateAccommodationInput> & { ordering?: ReorderCommand }
 
 export interface ListAccommodationsQuery extends PaginatedQuery {
   name?: string
@@ -42,6 +44,7 @@ export class Accommodation implements IAccommodation {
   introduction!: string | null
   description!: string | null
   published!: boolean
+  ordering!: number
 
   @timestamp() readonly created_at!: Date
   @timestamp() readonly updated_at!: Date
@@ -73,6 +76,18 @@ export class Accommodation implements IAccommodation {
   async restore (): Promise<void> {
     await this.axios.put(this.path + '/restore')
     this.deleted_at = null
+  }
+
+  async moveUp (): Promise<number> {
+    const { data } = await this.axios.patch<IAccommodation>(this.path, { ordering: 'up' })
+    this.ordering = data.ordering
+    return data.ordering
+  }
+
+  async moveDown (): Promise<number> {
+    const { data } = await this.axios.patch<IAccommodation>(this.path, { ordering: 'down' })
+    this.ordering = data.ordering
+    return data.ordering
   }
 
   get path (): string {
