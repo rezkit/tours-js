@@ -11,22 +11,18 @@ import timestamp from '../annotations/timestamp.js'
 
 export interface IAccommodation extends Entity {
   name: string
-  code: string
 
   introduction: string | null
   description: string | null
   published: boolean
-  capacity: number
 }
 
 export interface CreateAccommodationInput extends Partial<Fields> {
   name: string
-  code: string
 
   introduction?: string | null
   description?: string | null
   published?: boolean
-  capacity?: number
 }
 
 export type UpdateAccommodationInput = Partial<CreateAccommodationInput>
@@ -42,12 +38,10 @@ export class Accommodation implements IAccommodation {
   readonly id!: string
 
   name!: string
-  code!: string
 
   introduction!: string | null
   description!: string | null
   published!: boolean
-  capacity!: number
 
   @timestamp() readonly created_at!: Date
   @timestamp() readonly updated_at!: Date
