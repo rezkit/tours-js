@@ -123,7 +123,7 @@ export type QueryBooleanUndefined = null | ''
  */
 export type EntityType = 'holiday' | 'category' | 'holiday_version'
 | 'element' | 'element_option' | 'departure'
-| 'content' | 'image' | 'itinerary' | 'location'
+| 'content' | 'image' | 'itinerary' | 'location' | 'accommodations'
 
 /**
  * Inventory Interface
