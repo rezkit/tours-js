@@ -9,10 +9,13 @@ import type {
 import type { AxiosInstance } from 'axios'
 import { ApiGroup } from './common.js'
 import timestamp from '../annotations/timestamp.js'
+import { type Categorized, CategoryAttachment } from './categories.js'
+import { ContentAttachment, type Contentized } from './content.js'
+import { type Imagable, ImageAttachment } from './images.js'
+import type { FieldData } from './fields.js'
 
-export interface IAccommodation extends Entity {
+export interface IAccommodation extends Entity, Fields {
   name: string
-
   introduction: string | null
   description: string | null
   published: boolean
@@ -36,7 +39,7 @@ export interface ListAccommodationsQuery extends PaginatedQuery {
   description?: string
 }
 
-export class Accommodation implements IAccommodation {
+export class Accommodation implements IAccommodation, Categorized<Accommodation>, Contentized<Accommodation>, Imagable<Accommodation> {
   readonly id!: string
 
   name!: string
@@ -45,6 +48,8 @@ export class Accommodation implements IAccommodation {
   description!: string | null
   published!: boolean
   ordering!: number
+
+  fields!: FieldData
 
   @timestamp() readonly created_at!: Date
   @timestamp() readonly updated_at!: Date
@@ -88,6 +93,18 @@ export class Accommodation implements IAccommodation {
     const { data } = await this.axios.patch<IAccommodation>(this.path, { ordering: 'down' })
     this.ordering = data.ordering
     return data.ordering
+  }
+
+  categories (): CategoryAttachment<this> {
+    return new CategoryAttachment<this>(this.axios, 'accommodations', this)
+  }
+
+  content (): ContentAttachment<this> {
+    return new ContentAttachment<this>(this.axios, 'accommodations', this)
+  }
+
+  images (): ImageAttachment<Accommodation> {
+    return new ImageAttachment(this.axios, 'accommodations', this)
   }
 
   get path (): string {
