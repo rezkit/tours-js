@@ -13,7 +13,7 @@ import { type Categorized, CategoryAttachment } from './categories.js'
 import { ContentAttachment, type Contentized } from './content.js'
 import { type Imagable, ImageAttachment } from './images.js'
 import type { FieldData } from './fields.js'
-import {RoomTypes} from "./roomTypes";
+import { RoomTypes } from './roomTypes.js'
 
 export interface IAccommodation extends Entity, Fields {
   name: string
@@ -147,5 +147,9 @@ export class Api extends ApiGroup {
   async restore (id: string): Promise<Accommodation> {
     const a = await this.axios.put<IAccommodation>(`/accommodations/${id}/restore`)
     return new Accommodation(a.data, this.axios)
+  }
+
+  roomTypes (accommodationId: string): RoomTypes {
+    return new RoomTypes(this.axios, accommodationId)
   }
 }
