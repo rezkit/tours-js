@@ -13,6 +13,7 @@ import { type Categorized, CategoryAttachment } from './categories.js'
 import { ContentAttachment, type Contentized } from './content.js'
 import { type Imagable, ImageAttachment } from './images.js'
 import type { FieldData } from './fields.js'
+import {RoomTypes} from "./roomTypes";
 
 export interface IAccommodation extends Entity, Fields {
   name: string
@@ -24,7 +25,6 @@ export interface IAccommodation extends Entity, Fields {
 
 export interface CreateAccommodationInput extends Partial<Fields> {
   name: string
-
   introduction?: string | null
   description?: string | null
   published?: boolean
@@ -81,6 +81,10 @@ export class Accommodation implements IAccommodation, Categorized<Accommodation>
   async restore (): Promise<void> {
     await this.axios.put(this.path + '/restore')
     this.deleted_at = null
+  }
+
+  roomTypes (accommodationId: string): RoomTypes {
+    return new RoomTypes(this.axios, accommodationId)
   }
 
   async moveUp (): Promise<number> {
