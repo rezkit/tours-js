@@ -11,13 +11,15 @@ export interface IRoomType extends Entity, Fields {
     introduction: string | null
     description: string | null
     published: boolean
+    occupancy: { from: number, to: number }
 }
 
 export interface CreateRoomTypeInput extends Partial<Fields> {
     name: string
     introduction?: string | null
     description?: string | null
-    published?: boolean
+    published: boolean
+    occupancy: { from: number, to: number }
 }
 
 export type UpdateRoomTypeInput = Partial<CreateRoomTypeInput>
@@ -38,6 +40,7 @@ export class RoomType implements IRoomType, Contentized<RoomType>, Imagable<Room
     introduction!: string | null
     description!: string | null
     published!: boolean
+    occupancy!: { from: number, to: number }
 
     fields!: FieldData
 

@@ -83,8 +83,8 @@ export class Accommodation implements IAccommodation, Categorized<Accommodation>
     this.deleted_at = null
   }
 
-  roomTypes (accommodationId: string): RoomTypes {
-    return new RoomTypes(this.axios, accommodationId)
+  roomTypes (): RoomTypes {
+    return new RoomTypes(this.axios, this.id)
   }
 
   async moveUp (): Promise<number> {
