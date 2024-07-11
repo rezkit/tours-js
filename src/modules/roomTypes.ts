@@ -1,6 +1,14 @@
 import type { AxiosInstance } from 'axios'
 import type { FieldData } from './fields.js'
-import {ApiGroup, type Entity, type Fields, type Paginated, type PaginatedQuery, type QueryBoolean} from './common.js'
+import {
+    ApiGroup,
+    type Entity,
+    type Fields,
+    type Paginated,
+    type PaginatedQuery,
+    type QueryBoolean,
+    type ReorderCommand
+} from './common.js'
 import timestamp from '../annotations/timestamp.js'
 import {ContentAttachment, Contentized} from "./content";
 import {Imagable, ImageAttachment} from "./images";
@@ -12,6 +20,7 @@ export interface IRoomType extends Entity, Fields {
     description: string | null
     published: boolean
     occupancy: { from: number, to: number }
+    ordering: number
 }
 
 export interface CreateRoomTypeInput extends Partial<Fields> {
@@ -22,7 +31,7 @@ export interface CreateRoomTypeInput extends Partial<Fields> {
     occupancy: { from: number, to: number }
 }
 
-export type UpdateRoomTypeInput = Partial<CreateRoomTypeInput>
+export type UpdateRoomTypeInput = Partial<CreateRoomTypeInput> & { ordering?: ReorderCommand }
 
 export interface ListRoomTypesQuery extends PaginatedQuery {
     name?: string
@@ -41,6 +50,7 @@ export class RoomType implements IRoomType, Contentized<RoomType>, Imagable<Room
     description!: string | null
     published!: boolean
     occupancy!: { from: number, to: number }
+    ordering!: number
 
     fields!: FieldData
 
@@ -77,6 +87,18 @@ export class RoomType implements IRoomType, Contentized<RoomType>, Imagable<Room
 
     images (): ImageAttachment<this> {
         return new ImageAttachment(this.axios, 'room_types', this)
+    }
+
+    async moveUp (): Promise<number> {
+        const { data } = await this.axios.patch<IRoomType>(this.path, { ordering: 'up'} )
+        this.ordering = data.ordering
+        return data.ordering
+    }
+
+    async moveDown (): Promise<number> {
+        const { data } = await this.axios.patch<IRoomType>(this.path, { ordering: 'down'} )
+        this.ordering = data.ordering
+        return data.ordering
     }
 
     get path (): string {
