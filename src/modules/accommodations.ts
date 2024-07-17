@@ -4,7 +4,7 @@ import type {
   QueryBoolean,
   Entity,
   Fields,
-  ReorderCommand
+  ReorderCommand, ID, EntityType, AttachmentResponse
 } from './common.js'
 import type { AxiosInstance } from 'axios'
 import { ApiGroup } from './common.js'
@@ -152,4 +152,54 @@ export class Api extends ApiGroup {
   roomTypes (accommodationId: string): RoomTypes {
     return new RoomTypes(this.axios, accommodationId)
   }
+}
+
+export class AccommodationsAttachment<T extends ID> extends ApiGroup {
+  readonly type: EntityType
+  readonly entity: T
+
+  constructor (axios: AxiosInstance, type: EntityType, entity: T) {
+    super(axios)
+    this.type = type
+    this.entity = entity
+  }
+
+  async list (params?: ListAccommodationsQuery): Promise<Paginated<Accommodation>> {
+    const response = (await this.axios.get<Paginated<IAccommodation>>(this.path, { params })).data
+    response.data = response.data.map(a => new Accommodation(a, this.axios))
+
+    return response as Paginated<Accommodation>
+  }
+
+  async attach (ids: string[]): Promise<AttachmentResponse> {
+    const { data } = await this.axios.patch<AttachmentResponse>(this.path, { ids })
+    return data
+  }
+
+  async replace (ids: string[]): Promise<AttachmentResponse> {
+    const { data } = await this.axios.put<AttachmentResponse>(this.path, { ids })
+    return data
+  }
+
+  async detach (ids: string[]): Promise<void> {
+    await this.axios.delete(this.path, { params: { ids } })
+  }
+
+  async moveUp (): Promise<number> {
+    const { data } = await this.axios.patch<IAccommodation>(this.path, { ordering: 'up' })
+    return data.ordering
+  }
+
+  async moveDown (): Promise<number> {
+    const { data } = await this.axios.patch<IAccommodation>(this.path, { ordering: 'down' })
+    return data.ordering
+  }
+
+  get path (): string {
+    return `/${this.type}/${this.entity.id}/accommodations`
+  }
+}
+
+export interface Accommodatable<T extends ID> {
+  accommodations: () => AccommodationsAttachment<T>
 }

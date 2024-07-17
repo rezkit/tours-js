@@ -10,6 +10,7 @@ import { Itinerary } from './itinerary.js'
 import type { Locatable } from './locations.js'
 import { LocationAttachment } from './locations.js'
 import { type IMap, Map } from './maps.js'
+import { type Accommodatable, AccommodationsAttachment } from './accommodations.js'
 
 export interface IHolidayVersion extends Omit<IHoliday, 'search_public'> {
   holiday_id: string
@@ -27,7 +28,7 @@ export interface CreateHolidayVersionInput extends CreateHolidayInput {
   map_id?: string | null
 }
 
-export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersion>, Locatable<HolidayVersion> {
+export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersion>, Locatable<HolidayVersion>, Accommodatable<HolidayVersion> {
   private readonly axios: AxiosInstance
 
   constructor (values: IHolidayVersion, axios: AxiosInstance) {
@@ -86,6 +87,10 @@ export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersi
 
   locations (): LocationAttachment<this> {
     return new LocationAttachment<this>(this.axios, 'holiday_version', this)
+  }
+
+  accommodations (): AccommodationsAttachment<this> {
+    return new AccommodationsAttachment<this>(this.axios, 'holiday_version', this)
   }
 }
 export class HolidayVersions extends ApiGroup {

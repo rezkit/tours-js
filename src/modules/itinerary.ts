@@ -5,6 +5,7 @@ import timestamp from '../annotations/timestamp.js'
 import type { FieldData } from './fields.js'
 import type { Locatable } from './locations.js'
 import { LocationAttachment } from './locations.js'
+import { type Accommodatable, AccommodationsAttachment } from './accommodations.js'
 
 export interface IItineraryEntry extends Entity, Fields {
 
@@ -51,7 +52,7 @@ export interface CreateItineraryEntry extends Partial<Fields> {
 
 export type UpdateItineraryEntry = Partial<CreateItineraryEntry>
 
-export class ItineraryEntry implements IItineraryEntry, Locatable<ItineraryEntry> {
+export class ItineraryEntry implements IItineraryEntry, Locatable<ItineraryEntry>, Accommodatable<IItineraryEntry> {
   private readonly axios: AxiosInstance
 
   @timestamp() readonly created_at!: Date
@@ -93,6 +94,10 @@ export class ItineraryEntry implements IItineraryEntry, Locatable<ItineraryEntry
 
   locations (): LocationAttachment<ItineraryEntry> {
     return new LocationAttachment<ItineraryEntry>(this.axios, 'itinerary', this)
+  }
+
+  accommodations (): AccommodationsAttachment<this> {
+    return new AccommodationsAttachment<this>(this.axios, 'itinerary', this)
   }
 }
 
