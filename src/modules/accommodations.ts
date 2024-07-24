@@ -30,9 +30,28 @@ export interface CreateAccommodationInput extends Partial<Fields> {
   published?: boolean
 }
 
+interface IAccommodationPivot {
+  accommodatable_id: string
+  accommodatable_type: string
+  description: string | null
+}
+
 type attachmentUpdate = {
   id: string
   description?: string
+}
+
+export class AccommodationPivot implements IAccommodationPivot {
+  readonly id!: string
+  readonly accommodatable_id!: string
+  readonly accommodatable_type!: string
+  description!: string | null
+  private readonly axios: AxiosInstance
+
+  constructor (values: IAccommodationPivot, axios: AxiosInstance) {
+    Object.assign(this, values)
+    this.axios = axios
+  }
 }
 
 export type UpdateAccommodationInput = Partial<CreateAccommodationInput> & { ordering?: ReorderCommand }
@@ -176,6 +195,13 @@ export class AccommodationsAttachment<T extends ID> extends ApiGroup {
     return response as Paginated<Accommodation>
   }
 
+  async listAttachments (id: string, params?: ListAccommodationsQuery): Promise<Paginated<AccommodationPivot>> {
+    const response = (await this.axios.get<Paginated<IAccommodationPivot>>(this.path + '/attachments', { params })).data
+    response.data = response.data.map(a => new AccommodationPivot(a, this.axios))
+
+    return response as Paginated<AccommodationPivot>
+  }
+
   async attach (ids: string[]): Promise<AttachmentResponse> {
     const { data } = await this.axios.put<AttachmentResponse>(this.path, { ids })
     return data
@@ -188,16 +214,6 @@ export class AccommodationsAttachment<T extends ID> extends ApiGroup {
 
   async detach (ids: string[]): Promise<void> {
     await this.axios.delete(this.path, { params: { ids } })
-  }
-
-  async moveUp (): Promise<number> {
-    const { data } = await this.axios.patch<IAccommodation>(this.path, { ordering: 'up' })
-    return data.ordering
-  }
-
-  async moveDown (): Promise<number> {
-    const { data } = await this.axios.patch<IAccommodation>(this.path, { ordering: 'down' })
-    return data.ordering
   }
 
   get path (): string {
