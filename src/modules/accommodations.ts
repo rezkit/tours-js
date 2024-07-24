@@ -195,7 +195,7 @@ export class AccommodationsAttachment<T extends ID> extends ApiGroup {
     return response as Paginated<Accommodation>
   }
 
-  async listAttachments (id: string, params?: ListAccommodationsQuery): Promise<Paginated<AccommodationPivot>> {
+  async listAttachments (params?: ListAccommodationsQuery): Promise<Paginated<AccommodationPivot>> {
     const response = (await this.axios.get<Paginated<IAccommodationPivot>>(this.path + '/attachments', { params })).data
     response.data = response.data.map(a => new AccommodationPivot(a, this.axios))
 
