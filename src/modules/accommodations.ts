@@ -30,6 +30,11 @@ export interface CreateAccommodationInput extends Partial<Fields> {
   published?: boolean
 }
 
+type attachmentUpdate = {
+  id: string
+  description?: string
+}
+
 export type UpdateAccommodationInput = Partial<CreateAccommodationInput> & { ordering?: ReorderCommand }
 
 export interface ListAccommodationsQuery extends PaginatedQuery {
@@ -172,12 +177,12 @@ export class AccommodationsAttachment<T extends ID> extends ApiGroup {
   }
 
   async attach (ids: string[]): Promise<AttachmentResponse> {
-    const { data } = await this.axios.patch<AttachmentResponse>(this.path, { ids })
+    const { data } = await this.axios.put<AttachmentResponse>(this.path, { ids })
     return data
   }
 
-  async replace (ids: string[]): Promise<AttachmentResponse> {
-    const { data } = await this.axios.put<AttachmentResponse>(this.path, { ids })
+  async update (attachments: attachmentUpdate[]): Promise<AttachmentResponse> {
+    const { data } = await this.axios.patch<AttachmentResponse>(this.path, { attachments })
     return data
   }
 
