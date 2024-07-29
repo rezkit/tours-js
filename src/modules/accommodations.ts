@@ -37,7 +37,7 @@ interface IAccommodationPivot {
 }
 
 type attachmentUpdate = {
-  id: string
+  accommodations_id: string
   description?: string
 }
 
