@@ -212,8 +212,9 @@ export class AccommodationsAttachment<T extends ID> extends ApiGroup {
     return data
   }
 
-  async detach (ids: string[]): Promise<void> {
-    await this.axios.delete(this.path, { params: { ids } })
+  async detach (ids: string[]): Promise<AttachmentResponse> {
+    const { data } = await this.axios.delete<AttachmentResponse>(this.path, { params: { ids } })
+    return data
   }
 
   get path (): string {
