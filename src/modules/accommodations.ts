@@ -207,8 +207,8 @@ export class AccommodationsAttachment<T extends ID> extends ApiGroup {
     return data
   }
 
-  async update (params: attachmentUpdate[]): Promise<AttachmentResponse> {
-    const { data } = await this.axios.patch<AttachmentResponse>(this.path, { params })
+  async update (id: string, params: attachmentUpdate): Promise<AttachmentResponse> {
+    const { data } = await this.axios.patch<AttachmentResponse>(this.path, params)
     return data
   }
 
