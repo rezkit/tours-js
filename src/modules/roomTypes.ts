@@ -82,11 +82,11 @@ export class RoomType implements IRoomType, Contentized<RoomType>, Imagable<Room
     }
 
     content (): ContentAttachment<this> {
-        return new ContentAttachment<this>(this.axios, 'room_types', this)
+        return new ContentAttachment<this>(this.axios, 'room_type', this)
     }
 
     images (): ImageAttachment<this> {
-        return new ImageAttachment(this.axios, 'room_types', this)
+        return new ImageAttachment(this.axios, 'room_type', this)
     }
 
     async moveUp (): Promise<number> {

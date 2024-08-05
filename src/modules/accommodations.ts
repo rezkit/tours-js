@@ -124,15 +124,15 @@ export class Accommodation implements IAccommodation, Categorized<Accommodation>
   }
 
   categories (): CategoryAttachment<this> {
-    return new CategoryAttachment<this>(this.axios, 'accommodations', this)
+    return new CategoryAttachment<this>(this.axios, 'accommodation', this)
   }
 
   content (): ContentAttachment<this> {
-    return new ContentAttachment<this>(this.axios, 'accommodations', this)
+    return new ContentAttachment<this>(this.axios, 'accommodation', this)
   }
 
   images (): ImageAttachment<Accommodation> {
-    return new ImageAttachment(this.axios, 'accommodations', this)
+    return new ImageAttachment(this.axios, 'accommodation', this)
   }
 
   get path (): string {
