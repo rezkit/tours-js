@@ -6,7 +6,8 @@ import type {
   QueryBoolean,
   SortableQuery,
   ID,
-  Fields
+  Fields,
+  AttachmentResponse
 } from './common.js'
 import type { AxiosInstance } from 'axios'
 import { ApiGroup } from './common.js'
@@ -190,20 +191,16 @@ export class CategoryAttachment<T extends ID> extends ApiGroup {
      * Attach additional categories. Preserving existing attachment.
      * @param ids
      */
-  async attach (ids: string[]): Promise<Category[]> {
-    const response = (await this.axios.patch<ICategory[]>(this.path, { ids })).data
-
-    return response.map(c => new Category(c, this.axios))
+  async attach (ids: string[]): Promise<AttachmentResponse> {
+    return (await this.axios.patch<AttachmentResponse>(this.path, { ids })).data
   }
 
   /**
      * Replace attached categories. Replaces all attached categories with the given categories
      * @param ids
      */
-  async replace (ids: string[]): Promise<Category[]> {
-    const response = (await this.axios.put<ICategory[]>(this.path, { ids })).data
-
-    return response.map(c => new Category(c, this.axios))
+  async replace (ids: string[]): Promise<AttachmentResponse> {
+    return (await this.axios.put<AttachmentResponse>(this.path, { ids })).data
   }
 
   /**
