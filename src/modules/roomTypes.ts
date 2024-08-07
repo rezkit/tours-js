@@ -10,8 +10,8 @@ import {
     type ReorderCommand
 } from './common.js'
 import timestamp from '../annotations/timestamp.js'
-import {ContentAttachment, Contentized} from "./content";
-import {Imagable, ImageAttachment} from "./images";
+import {ContentAttachment, Contentized} from "./content.js";
+import {Imagable, ImageAttachment} from "./images.js";
 
 export interface IRoomType extends Entity, Fields {
     name: string
