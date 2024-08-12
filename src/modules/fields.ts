@@ -20,6 +20,7 @@ export interface FieldDefinition extends Entity {
    */
   name: string
   label: string
+  description?: string | null
   ordering: number
 }
 
@@ -50,6 +51,7 @@ export interface ChoiceFieldDefinition extends FieldDefinition {
 export interface GroupedFieldDefinitions {
   id: string
   label: string
+  description?: string | null
   ordering: number
   fields: FieldDefinition[]
 }
