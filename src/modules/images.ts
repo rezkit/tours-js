@@ -24,6 +24,11 @@ export interface Point {
   y: number
 }
 
+export interface ImageUses {
+  imagable_id: string
+  imagable_type: EntityType
+}
+
 export interface IImage extends Entity {
   title: string
   published: boolean
@@ -33,6 +38,7 @@ export interface IImage extends Entity {
   file_path: string
   file_size: string
   category: ICategory
+  uses?: ImageUses
   tags: string[]
   ordering?: number
   readonly thumbnail: string
@@ -76,6 +82,7 @@ export class Image implements IImage {
   @timestamp() readonly created_at!: Date
   @timestamp() readonly updated_at!: Date
   category!: ICategory
+  uses?: ImageUses
   content!: string | null
   dimensions!: ImageDimensions
   file_path!: string
@@ -119,6 +126,11 @@ export class Images extends ApiGroup {
     const { data } = await this.axios.get<Paginated<IImage>>('/images', { params })
     data.data = data.data.map(i => new Image(i, this.axios))
     return data as Paginated<Image>
+  }
+
+  async find (id: string): Promise<Image> {
+    const { data } = await this.axios.get<IImage>('/images/${id}')
+    return new Image(data, this.axios)
   }
 
   async link (id: string, params?: ImageLinkParams): Promise<string> {
