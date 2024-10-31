@@ -7,7 +7,10 @@ import {
   type PaginatedQuery,
   type QueryBoolean,
   type ReorderCommand,
-  type SortableQuery
+  type SortableQuery,
+  type SEOProperties,
+  type Slugged,
+  type SEO
 } from './common.js'
 import type { FieldData } from './fields.js'
 import type { AxiosInstance } from 'axios'
@@ -23,7 +26,7 @@ import { LocationAttachment } from './locations.js'
 
 export * as Versions from './holidayVersion.js'
 
-export interface IHoliday extends Entity, Fields {
+export interface IHoliday extends Entity, Fields, Slugged, SEO {
   name: string
 
   code: string
@@ -43,10 +46,12 @@ export interface CreateHolidayInput extends Partial<Fields> {
   name: string
   code: string
 
+  slug?: string | null
   introduction?: string | null
   description?: string | null
   published?: boolean | null
   search_public?: boolean
+  seo?: Partial<SEOProperties>
 }
 
 export interface UpdateHolidayInput extends Partial<CreateHolidayInput> {
@@ -163,6 +168,8 @@ export class Holiday implements IHoliday, Categorized<Holiday>, Contentized<Holi
   search_public!: boolean | null
   ordering!: number
   deleted_at!: null | string | Date
+  slug!: string
+  seo!: SEOProperties
 
   images (): ImageAttachment<Holiday> {
     return new ImageAttachment(this.axios, 'holiday', this)

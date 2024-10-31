@@ -15,6 +15,20 @@ export interface Fields {
 export interface ID {
   readonly id: string
 }
+
+export interface Slugged {
+  slug: string
+}
+
+export interface SEO {
+  seo?: SEOProperties
+}
+
+export interface SEOProperties {
+  meta_title: string | null
+  meta_description: string | null
+}
+
 export interface Entity extends ID {
   readonly created_at: Date
 

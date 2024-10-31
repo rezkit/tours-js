@@ -4,7 +4,10 @@ import type {
   QueryBoolean,
   Entity,
   Fields,
-  ReorderCommand, ID, EntityType, AttachmentResponse
+  ReorderCommand, ID, EntityType, AttachmentResponse,
+  Slugged,
+  SEO,
+  SEOProperties
 } from './common.js'
 import type { AxiosInstance } from 'axios'
 import { ApiGroup } from './common.js'
@@ -15,7 +18,7 @@ import { type Imagable, ImageAttachment } from './images.js'
 import type { FieldData } from './fields.js'
 import { RoomTypes } from './roomTypes.js'
 
-export interface IAccommodation extends Entity, Fields {
+export interface IAccommodation extends Entity, Fields, SEO, Slugged {
   name: string
   introduction: string | null
   description: string | null
@@ -36,7 +39,7 @@ interface IAccommodationPivot {
   description: string | null
 }
 
-type attachmentUpdate = {
+interface attachmentUpdate {
   accommodations_id: string
   description?: string
 }
@@ -74,6 +77,9 @@ export class Accommodation implements IAccommodation, Categorized<Accommodation>
   ordering!: number
 
   fields!: FieldData
+
+  seo!: SEOProperties
+  slug!: string
 
   @timestamp() readonly created_at!: Date
   @timestamp() readonly updated_at!: Date
