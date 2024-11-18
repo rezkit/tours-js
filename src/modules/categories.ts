@@ -7,7 +7,10 @@ import type {
   SortableQuery,
   ID,
   Fields,
-  AttachmentResponse
+  AttachmentResponse,
+  Slugged,
+  SEO,
+  SEOProperties
 } from './common.js'
 import type { AxiosInstance } from 'axios'
 import { ApiGroup } from './common.js'
@@ -15,7 +18,7 @@ import type { TreeNode } from '../helpers.js'
 import timestamp from '../annotations/timestamp.js'
 import type { FieldData } from './fields.js'
 
-export interface ICategory extends Entity, TreeNode, Fields {
+export interface ICategory extends Entity, TreeNode, Fields, Slugged, SEO {
   type: EntityType
   name: string
   parent_id: string | null
@@ -83,6 +86,8 @@ export class Category implements ICategory {
   searchable!: boolean
   readonly children!: Category[]
   fields!: FieldData
+  slug!: string
+  seo!: SEOProperties
 
   readonly ordering!: number
 
@@ -115,10 +120,12 @@ export interface ListCategoriesQuery extends PaginatedQuery, SortableQuery<Categ
 }
 export interface CreateCategoryParams extends Partial<Fields> {
   name: string
+  slug?: string
   parent_id?: string
   description?: string
   published?: boolean
   searchable?: boolean
+  seo?: Partial<SEOProperties>
 }
 
 export interface UpdateCategoryParams extends Partial<CreateCategoryParams> {

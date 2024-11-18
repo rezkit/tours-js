@@ -7,6 +7,9 @@ import type {
   Paginated,
   PaginatedQuery,
   QueryBoolean,
+  SEO,
+  SEOProperties,
+  Slugged,
   SortableQuery
 } from './common.js'
 import { ApiGroup } from './common.js'
@@ -17,7 +20,7 @@ import type { FieldData } from './fields.js'
 import { Category, type ICategory } from './categories.js'
 import { type Imagable, ImageAttachment } from './images.js'
 
-export interface ILocation extends Entity, TreeNode, Fields {
+export interface ILocation extends Entity, TreeNode, Fields, Slugged, SEO {
   name: string
   parent_id: string | null
 
@@ -86,6 +89,8 @@ export class Location implements ILocation, Imagable<Location> {
   readonly children!: Location[]
   category?: Category
   fields!: FieldData
+  slug!: string
+  seo!: SEOProperties
 
   readonly ordering!: number
 
@@ -123,10 +128,12 @@ export interface ListLocationsQuery extends PaginatedQuery, SortableQuery<Locati
 
 export interface CreateLocationParams extends Partial<Fields> {
   name: string
+  slug?: string
   category_id: string
   parent_id?: string
   description?: string
   published?: boolean
+  seo?: Partial<SEOProperties>
 }
 
 export interface UpdateLocationParams extends Partial<CreateLocationParams> {

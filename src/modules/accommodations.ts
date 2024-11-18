@@ -28,9 +28,11 @@ export interface IAccommodation extends Entity, Fields, SEO, Slugged {
 
 export interface CreateAccommodationInput extends Partial<Fields> {
   name: string
+  slug?: string | null
   introduction?: string | null
   description?: string | null
   published?: boolean
+  seo?: Partial<SEOProperties>
 }
 
 interface IAccommodationPivot {
