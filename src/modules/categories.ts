@@ -48,12 +48,12 @@ export class Category implements ICategory {
   }
 
   async destroy (): Promise<void> {
-    await this.axios.delete(this.path)
+    await this.axios.delete(this.apiPath)
     this.deleted_at = new Date()
   }
 
   async update (params: UpdateCategoryParams): Promise<Category> {
-    const response = (await this.axios.patch<ICategory>(this.path, params)).data
+    const response = (await this.axios.patch<ICategory>(this.apiPath, params)).data
 
     Object.assign(this, response)
 
@@ -61,14 +61,14 @@ export class Category implements ICategory {
   }
 
   async moveUp (): Promise<number> {
-    const response = (await this.axios.patch<ICategory>(this.path, { ordering: 'up' })).data
+    const response = (await this.axios.patch<ICategory>(this.apiPath, { ordering: 'up' })).data
 
     Object.assign(this, response)
     return response.ordering
   }
 
   async moveDown (): Promise<number> {
-    const response = (await this.axios.patch<ICategory>(this.path, { ordering: 'down' })).data
+    const response = (await this.axios.patch<ICategory>(this.apiPath, { ordering: 'down' })).data
 
     Object.assign(this, response)
     return response.ordering
@@ -91,7 +91,7 @@ export class Category implements ICategory {
 
   readonly ordering!: number
 
-  get path (): string {
+  get apiPath (): string {
     return `${this.type}/categories/${this.id}`
   }
 }
@@ -187,7 +187,7 @@ export class CategoryAttachment<T extends ID> extends ApiGroup {
      * @param params
      */
   async list (params?: ListCategoriesQuery): Promise<Paginated<Category>> {
-    const response = (await this.axios.get<Paginated<ICategory>>(this.path, { params })).data
+    const response = (await this.axios.get<Paginated<ICategory>>(this.apiPath, { params })).data
 
     response.data = response.data.map(c => new Category(c, this.axios))
 
@@ -199,7 +199,7 @@ export class CategoryAttachment<T extends ID> extends ApiGroup {
      * @param ids
      */
   async attach (ids: string[]): Promise<AttachmentResponse> {
-    return (await this.axios.patch<AttachmentResponse>(this.path, { ids })).data
+    return (await this.axios.patch<AttachmentResponse>(this.apiPath, { ids })).data
   }
 
   /**
@@ -207,7 +207,7 @@ export class CategoryAttachment<T extends ID> extends ApiGroup {
      * @param ids
      */
   async replace (ids: string[]): Promise<AttachmentResponse> {
-    return (await this.axios.put<AttachmentResponse>(this.path, { ids })).data
+    return (await this.axios.put<AttachmentResponse>(this.apiPath, { ids })).data
   }
 
   /**
@@ -215,13 +215,13 @@ export class CategoryAttachment<T extends ID> extends ApiGroup {
      * @param ids
      */
   async detach (ids: string[]): Promise<void> {
-    await this.axios.delete<ICategory[]>(this.path, { params: { ids } })
+    await this.axios.delete<ICategory[]>(this.apiPath, { params: { ids } })
   }
 
   /**
      * Get the path to the categories resources
      */
-  get path (): string {
+  get apiPath (): string {
     return `/${this.type}/${this.entity.id}/categories`
   }
 }

@@ -52,12 +52,12 @@ export class Location implements ILocation, Imagable<Location> {
   }
 
   async destroy (): Promise<void> {
-    await this.axios.delete(this.path)
+    await this.axios.delete(this.apiPath)
     this.deleted_at = new Date()
   }
 
   async update (params: UpdateLocationParams): Promise<Location> {
-    const response = (await this.axios.patch<ILocation>(this.path, params)).data
+    const response = (await this.axios.patch<ILocation>(this.apiPath, params)).data
 
     Object.assign(this, response)
 
@@ -65,14 +65,14 @@ export class Location implements ILocation, Imagable<Location> {
   }
 
   async moveUp (): Promise<number> {
-    const response = (await this.axios.patch<ILocation>(this.path, { ordering: 'up' })).data
+    const response = (await this.axios.patch<ILocation>(this.apiPath, { ordering: 'up' })).data
 
     Object.assign(this, response)
     return response.ordering
   }
 
   async moveDown (): Promise<number> {
-    const response = (await this.axios.patch<ILocation>(this.path, { ordering: 'down' })).data
+    const response = (await this.axios.patch<ILocation>(this.apiPath, { ordering: 'down' })).data
 
     Object.assign(this, response)
     return response.ordering
@@ -94,7 +94,7 @@ export class Location implements ILocation, Imagable<Location> {
 
   readonly ordering!: number
 
-  get path (): string {
+  get apiPath (): string {
     return `locations/${this.id}`
   }
 
@@ -188,7 +188,7 @@ export class LocationAttachment<T extends ID> extends ApiGroup {
    * @param params
    */
   async list (params?: ListLocationsQuery): Promise<Paginated<Location>> {
-    const response = (await this.axios.get<Paginated<ILocation>>(this.path, { params })).data
+    const response = (await this.axios.get<Paginated<ILocation>>(this.apiPath, { params })).data
 
     response.data = response.data.map((l: any) => new Location(l, this.axios))
 
@@ -200,7 +200,7 @@ export class LocationAttachment<T extends ID> extends ApiGroup {
    * @param ids
    */
   async attach (ids: string[]): Promise<AttachmentResponse> {
-    const { data } = await this.axios.patch<AttachmentResponse>(this.path, { ids })
+    const { data } = await this.axios.patch<AttachmentResponse>(this.apiPath, { ids })
     return data
   }
 
@@ -209,7 +209,7 @@ export class LocationAttachment<T extends ID> extends ApiGroup {
    * @param ids
    */
   async replace (ids: string[]): Promise<AttachmentResponse> {
-    const { data } = await this.axios.put<AttachmentResponse>(this.path, { ids })
+    const { data } = await this.axios.put<AttachmentResponse>(this.apiPath, { ids })
     return data
   }
 
@@ -218,13 +218,13 @@ export class LocationAttachment<T extends ID> extends ApiGroup {
    * @param ids
    */
   async detach (ids: string[]): Promise<void> {
-    await this.axios.delete<ILocation[]>(this.path, { params: { ids } })
+    await this.axios.delete<ILocation[]>(this.apiPath, { params: { ids } })
   }
 
   /**
    * Get the path to the location resources
    */
-  get path (): string {
+  get apiPath (): string {
     return `/${this.type}/${this.entity.id}/locations`
   }
 }
