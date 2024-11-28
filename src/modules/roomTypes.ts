@@ -21,6 +21,7 @@ export interface IRoomType extends Entity, Fields {
   published: boolean
   occupancy: { from: number, to: number }
   ordering: number
+  price: IAccommodationPrice
 }
 
 export interface CreateRoomTypeInput extends Partial<Fields> {
@@ -53,6 +54,7 @@ export class RoomType implements IRoomType, Contentized<RoomType>, Imagable<Room
   ordering!: number
 
   fields!: FieldData
+  readonly price: AccommodationPrice | undefined
 
   @timestamp() readonly created_at!: Date
   @timestamp() readonly updated_at!: Date
@@ -105,6 +107,53 @@ export class RoomType implements IRoomType, Contentized<RoomType>, Imagable<Room
     return `/accommodations/${this.accommodation_id}/roomTypes/${this.id}`
   }
 }
+
+export interface IAccommodationPrice extends Entity {
+  readonly start: Date
+  readonly end: Date
+  readonly occupancy: { from: number, to: number }
+  readonly currency:  string
+  readonly value: number
+  readonly published: boolean
+}
+
+export interface CreateAccommodationPriceParams {
+  start: Date
+  end: Date
+  occupancy: { from: number, to: number }
+  currency: string
+  value: number
+  published: boolean
+}
+
+export class AccommodationPrice implements IAccommodationPrice {
+  readonly id!: string
+  readonly roomType!: RoomType
+  readonly currency!: string
+  readonly start!: Date
+  readonly end!: Date
+  readonly occupancy!: { from: number; to: number }
+  readonly published!: boolean
+  readonly value!: number;
+  @timestamp() readonly updated_at!: Date
+  @timestamp() readonly created_at!: Date
+
+  private readonly axios: AxiosInstance
+
+  constructor(roomType: RoomType, data: IAccommodationPrice, axios: AxiosInstance) {
+    this.roomType = roomType
+    Object.assign(this, data)
+    this.axios = axios
+  }
+
+  async update (params: UpdateAccommodationPriceParams): Promise<AccommodationPrice> {
+    const { data } = await this.axios.patch<IAccommodationPrice>(`/accommodations/${this.roomType.accommodation_id}/roomTypes/prices/${this.id}`)
+    Object.assign(this, data)
+    return this
+  }
+}
+
+export type UpdateAccommodationPriceParams = Partial<CreateAccommodationPriceParams>
 
 export class RoomTypes extends ApiGroup {
   readonly accommodationId: string
