@@ -21,7 +21,7 @@ export interface IRoomType extends Entity, Fields {
   published: boolean
   occupancy: { from: number, to: number }
   ordering: number
-  price: IAccommodationPrice
+  prices: IAccommodationPrice[] | null
 }
 
 export interface CreateRoomTypeInput extends Partial<Fields> {
@@ -54,7 +54,7 @@ export class RoomType implements IRoomType, Contentized<RoomType>, Imagable<Room
   ordering!: number
 
   fields!: FieldData
-  readonly price: AccommodationPrice | undefined
+  readonly prices!: AccommodationPrice[] | null
 
   @timestamp() readonly created_at!: Date
   @timestamp() readonly updated_at!: Date
@@ -65,6 +65,13 @@ export class RoomType implements IRoomType, Contentized<RoomType>, Imagable<Room
   constructor (values: IRoomType, axios: AxiosInstance) {
     this.axios = axios
     Object.assign(this, values)
+  }
+
+  price (id: string): AccommodationPrice | undefined | null {
+    if (this.prices) {
+      return this.prices.find(p => p.id === id)
+    }
+    return null
   }
 
   async update (params: UpdateRoomTypeInput): Promise<RoomType> {
