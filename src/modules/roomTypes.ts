@@ -12,6 +12,7 @@ import {
 import timestamp from '../annotations/timestamp.js'
 import { ContentAttachment, type Contentized } from './content.js'
 import { type Imagable, ImageAttachment } from './images.js'
+import {Accommodation} from "./accommodations";
 
 export interface IRoomType extends Entity, Fields {
   name: string
@@ -21,7 +22,6 @@ export interface IRoomType extends Entity, Fields {
   published: boolean
   occupancy: { from: number, to: number }
   ordering: number
-  prices: IAccommodationPrice[] | null
 }
 
 export interface CreateRoomTypeInput extends Partial<Fields> {
@@ -54,7 +54,6 @@ export class RoomType implements IRoomType, Contentized<RoomType>, Imagable<Room
   ordering!: number
 
   fields!: FieldData
-  readonly prices!: AccommodationPrice[] | null
 
   @timestamp() readonly created_at!: Date
   @timestamp() readonly updated_at!: Date
@@ -65,13 +64,6 @@ export class RoomType implements IRoomType, Contentized<RoomType>, Imagable<Room
   constructor (values: IRoomType, axios: AxiosInstance) {
     this.axios = axios
     Object.assign(this, values)
-  }
-
-  price (id: string): AccommodationPrice | undefined | null {
-    if (this.prices) {
-      return this.prices.find(p => p.id === id)
-    }
-    return null
   }
 
   async update (params: UpdateRoomTypeInput): Promise<RoomType> {
@@ -96,6 +88,10 @@ export class RoomType implements IRoomType, Contentized<RoomType>, Imagable<Room
 
   images (): ImageAttachment<this> {
     return new ImageAttachment(this.axios, 'room_type', this)
+  }
+
+  prices (): AccommodationPriceAttachment {
+    return new AccommodationPriceAttachment(this.axios, this.accommodation_id, this.id)
   }
 
   async moveUp (): Promise<number> {
@@ -133,9 +129,21 @@ export interface CreateAccommodationPriceParams {
   published: boolean
 }
 
+export interface ListAccommodationPriceParams extends PaginatedQuery{
+  start?: Date
+  end?: Date
+  occupancy?: {
+    from?: number,
+    to?: number,
+  }
+  currency?: string
+  published: boolean
+}
+
 export class AccommodationPrice implements IAccommodationPrice {
   readonly id!: string
-  readonly roomType!: RoomType
+  readonly room_type_id!: string
+  readonly accommodation_id!: string
   readonly currency!: string
   readonly start!: Date
   readonly end!: Date
@@ -147,16 +155,75 @@ export class AccommodationPrice implements IAccommodationPrice {
 
   private readonly axios: AxiosInstance
 
-  constructor(roomType: RoomType, data: IAccommodationPrice, axios: AxiosInstance) {
-    this.roomType = roomType
+  constructor(data: IAccommodationPrice, axios: AxiosInstance) {
     Object.assign(this, data)
     this.axios = axios
   }
 
   async update (params: UpdateAccommodationPriceParams): Promise<AccommodationPrice> {
-    const { data } = await this.axios.patch<IAccommodationPrice>(`/accommodations/${this.roomType.accommodation_id}/roomTypes/prices/${this.id}`)
+    const { data } = await this.axios.patch<IAccommodationPrice>(`/accommodations/${this.accommodation_id}/roomTypes/prices/${this.id}`)
     Object.assign(this, data)
     return this
+  }
+
+  async delete(): Promise<void> {
+    await this.axios.delete(`accommodations/${this.accommodation_id}/roomTypes/prices/${this.id}`)
+  }
+}
+
+export class AccommodationPriceAttachment extends ApiGroup {
+  readonly accommodationId: string
+  readonly roomTypeId: string
+
+  constructor (axios: AxiosInstance, accommodationId: string, roomTypeId: string) {
+    super(axios)
+    this.accommodationId = accommodationId
+    this.roomTypeId = roomTypeId
+  }
+
+  async list (params?: ListAccommodationPriceParams): Promise<Paginated<AccommodationPrice>> {
+    const resp = (await this.axios.get<Paginated<IAccommodationPrice>>(
+        `/accommodations/${this.accommodationId}/roomTypes/${this.roomTypeId}/prices`,
+        { params }
+    )).data
+
+    resp.data = resp.data.map(a => new AccommodationPrice(a, this.axios))
+
+    return resp as Paginated<AccommodationPrice>
+  }
+
+  async find (id: string): Promise<AccommodationPrice> {
+    const resp = (await this.axios.get<IAccommodationPrice>(
+        `/accommodations/${this.accommodationId}/roomTypes/${this.roomTypeId}/${id}`
+    )).data
+    return new AccommodationPrice(resp, this.axios)
+  }
+
+  async create (params: CreateAccommodationPriceParams): Promise<AccommodationPrice> {
+    const resp = (await this.axios.post<IAccommodationPrice>(
+        `/accommodations/${this.accommodationId}/roomTypes/${this.roomTypeId}`,
+        params
+    )).data
+    return new AccommodationPrice(resp, this.axios)
+  }
+
+  async update (id: string, params: UpdateAccommodationPriceParams): Promise<AccommodationPrice> {
+    const resp = (await this.axios.patch<IAccommodationPrice>(
+        `/accommodations/${this.accommodationId}/roomTypes/${this.roomTypeId}/${id}`,
+        params
+    )).data
+    return new AccommodationPrice(resp, this.axios)
+  }
+
+  async destroy (id: string): Promise<void> {
+    await this.axios.delete(`/accommodations/${this.accommodationId}/roomTypes/${this.roomTypeId}/${id}`)
+  }
+
+  async restore (id: string): Promise<AccommodationPrice> {
+    const resp = await this.axios.put<IAccommodationPrice>(
+        `/accommodations/${this.accommodationId}/roomTypes/${this.roomTypeId}/${id}/restore`
+    )
+    return new AccommodationPrice(resp, this.axios)
   }
 }
 
