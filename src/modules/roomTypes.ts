@@ -194,14 +194,14 @@ export class AccommodationPriceAttachment extends ApiGroup {
 
   async find (id: string): Promise<AccommodationPrice> {
     const resp = (await this.axios.get<IAccommodationPrice>(
-        `/accommodations/${this.accommodationId}/roomTypes/${this.roomTypeId}/${id}`
+        `/accommodations/${this.accommodationId}/roomTypes/${this.roomTypeId}/${id}/prices`
     )).data
     return new AccommodationPrice(resp, this.axios)
   }
 
   async create (params: CreateAccommodationPriceParams): Promise<AccommodationPrice> {
     const resp = (await this.axios.post<IAccommodationPrice>(
-        `/accommodations/${this.accommodationId}/roomTypes/${this.roomTypeId}`,
+        `/accommodations/${this.accommodationId}/roomTypes/${this.roomTypeId}/prices`,
         params
     )).data
     return new AccommodationPrice(resp, this.axios)
@@ -209,19 +209,19 @@ export class AccommodationPriceAttachment extends ApiGroup {
 
   async update (id: string, params: UpdateAccommodationPriceParams): Promise<AccommodationPrice> {
     const resp = (await this.axios.patch<IAccommodationPrice>(
-        `/accommodations/${this.accommodationId}/roomTypes/${this.roomTypeId}/${id}`,
+        `/accommodations/${this.accommodationId}/roomTypes/${this.roomTypeId}/prices/${id}`,
         params
     )).data
     return new AccommodationPrice(resp, this.axios)
   }
 
   async destroy (id: string): Promise<void> {
-    await this.axios.delete(`/accommodations/${this.accommodationId}/roomTypes/${this.roomTypeId}/${id}`)
+    await this.axios.delete(`/accommodations/${this.accommodationId}/roomTypes/${this.roomTypeId}/prices/${id}`)
   }
 
   async restore (id: string): Promise<AccommodationPrice> {
     const resp = await this.axios.put<IAccommodationPrice>(
-        `/accommodations/${this.accommodationId}/roomTypes/${this.roomTypeId}/${id}/restore`
+        `/accommodations/${this.accommodationId}/roomTypes/${this.roomTypeId}/prices/${id}/restore`
     )
     return new AccommodationPrice(resp, this.axios)
   }
