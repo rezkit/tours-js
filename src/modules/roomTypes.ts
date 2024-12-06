@@ -161,13 +161,13 @@ export class AccommodationPrice implements IAccommodationPrice {
   }
 
   async update (params: UpdateAccommodationPriceParams): Promise<AccommodationPrice> {
-    const { data } = await this.axios.patch<IAccommodationPrice>(`/accommodations/${this.accommodation_id}/roomTypes/prices/${this.id}`)
+    const { data } = await this.axios.patch<IAccommodationPrice>(`/accommodations/${this.accommodation_id}/roomTypes/${this.room_type_id}/prices/${this.id}`)
     Object.assign(this, data)
     return this
   }
 
   async delete(): Promise<void> {
-    await this.axios.delete(`accommodations/${this.accommodation_id}/roomTypes/prices/${this.id}`)
+    await this.axios.delete(`accommodations/${this.accommodation_id}/roomTypes/${this.room_type_id}/prices/${this.id}`)
   }
 }
 
