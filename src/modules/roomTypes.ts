@@ -167,7 +167,9 @@ export class AccommodationPrice implements IAccommodationPrice {
   }
 
   async delete(): Promise<void> {
-    await this.axios.delete(`accommodations/${this.accommodation_id}/roomTypes/${this.room_type_id}/prices/${this.id}`)
+    await this.axios.delete(
+        `accommodations/${this.accommodation_id}/roomTypes/${this.room_type_id}/prices/${this.id}`
+    )
   }
 }
 
@@ -194,7 +196,7 @@ export class AccommodationPriceAttachment extends ApiGroup {
 
   async find (id: string): Promise<AccommodationPrice> {
     const resp = (await this.axios.get<IAccommodationPrice>(
-        `/accommodations/${this.accommodationId}/roomTypes/${this.roomTypeId}/${id}/prices`
+        `/accommodations/${this.accommodationId}/roomTypes/${this.roomTypeId}/prices/${id}`
     )).data
     return new AccommodationPrice(resp, this.axios)
   }
