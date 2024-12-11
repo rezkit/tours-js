@@ -39,6 +39,8 @@ interface IAccommodationPivot {
   accommodatable_id: string
   accommodatable_type: string
   description: string | null
+  max_pre_days: number
+  max_post_days: number
 }
 
 interface attachmentUpdate {
@@ -51,6 +53,8 @@ export class AccommodationPivot implements IAccommodationPivot {
   readonly accommodatable_id!: string
   readonly accommodatable_type!: string
   description!: string | null
+  max_pre_days!: number
+  max_post_days!: number
   private readonly axios: AxiosInstance
 
   constructor (values: IAccommodationPivot, axios: AxiosInstance) {
