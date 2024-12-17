@@ -130,15 +130,15 @@ export interface CreateAccommodationPriceParams {
 }
 
 export interface ListAccommodationPriceParams extends PaginatedQuery{
-  room_type_id?: string
-  start?: Date
-  end?: Date
+  before?: Date
+  after?: Date
   occupancy?: {
     from?: number,
     to?: number,
   }
+  value?: number
   currency?: string
-  published: boolean
+  published?: boolean
 }
 
 export class AccommodationPrice implements IAccommodationPrice {
