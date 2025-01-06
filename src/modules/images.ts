@@ -109,10 +109,11 @@ export class Image implements IImage {
   tags!: string[]
 }
 
-export type SortImage = 'ordering' | 'title' | 'id' | 'category_id' | 'created_at' | 'updated_at'
+export type SortImage = 'ordering' | 'title' | 'id' | 'created_at' | 'updated_at'
 
 export interface ListImageParams extends PaginatedQuery, SortableQuery<SortImage> {
   search?: string
+  category?: string
 }
 export class Images extends ApiGroup {
   async list (params?: ListImageParams): Promise<Paginated<Image>> {
