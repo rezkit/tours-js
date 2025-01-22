@@ -61,7 +61,7 @@ export class Category implements ICategory {
   }
 
   async move (ordering: ReorderCommand): Promise<number> {
-    const response = (await this.axios.patch<ICategory>(this.apiPath, ordering)).data
+    const response = (await this.axios.patch<ICategory>(this.apiPath, { ordering })).data
 
     Object.assign(this, response)
     return response.ordering

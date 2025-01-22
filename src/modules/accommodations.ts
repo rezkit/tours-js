@@ -124,7 +124,7 @@ export class Accommodation implements IAccommodation, Categorized<Accommodation>
   }
 
   async move (ordering: ReorderCommand): Promise<number> {
-    const { data } = await this.axios.patch<IAccommodation>(this.path, ordering)
+    const { data } = await this.axios.patch<IAccommodation>(this.path, { ordering })
     this.ordering = data.ordering
     return data.ordering
   }

@@ -43,7 +43,7 @@ export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersi
   }
   
   async move (ordering: ReorderCommand): Promise<number> {
-    const response = (await this.axios.patch<IHolidayVersion>(this.path, ordering)).data
+    const response = (await this.axios.patch<IHolidayVersion>(this.path, { ordering })).data
     Object.assign(this, response)
     return this.ordering
   }

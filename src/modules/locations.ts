@@ -65,7 +65,7 @@ export class Location implements ILocation, Imagable<Location> {
   }
 
   async move (ordering: ReorderCommand): Promise<number> {
-    const response = (await this.axios.patch<ILocation>(this.apiPath, ordering)).data
+    const response = (await this.axios.patch<ILocation>(this.apiPath, { ordering })).data
 
     Object.assign(this, response)
     return response.ordering

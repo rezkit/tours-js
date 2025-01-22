@@ -79,7 +79,7 @@ export class ContentItem implements IContentItem, Imagable<ContentItem> {
   }
 
   async move (ordering: ReorderCommand): Promise<number> {
-    const { data } = await this.axios.patch<IContentItem>(this.path, ordering)
+    const { data } = await this.axios.patch<IContentItem>(this.path, { ordering })
     this.ordering = data.ordering
     return data.ordering
   }

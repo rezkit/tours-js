@@ -128,7 +128,7 @@ export class Holiday implements IHoliday, Categorized<Holiday>, Contentized<Holi
   }
 
   async move (ordering: ReorderCommand): Promise<number> {
-    const { data } = await this.axios.patch<IHoliday>(`/holidays/${this.id}`, ordering)
+    const { data } = await this.axios.patch<IHoliday>(`/holidays/${this.id}`, { ordering })
     this.ordering = data.ordering
     return data.ordering
   }
