@@ -94,14 +94,8 @@ export class RoomType implements IRoomType, Contentized<RoomType>, Imagable<Room
     return new AccommodationPriceAttachment(this.axios, this.accommodation_id, this.id)
   }
 
-  async moveUp (): Promise<number> {
-    const { data } = await this.axios.patch<IRoomType>(this.path, { ordering: 'up' })
-    this.ordering = data.ordering
-    return data.ordering
-  }
-
-  async moveDown (): Promise<number> {
-    const { data } = await this.axios.patch<IRoomType>(this.path, { ordering: 'down' })
+  async moveUp (ordering: ReorderCommand): Promise<number> {
+    const { data } = await this.axios.patch<IRoomType>(this.path, { ordering })
     this.ordering = data.ordering
     return data.ordering
   }

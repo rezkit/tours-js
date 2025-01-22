@@ -1,7 +1,7 @@
 import type { AxiosInstance } from 'axios'
 import type { CreateHolidayInput, HolidayListQuery, IHoliday, UpdateHolidayInput } from './holidays.js'
 import type { FieldData } from './fields.js'
-import { ApiGroup, type Paginated } from './common.js'
+import {ApiGroup, type Paginated, ReorderCommand} from './common.js'
 import { Categories, type Categorized, CategoryAttachment } from './categories.js'
 import { Elements } from './elements.js'
 import timestamp from '../annotations/timestamp.js'
@@ -40,6 +40,12 @@ export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersi
     const response = (await this.axios.patch<IHolidayVersion>(this.path, params)).data
     Object.assign(this, response)
     return this
+  }
+  
+  async move (ordering: ReorderCommand): Promise<number> {
+    const response = (await this.axios.patch<IHolidayVersion>(this.path, ordering)).data
+    Object.assign(this, response)
+    return this.ordering
   }
 
   async delete (): Promise<void> {

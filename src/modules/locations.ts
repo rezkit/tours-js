@@ -6,7 +6,7 @@ import type {
   ID,
   Paginated,
   PaginatedQuery,
-  QueryBoolean,
+  QueryBoolean, ReorderCommand,
   SEO,
   SEOProperties,
   Slugged,
@@ -64,15 +64,8 @@ export class Location implements ILocation, Imagable<Location> {
     return new Location(response, this.axios)
   }
 
-  async moveUp (): Promise<number> {
-    const response = (await this.axios.patch<ILocation>(this.apiPath, { ordering: 'up' })).data
-
-    Object.assign(this, response)
-    return response.ordering
-  }
-
-  async moveDown (): Promise<number> {
-    const response = (await this.axios.patch<ILocation>(this.apiPath, { ordering: 'down' })).data
+  async move (ordering: ReorderCommand): Promise<number> {
+    const response = (await this.axios.patch<ILocation>(this.apiPath, ordering)).data
 
     Object.assign(this, response)
     return response.ordering

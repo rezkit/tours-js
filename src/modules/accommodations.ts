@@ -123,14 +123,8 @@ export class Accommodation implements IAccommodation, Categorized<Accommodation>
     return new RoomTypes(this.axios, this.id)
   }
 
-  async moveUp (): Promise<number> {
-    const { data } = await this.axios.patch<IAccommodation>(this.path, { ordering: 'up' })
-    this.ordering = data.ordering
-    return data.ordering
-  }
-
-  async moveDown (): Promise<number> {
-    const { data } = await this.axios.patch<IAccommodation>(this.path, { ordering: 'down' })
+  async move (ordering: ReorderCommand): Promise<number> {
+    const { data } = await this.axios.patch<IAccommodation>(this.path, ordering)
     this.ordering = data.ordering
     return data.ordering
   }

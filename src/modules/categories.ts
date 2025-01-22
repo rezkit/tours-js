@@ -10,7 +10,7 @@ import type {
   AttachmentResponse,
   Slugged,
   SEO,
-  SEOProperties
+  SEOProperties, ReorderCommand
 } from './common.js'
 import type { AxiosInstance } from 'axios'
 import { ApiGroup } from './common.js'
@@ -60,15 +60,8 @@ export class Category implements ICategory {
     return new Category(response, this.axios)
   }
 
-  async moveUp (): Promise<number> {
-    const response = (await this.axios.patch<ICategory>(this.apiPath, { ordering: 'up' })).data
-
-    Object.assign(this, response)
-    return response.ordering
-  }
-
-  async moveDown (): Promise<number> {
-    const response = (await this.axios.patch<ICategory>(this.apiPath, { ordering: 'down' })).data
+  async move (ordering: ReorderCommand): Promise<number> {
+    const response = (await this.axios.patch<ICategory>(this.apiPath, ordering)).data
 
     Object.assign(this, response)
     return response.ordering
