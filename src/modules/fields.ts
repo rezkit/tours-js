@@ -137,6 +137,11 @@ export class GroupsApi extends ApiGroup {
     return data
   }
 
+  async move (id: string, ordering: ReorderCommand): Promise<number> {
+    const { data } = await this.axios.patch<FieldGroup>(`/${this.type}/fields/groups/${id}`, { ordering })
+    return data.ordering
+  }
+
   async update (id: string, params: UpdateFieldGroupRequest): Promise<FieldGroup> {
     const { data } = await this.axios.patch<FieldGroup>(`/${this.type}/fields/groups/${id}`, params)
     return data
