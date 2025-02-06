@@ -117,6 +117,10 @@ export default class TourManager {
   accommodations (): Modules.Accommodations.Api {
     return new Modules.Accommodations.Api(this.axios)
   }
+
+  extras (): Modules.Extras.Api {
+    return new Modules.Extras.Api(this.axios)
+  }
 }
 
 /**

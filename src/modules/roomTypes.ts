@@ -12,7 +12,6 @@ import {
 import timestamp from '../annotations/timestamp.js'
 import { ContentAttachment, type Contentized } from './content.js'
 import { type Imagable, ImageAttachment } from './images.js'
-import {Accommodation} from "./accommodations";
 
 export interface IRoomType extends Entity, Fields {
   name: string
@@ -156,7 +155,10 @@ export class AccommodationPrice implements IAccommodationPrice {
   }
 
   async update (params: UpdateAccommodationPriceParams): Promise<AccommodationPrice> {
-    const { data } = await this.axios.patch<IAccommodationPrice>(`/accommodations/${this.accommodation_id}/roomTypes/${this.room_type_id}/prices/${this.id}`)
+    const { data } = await this.axios.patch<IAccommodationPrice>(
+        `/accommodations/${this.accommodation_id}/roomTypes/${this.room_type_id}/prices/${this.id}`,
+        params
+    )
     Object.assign(this, data)
     return this
   }
@@ -217,9 +219,9 @@ export class AccommodationPriceAttachment extends ApiGroup {
   }
 
   async restore (id: string): Promise<AccommodationPrice> {
-    const resp = await this.axios.put<IAccommodationPrice>(
+    const resp = (await this.axios.put<IAccommodationPrice>(
         `/accommodations/${this.accommodationId}/roomTypes/${this.roomTypeId}/prices/${id}/restore`
-    )
+    )).data
     return new AccommodationPrice(resp, this.axios)
   }
 }

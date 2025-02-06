@@ -135,9 +135,20 @@ export type QueryBooleanUndefined = null | ''
 /**
  * The names of entity types
  */
-export type EntityType = 'holiday' | 'category' | 'holiday_version'
-| 'element' | 'element_option' | 'departure'
-| 'content' | 'image' | 'itinerary' | 'location' | 'accommodation' | 'room_type'
+export type EntityType =
+    'holiday' |
+    'category' |
+    'holiday_version' |
+    'element' |
+    'element_option' |
+    'departure' |
+    'content' |
+    'image' |
+    'itinerary' |
+    'location' |
+    'accommodation' |
+    'room_type' |
+    'extra'
 
 /**
  * Inventory Interface
