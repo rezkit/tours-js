@@ -110,10 +110,7 @@ export interface AttachmentResponse {
 /**
  * Command words to re-order items in ordered sets.
  */
-export type ReorderCommand = {
-  direction: 'up' | 'down' | 'first' | 'last' | '-' | '+',
-  amount?: number
-}
+export type ReorderCommand = string | number
 
 /**
  * A type which represents the possible values for a boolean parameter in a URL query
