@@ -23,6 +23,7 @@ import type { Imagable } from './images.js'
 import { ImageAttachment } from './images.js'
 import type { Locatable } from './locations.js'
 import { LocationAttachment } from './locations.js'
+import { Accommodatable, AccommodationsAttachment } from './accommodations.js'
 
 export * as Versions from './holidayVersion.js'
 
@@ -84,7 +85,7 @@ interface CopyHolidayInput {
   version: object[]
 }
 
-export class Holiday implements IHoliday, Categorized<Holiday>, Contentized<Holiday>, Imagable<Holiday>, Locatable<Holiday> {
+export class Holiday implements IHoliday, Categorized<Holiday>, Contentized<Holiday>, Imagable<Holiday>, Locatable<Holiday>, Accommodatable<Holiday> {
   private readonly axios: AxiosInstance
 
   /**
@@ -95,6 +96,10 @@ export class Holiday implements IHoliday, Categorized<Holiday>, Contentized<Holi
   constructor (values: IHoliday, axios: AxiosInstance) {
     Object.assign(this, values)
     this.axios = axios
+  }
+
+  accommodations (): AccommodationsAttachment<Holiday> {
+    return new AccommodationsAttachment(this.axios, 'holiday', this)
   }
 
   /**
