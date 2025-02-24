@@ -137,7 +137,6 @@ export class ExtraPrice implements IExtraPrice {
     readonly start!: Date
     readonly end!: Date
     readonly occupancy!: { from: number; to: number }
-    readonly published!: boolean
     readonly value!: number;
     @timestamp() readonly updated_at!: Date
     @timestamp() readonly created_at!: Date
