@@ -190,7 +190,7 @@ export class ExtraPriceAttachment extends ApiGroup {
     }
 
     async update (id: string, params: UpdateExtraPriceParams): Promise<ExtraPrice> {
-        const { data } = await this.axios.patch<IExtraPrice>(this.path + `/{id}`, params)
+        const { data } = await this.axios.patch<IExtraPrice>(this.path + `/${id}`, params)
         return new ExtraPrice(data, this.axios)
     }
 
