@@ -1,9 +1,9 @@
 import type { AxiosInstance } from 'axios'
 import type { FieldData } from './fields.js'
 import {
-    ApiGroup,
-    type Entity,
-    type Fields, FieldsQuery,
+    ApiGroup, AttachmentResponse,
+    type Entity, type EntityType,
+    type Fields, FieldsQuery, type ID,
     type Paginated,
     type PaginatedQuery,
     type QueryBoolean,
@@ -257,5 +257,37 @@ export class Api extends ApiGroup {
 
     get content (): Content {
         return new Content(this.axios, 'extra')
+    }
+}
+
+export class ExtrasAttachment<T extends ID> extends ApiGroup {
+    readonly type: EntityType
+    readonly entity: T
+
+    constructor (axios: AxiosInstance, type: EntityType, entity: T) {
+        super(axios)
+        this.type = type
+        this.entity = entity
+    }
+
+    async list (params?: ExtraListQuery): Promise<Paginated<Extra>> {
+        const { data } = await this.axios.get<Paginated<IExtra>>(this.path, { params })
+        data.data = data.data.map(e => new Extra(e, this.axios))
+
+        return data as Paginated<Extra>
+    }
+
+    async attach (ids: string[]): Promise<AttachmentResponse> {
+        const { data } = await this.axios.put<AttachmentResponse>(this.path, { ids })
+        return data
+    }
+
+    async detach(ids: string[]): Promise<AttachmentResponse> {
+        const { data } = await this.axios.delete<AttachmentResponse>(this.path, { params: { ids } })
+        return data
+    }
+
+    get path (): string {
+        return `/${this.type}/${this.entity.id}/extras`
     }
 }

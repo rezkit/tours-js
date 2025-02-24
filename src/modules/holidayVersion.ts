@@ -11,6 +11,7 @@ import type { Locatable } from './locations.js'
 import { LocationAttachment } from './locations.js'
 import { type IMap, Map } from './maps.js'
 import { type Accommodatable, AccommodationsAttachment } from './accommodations.js'
+import {type IExtra, Extra, ExtrasAttachment} from './extras.js'
 
 export interface IHolidayVersion extends Omit<Omit<IHoliday, 'search_public'>, 'slug'> {
   holiday_id: string
@@ -97,6 +98,10 @@ export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersi
 
   accommodations (): AccommodationsAttachment<this> {
     return new AccommodationsAttachment<this>(this.axios, 'holiday_version', this)
+  }
+
+  extras (): ExtrasAttachment<this> {
+    return new ExtrasAttachment<this>(this.axios, 'holiday_version', this)
   }
 }
 export class HolidayVersions extends ApiGroup {
