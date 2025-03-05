@@ -123,6 +123,10 @@ export interface CreateAccommodationPriceParams {
 }
 
 export interface ListAccommodationPriceParams extends PaginatedQuery{
+  dates?: {
+    start?: Date,
+    end?: Date,
+  },
   before?: Date
   after?: Date
   occupancy?: {
