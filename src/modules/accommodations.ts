@@ -66,6 +66,8 @@ export class AccommodationPivot implements IAccommodationPivot {
 export type UpdateAccommodationInput = Partial<CreateAccommodationInput> & { ordering?: ReorderCommand }
 
 export interface ListAccommodationsQuery extends PaginatedQuery {
+  before?: Date
+  after?: Date
   name?: string
   search?: string
   published?: QueryBoolean
