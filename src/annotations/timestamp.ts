@@ -2,26 +2,18 @@
  * Annotation which will always return the given property as a `Date`
  */
 export default function timestamp() {
-  return (target: any, name: PropertyKey) => {
-    console.log(target);
-    
-    if (typeof target === 'function' && target.prototype) {
-    } else if (typeof target !== "object" || target === null) {
-      throw new Error("Target must be an object");
-    }
+  return function (target: any, propertyKey: string | symbol) {
+    const internalKey = Symbol(propertyKey.toString());
 
-    const internalName = Symbol.for("__timestamp_" + String(name));
-
-    Object.defineProperty(target, name, {
+    Object.defineProperty(target, propertyKey, {
       get() {
-        if (typeof this[internalName] === "string") {
-          return new Date(this[internalName]);
-        }
-        return this[internalName];
+        return this[internalKey] ? new Date(this[internalKey]) : undefined;
       },
       set(value) {
-        this[internalName] = value;
-      }
+        this[internalKey] = value instanceof Date ? value.toISOString() : value;
+      },
+      enumerable: true,
+      configurable: true,
     });
   };
 }
