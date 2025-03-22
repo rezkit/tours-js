@@ -2,7 +2,7 @@
  * Annotation which will always return the given property as a `Date`
  */
 export default function timestamp() {
-  return function (target: any, propertyKey: string | symbol) {
+  return function (target: any, propertyKey: string | symbol): void {
     const internalKey = Symbol(propertyKey.toString());
 
     Object.defineProperty(target, propertyKey, {
@@ -17,3 +17,4 @@ export default function timestamp() {
     });
   };
 }
+
