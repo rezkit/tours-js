@@ -120,6 +120,10 @@ export interface CreateExtraPriceParams {
 export type UpdateExtraPriceParams = Partial<CreateExtraPriceParams>
 
 export interface ListExtraPriceParams extends PaginatedQuery{
+    dates?: {
+        start?: Date,
+        end?: Date,
+    },
     before?: Date
     after?: Date
     occupancy?: {
