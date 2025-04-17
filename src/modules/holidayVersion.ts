@@ -11,7 +11,8 @@ import type { Locatable } from './locations.js'
 import { LocationAttachment } from './locations.js'
 import { type IMap, Map } from './maps.js'
 import { type Accommodatable, AccommodationsAttachment } from './accommodations.js'
-import {type IExtra, Extra, ExtrasAttachment} from './extras.js'
+import { ExtrasAttachment } from './extras.js'
+import { Cakeable, CakeAttachment } from './cakes.js'
 
 export interface IHolidayVersion extends Omit<Omit<IHoliday, 'search_public'>, 'slug'> {
   holiday_id: string
@@ -29,7 +30,12 @@ export interface CreateHolidayVersionInput extends CreateHolidayInput {
   map_id?: string | null
 }
 
-export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersion>, Locatable<HolidayVersion>, Accommodatable<HolidayVersion> {
+export class HolidayVersion implements
+    IHolidayVersion,
+    Categorized<HolidayVersion>,
+    Locatable<HolidayVersion>,
+    Accommodatable<HolidayVersion>,
+    Cakeable<HolidayVersion> {
   private readonly axios: AxiosInstance
 
   constructor (values: IHolidayVersion, axios: AxiosInstance) {
@@ -102,6 +108,10 @@ export class HolidayVersion implements IHolidayVersion, Categorized<HolidayVersi
 
   extras (): ExtrasAttachment<this> {
     return new ExtrasAttachment<this>(this.axios, 'holiday_version', this)
+  }
+
+  cakes ():CakeAttachment<this> {
+    return new CakeAttachment<this>(this.axios, 'holiday_version', this)
   }
 }
 export class HolidayVersions extends ApiGroup {

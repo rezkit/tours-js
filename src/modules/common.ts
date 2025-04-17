@@ -148,7 +148,8 @@ export type EntityType =
     'location' |
     'accommodation' |
     'room_type' |
-    'extra'
+    'extra' |
+    'cake'
 
 /**
  * Inventory Interface

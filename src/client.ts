@@ -4,7 +4,6 @@ import type Config from './config.js'
 import { NotFoundError, ValidationError } from './errors.js'
 import type { EntityType } from './modules/common.js'
 import type { ListDeparturesQuery } from './modules/departures.js'
-import {Accommodation} from "./modules/accommodations";
 export * from './config.js'
 export * from './modules.js'
 export * as helpers from './helpers.js'
@@ -120,6 +119,10 @@ export default class TourManager {
 
   extras (): Modules.Extras.Api {
     return new Modules.Extras.Api(this.axios)
+  }
+
+  cakes (): Modules.Cakes.Api {
+    return new Modules.Cakes.Api(this.axios)
   }
 }
 
