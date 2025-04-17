@@ -133,7 +133,6 @@ export interface ListAccommodationPriceParams extends PaginatedQuery{
     from?: number,
     to?: number,
   }
-  roomTypeId?: string
   currency?: string
   published?: boolean
 }
