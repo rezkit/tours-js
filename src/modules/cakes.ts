@@ -154,7 +154,7 @@ export class Api extends ApiGroup {
     }
 
     async create (params: CreateCakeInput): Promise<Cake> {
-        const { data } = await this.axios.put<ICake>(this.path, params)
+        const { data } = await this.axios.post<ICake>(this.path, params)
         return new Cake(data, this.axios)
     }
 
