@@ -27,6 +27,24 @@ type DisplayTypes = 'fieldGroup' |
     'radioGroup' |
     'dropdown'
 
+interface TextValidation {
+    min_length?: number,
+    max_length?: number
+}
+
+interface NumberValidation {
+    min_value?: number,
+    max_value?: number
+}
+
+interface SelectionValidation {
+    min_count?: number,
+    max_count?: number,
+    values?: string[]
+}
+
+type CakeValidation = TextValidation | NumberValidation | SelectionValidation
+
 export interface ICake extends Entity, TreeNode {
     parent_id: string | null
     name: string
@@ -37,7 +55,7 @@ export interface ICake extends Entity, TreeNode {
     published: boolean
     required: boolean
     required_by: number | null
-    validation: string | null
+    validation: CakeValidation | null
     global: boolean
     children: ICake[]
     ordering: number
@@ -53,7 +71,7 @@ export interface CreateCakeInput {
     published: boolean
     required: boolean
     required_by?: number
-    validation?: string
+    validation?: CakeValidation
     global: boolean
 }
 
@@ -79,7 +97,7 @@ export class Cake implements ICake {
     published!: boolean
     required!: boolean
     required_by!: number | null
-    validation!: string | null
+    validation!: CakeValidation | null
     global!: boolean
     children!: ICake[]
     ordering!: number
