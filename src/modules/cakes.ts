@@ -14,18 +14,30 @@ import type { TreeNode } from '../helpers.js'
 import timestamp from '../annotations/timestamp.js'
 
 type CakeTypes = 'text' | 'number' | 'boolean' | 'selection' | 'section'
+type DisplayTypes = 'fieldGroup' |
+    'number' |
+    'numberStepper' |
+    'text' |
+    'textArea' |
+    'telephone' |
+    'email' |
+    'transport' |
+    'checkbox' |
+    'checkboxGroup' |
+    'radioGroup' |
+    'dropdown'
 
 export interface ICake extends Entity, TreeNode {
     parent_id: string | null
     name: string
     type: CakeTypes
+    display_type: DisplayTypes
     title: string
     description: string | null
     published: boolean
     required: boolean
     required_by: number | null
     validation: string | null
-    presentation: string | null
     global: boolean
     children: ICake[]
     ordering: number
@@ -35,13 +47,13 @@ export interface CreateCakeInput {
     parent_id?: string
     name: string
     type: CakeTypes
+    display_type: DisplayTypes
     title: string
     description?: string
     published: boolean
     required: boolean
     required_by?: number
     validation?: string
-    presentation?: string
     global: boolean
 }
 
@@ -61,13 +73,13 @@ export class Cake implements ICake {
     parent_id!: string | null
     name!: string
     type!: CakeTypes
+    display_type!: DisplayTypes
     title!: string
     description!: string | null
     published!: boolean
     required!: boolean
     required_by!: number | null
     validation!: string | null
-    presentation!: string | null
     global!: boolean
     children!: ICake[]
     ordering!: number
