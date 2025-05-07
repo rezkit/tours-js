@@ -177,7 +177,7 @@ export class CakeAttachment<T extends ID> extends ApiGroup {
     }
 
     async attach (ids: string[]): Promise<AttachmentResponse> {
-        const { data } = await this.axios.put<AttachmentResponse>(this.path, { ids })
+        const { data } = await this.axios.patch<AttachmentResponse>(this.path, { ids })
         return data
     }
 
