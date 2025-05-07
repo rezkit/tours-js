@@ -102,7 +102,7 @@ export class Cake implements ICake {
     }
 
     async move (ordering: ReorderCommand): Promise<number> {
-        const { data } = await this.axios.patch<ICake>(this.path, ordering)
+        const { data } = await this.axios.patch<ICake>(this.path, { ordering })
         this.ordering = data.ordering
         return data.ordering
     }
