@@ -13,8 +13,8 @@ import {
 import type { TreeNode } from '../helpers.js'
 import timestamp from '../annotations/timestamp.js'
 
-type CakeTypes = 'text' | 'number' | 'boolean' | 'selection' | 'section'
-type DisplayTypes = 'fieldGroup' |
+export type CakeTypes = 'text' | 'number' | 'boolean' | 'selection' | 'section'
+export type DisplayTypes = 'fieldGroup' |
     'number' |
     'numberStepper' |
     'text' |
