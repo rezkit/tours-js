@@ -63,6 +63,7 @@ export interface UpdateCakeInput extends Partial<CreateCakeInput> {
 
 export interface ListCakesQuery extends PaginatedQuery {
     search?: string
+    name?: string
     parentId?: string
     type?: string
     published?: QueryBoolean
