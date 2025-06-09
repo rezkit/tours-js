@@ -32,10 +32,10 @@ export interface ICake extends Entity, TreeNode {
     name: string
     type: CakeTypes
     display_type: DisplayTypes
-    title: string
+    label: string
     description: string | null
     published: boolean
-    required: boolean
+    required_to_reserve: boolean
     required_by: number | null
     validation: string | null
     global: boolean
@@ -48,10 +48,10 @@ export interface CreateCakeInput {
     name: string
     type: CakeTypes
     display_type: DisplayTypes
-    title: string
+    label: string
     description?: string
     published: boolean
-    required: boolean
+    required_to_reserve: boolean
     required_by?: number
     validation?: string
     global: boolean
@@ -74,10 +74,10 @@ export class Cake implements ICake {
     name!: string
     type!: CakeTypes
     display_type!: DisplayTypes
-    title!: string
+    label!: string
     description!: string | null
     published!: boolean
-    required!: boolean
+    required_to_reserve!: boolean
     required_by!: number | null
     validation!: string | null
     global!: boolean
