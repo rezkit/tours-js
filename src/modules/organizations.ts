@@ -23,6 +23,7 @@ export class Organization implements IOrganization {
   image_settings!: ImagePreset[]
   readonly id!: string
   name!: string
+  environment!: 'Production' | 'Sandbox'
   rezkit_id!: string
   readonly updated_at!: Date
 }

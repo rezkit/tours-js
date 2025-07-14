@@ -56,6 +56,7 @@ export interface ImagePreset {
 }
 
 export interface OrganizationSettings {
+  environment: 'Sandbox' | 'Production'
   currencies: string[]
   deposit_defaults: {
     balance_due: number
