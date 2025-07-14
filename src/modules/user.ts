@@ -56,7 +56,6 @@ export interface ImagePreset {
 }
 
 export interface OrganizationSettings {
-  environment: 'Sandbox' | 'Production'
   currencies: string[]
   deposit_defaults: {
     balance_due: number
@@ -65,10 +64,13 @@ export interface OrganizationSettings {
   image_settings: ImagePreset[]
 }
 
+export type OrganizationEnvironment = 'Sandbox' | 'Production'
+
 export type UpdateOrganizationSettings = Partial<OrganizationSettings>
 
 export interface IOrganization extends Entity, OrganizationSettings {
   name: string
+  environment: OrganizationEnvironment
   rezkit_id: string
 }
 

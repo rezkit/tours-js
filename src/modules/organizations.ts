@@ -1,6 +1,6 @@
 import type { AxiosInstance } from 'axios'
 import timestamp from '../annotations/timestamp.js'
-import type { UpdateOrganizationSettings, IOrganization, ImagePreset } from './user.js'
+import type {UpdateOrganizationSettings, IOrganization, ImagePreset, OrganizationEnvironment} from './user.js'
 
 export class Organization implements IOrganization {
   private readonly axios: AxiosInstance
@@ -23,7 +23,7 @@ export class Organization implements IOrganization {
   image_settings!: ImagePreset[]
   readonly id!: string
   name!: string
-  environment!: 'Production' | 'Sandbox'
+  environment!: OrganizationEnvironment
   rezkit_id!: string
   readonly updated_at!: Date
 }
