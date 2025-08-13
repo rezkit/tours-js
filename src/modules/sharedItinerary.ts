@@ -1,4 +1,4 @@
-import type { Entity, Paginated, PaginatedQuery, SortableQuery } from './common.js'
+import type { Entity, Paginated, PaginatedQuery, QueryBoolean, SortableQuery } from './common.js'
 import { ApiGroup } from './common.js'
 import type { AxiosInstance } from 'axios'
 import timestamp from '../annotations/timestamp.js'
@@ -32,7 +32,11 @@ export type UpdateSharedItinerary = Partial<CreateSharedItinerary>
 
 export type SortSharedItinerary = 'id' | 'start_day' | 'end_day' | 'title' | 'created_at' | 'updated_at'
 
-export interface ListSharedItineraryParams extends PaginatedQuery, SortableQuery<SortSharedItinerary> {}
+export interface ListSharedItineraryParams extends PaginatedQuery, SortableQuery<SortSharedItinerary> {
+    title?: string
+    published?: QueryBoolean
+    search?: string
+}
 
 export class SharedItinerary implements ISharedItinerary {
     private readonly axios: AxiosInstance
