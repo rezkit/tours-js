@@ -2,36 +2,24 @@ import type { Entity, Paginated, PaginatedQuery, QueryBoolean, SortableQuery } f
 import { ApiGroup } from './common.js'
 import type { AxiosInstance } from 'axios'
 import timestamp from '../annotations/timestamp.js'
-import {SharedItineraryEntries} from "./sharedItineraryEntry";
+import { SharedItineraryEntries } from './sharedItineraryEntry.js'
 
 export interface ISharedItinerary extends Entity {
     shared_id: string
-    start_day: number
-    end_day: number
+    duration: number
     title: string
-    description: string | null
-    introduction: string | null
-    includes_breakfast: boolean
-    includes_lunch: boolean
-    includes_dinner: boolean
     published: boolean
 }
 
 export interface CreateSharedItinerary {
-    start_day: number
-    end_day: number
+    duration: number
     title: string
-    description: string | null
-    introduction: string | null
-    includes_breakfast: boolean
-    includes_lunch: boolean
-    includes_dinner: boolean
     published: boolean
 }
 
 export type UpdateSharedItinerary = Partial<CreateSharedItinerary>
 
-export type SortSharedItinerary = 'id' | 'start_day' | 'end_day' | 'title' | 'created_at' | 'updated_at'
+export type SortSharedItinerary = 'id' | 'duration' | 'title' | 'created_at' | 'updated_at'
 
 export interface ListSharedItineraryParams extends PaginatedQuery, SortableQuery<SortSharedItinerary> {
     title?: string
@@ -44,14 +32,8 @@ export class SharedItinerary implements ISharedItinerary {
 
     readonly id!: string
     shared_id!: string
-    start_day!: number
-    end_day!: number
+    duration!: number
     title!: string
-    description!: string | null
-    introduction!: string | null
-    includes_breakfast!: boolean
-    includes_lunch!: boolean
-    includes_dinner!: boolean
     published!: boolean
     deleted_at!: null | string | Date
 
