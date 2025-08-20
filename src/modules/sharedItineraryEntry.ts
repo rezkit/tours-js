@@ -101,7 +101,7 @@ export class SharedItineraryEntries extends ApiGroup {
     }
 
     async update (id: string, params: UpdateSharedItineraryEntry): Promise<SharedItineraryEntry> {
-        const { data } = await this.axios.post<ISharedItineraryEntry>(`${this.path}/${id}`, params)
+        const { data } = await this.axios.patch<ISharedItineraryEntry>(`${this.path}/${id}`, params)
         return new SharedItineraryEntry(data, this.axios)
     }
 
