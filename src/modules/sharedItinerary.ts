@@ -2,6 +2,7 @@ import type { Entity, Paginated, PaginatedQuery, QueryBoolean, SortableQuery } f
 import { ApiGroup } from './common.js'
 import type { AxiosInstance } from 'axios'
 import timestamp from '../annotations/timestamp.js'
+import {SharedItineraryEntries} from "./sharedItineraryEntry";
 
 export interface ISharedItinerary extends Entity {
     shared_id: string
@@ -116,5 +117,7 @@ export class Api extends ApiGroup {
         await this.axios.put(`/itineraries/${id}/restore`)
     }
 
-    entries (itineraryId: string):
+    entries (itineraryId: string): SharedItineraryEntries {
+        return new SharedItineraryEntries(this.axios, itineraryId)
+    }
 }
