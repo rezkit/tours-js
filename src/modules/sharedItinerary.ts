@@ -52,6 +52,10 @@ export class SharedItinerary implements ISharedItinerary {
         return this
     }
 
+    get entries (): SharedItineraryEntries {
+        return new SharedItineraryEntries(this.axios, this.id)
+    }
+
     async delete (orphan: boolean = false): Promise<void> {
         await this.axios.delete(this.path, { params: { orphan } })
         this.deleted_at = new Date()
