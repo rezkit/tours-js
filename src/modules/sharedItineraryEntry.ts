@@ -1,5 +1,4 @@
 import type { Entity, Fields, Paginated, PaginatedQuery, SortableQuery } from './common.js'
-import { Content, ContentAttachment, type Contentized } from './content.js'
 import type { AxiosInstance } from 'axios'
 import { ApiGroup } from './common.js'
 import timestamp from '../annotations/timestamp.js'
@@ -35,7 +34,7 @@ export type SortSharedItineraryEntry = 'id' | 'itinerary_id' | 'start_day' | 'en
 export interface ListSharedItineraryEntryParams extends PaginatedQuery, SortableQuery<SortSharedItineraryEntry> {}
 
 
-export class SharedItineraryEntry implements ISharedItineraryEntry, Contentized<SharedItineraryEntry> {
+export class SharedItineraryEntry implements ISharedItineraryEntry {
     private readonly axios: AxiosInstance
 
     readonly id!: string
@@ -68,10 +67,6 @@ export class SharedItineraryEntry implements ISharedItineraryEntry, Contentized<
     async destroy (): Promise<void> {
         await this.axios.delete(this.path)
         this.deleted_at = new Date()
-    }
-
-    content (): ContentAttachment<this> {
-        return new ContentAttachment<this>(this.axios, 'shared_itinerary_entry', this)
     }
 
     get path (): string {
@@ -117,10 +112,6 @@ export class SharedItineraryEntries extends ApiGroup {
     async restore (id: string): Promise<SharedItineraryEntry> {
         const { data } = await this.axios.put<ISharedItineraryEntry>(`${this.path}/${id}/restore`)
         return new SharedItineraryEntry(data, this.axios)
-    }
-
-    get content (): Content {
-        return new Content(this.axios, 'shared_itinerary_entry')
     }
 
     get path (): string {

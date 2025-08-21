@@ -6,7 +6,6 @@ import type { FieldData } from './fields.js'
 import type { Locatable } from './locations.js'
 import { LocationAttachment } from './locations.js'
 import { type Accommodatable, AccommodationsAttachment } from './accommodations.js'
-import { Content, ContentAttachment, type Contentized } from './content.js'
 
 export interface IItineraryEntry extends Entity, Fields {
 
@@ -57,7 +56,7 @@ export interface CreateItineraryEntry extends Partial<Fields> {
 
 export type UpdateItineraryEntry = Partial<CreateItineraryEntry>
 
-export class ItineraryEntry implements IItineraryEntry, Locatable<ItineraryEntry>, Accommodatable<IItineraryEntry>, Contentized<ItineraryEntry> {
+export class ItineraryEntry implements IItineraryEntry, Locatable<ItineraryEntry>, Accommodatable<IItineraryEntry> {
   private readonly axios: AxiosInstance
 
   @timestamp() readonly created_at!: Date
@@ -105,10 +104,6 @@ export class ItineraryEntry implements IItineraryEntry, Locatable<ItineraryEntry
   accommodations (): AccommodationsAttachment<this> {
     return new AccommodationsAttachment<this>(this.axios, 'itinerary', this)
   }
-
-  content (): ContentAttachment<this> {
-      return new ContentAttachment<this>(this.axios, 'itinerary', this)
-  }
 }
 
 export type SortItineraryEntry = 'id' | 'shared_id' | 'start_day' | 'end_day' | 'title' | 'created_at' | 'updated_at'
@@ -154,9 +149,5 @@ export class Itinerary extends ApiGroup {
   async restore (id: string): Promise<ItineraryEntry> {
     const { data } = await this.axios.put<IItineraryEntry>(`/holidays/versions/${this.version_id}/itinerary/${id}/restore`)
     return new ItineraryEntry(data, this.axios)
-  }
-
-  get content (): Content {
-      return new Content(this.axios, 'itinerary')
   }
 }
