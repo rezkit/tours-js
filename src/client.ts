@@ -124,6 +124,10 @@ export default class TourManager {
   cakes (): Modules.Cakes.Api {
     return new Modules.Cakes.Api(this.axios)
   }
+
+  sharedItineraries (): Modules.SharedItinerary.Api {
+    return new Modules.SharedItinerary.Api(this.axios)
+  }
 }
 
 /**

@@ -145,6 +145,7 @@ export type EntityType =
     'content' |
     'image' |
     'itinerary' |
+    'shared_itinerary_entry' |
     'location' |
     'accommodation' |
     'room_type' |
