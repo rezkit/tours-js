@@ -210,8 +210,13 @@ export class AccommodationsAttachment<T extends ID> extends ApiGroup {
     return response as Paginated<AccommodationPivot>
   }
 
-  async attach (ids: string[]): Promise<AttachmentResponse> {
+  async replace (ids: string[]): Promise<AttachmentResponse> {
     const { data } = await this.axios.put<AttachmentResponse>(this.path, { ids })
+    return data
+  }
+
+  async attach (ids: string[]): Promise<AttachmentResponse> {
+    const { data } = await this.axios.patch<AttachmentResponse>(this.path, { ids })
     return data
   }
 
