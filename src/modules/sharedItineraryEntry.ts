@@ -64,8 +64,8 @@ export class SharedItineraryEntry implements ISharedItineraryEntry {
         return this
     }
 
-    async destroy (): Promise<void> {
-        await this.axios.delete(this.path)
+    async delete (orphan: boolean = false): Promise<void> {
+        await this.axios.delete(this.path, { params: { orphan } })
         this.deleted_at = new Date()
     }
 
@@ -105,8 +105,8 @@ export class SharedItineraryEntries extends ApiGroup {
         return new SharedItineraryEntry(data, this.axios)
     }
 
-    async delete (id: string): Promise<void> {
-        await this.axios.delete(`${this.path}/${id}`)
+    async delete (id: string, orphan: boolean = false): Promise<void> {
+        await this.axios.delete(`${this.path}/${id}`, { params: { orphan } })
     }
 
     async restore (id: string): Promise<SharedItineraryEntry> {
