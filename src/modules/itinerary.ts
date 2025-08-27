@@ -140,8 +140,11 @@ export class Itinerary extends ApiGroup {
     return new ItineraryEntry(data, this.axios)
   }
 
-  async attachShared (sharedId: string) {
-      const { data } = await this.axios.put<Paginated<IItineraryEntry>>(`/holidays/versions/${this.version_id}/itinerary/shared/${sharedId}/attach`)
+  async attachShared (sharedId: string, start_day: number) {
+      const { data } = await this.axios.put<Paginated<IItineraryEntry>>(
+          `/holidays/versions/${this.version_id}/itinerary/shared/${sharedId}/attach`,
+          { params: { start_day } }
+      )
       data.data = data.data.map(i => new ItineraryEntry(i, this.axios))
 
       return data as Paginated<ItineraryEntry>
