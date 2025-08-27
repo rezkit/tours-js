@@ -13,6 +13,8 @@ export interface IItineraryEntry extends Entity, Fields {
 
   shared_id: string | null
 
+  shared_name: string | null
+
   start_day: number
 
   end_day: number
@@ -72,6 +74,7 @@ export class ItineraryEntry implements IItineraryEntry, Locatable<ItineraryEntry
   @timestamp() readonly updated_at!: Date
   version_id!: string
   shared_id!: string | null
+  shared_name!: string | null
   published!: boolean
   fields!: FieldData
   deleted_at?: Date
