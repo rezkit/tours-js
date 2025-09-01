@@ -80,6 +80,11 @@ export class Api extends ApiGroup {
         return data as Paginated<SharedItinerary>
     }
 
+    async uses(id: string): Promise<[]> {
+        const { data } = await this.axios.get<[]>(`/itineraries/${id}/uses`)
+        return data
+    }
+
     async find (id: string): Promise<SharedItinerary> {
         const { data } = await this.axios.get<ISharedItinerary>(`/itineraries/${id}`)
         return new SharedItinerary(data, this.axios)
