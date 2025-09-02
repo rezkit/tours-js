@@ -11,6 +11,10 @@ export interface IItineraryEntry extends Entity, Fields {
 
   version_id: string
 
+  shared_id: string | null
+
+  shared_name: string | null
+
   start_day: number
 
   end_day: number
@@ -48,6 +52,8 @@ export interface CreateItineraryEntry extends Partial<Fields> {
   includes_dinner?: boolean
 
   published?: boolean
+
+  shared_id?: string | null
 }
 
 export type UpdateItineraryEntry = Partial<CreateItineraryEntry>
@@ -67,6 +73,8 @@ export class ItineraryEntry implements IItineraryEntry, Locatable<ItineraryEntry
   title!: string
   @timestamp() readonly updated_at!: Date
   version_id!: string
+  shared_id!: string | null
+  shared_name!: string | null
   published!: boolean
   fields!: FieldData
   deleted_at?: Date
@@ -101,7 +109,7 @@ export class ItineraryEntry implements IItineraryEntry, Locatable<ItineraryEntry
   }
 }
 
-export type SortItineraryEntry = 'id' | 'start_day' | 'end_day' | 'title' | 'created_at' | 'updated_at'
+export type SortItineraryEntry = 'id' | 'shared_id' | 'start_day' | 'end_day' | 'title' | 'created_at' | 'updated_at'
 export interface ListItineraryParams extends PaginatedQuery, SortableQuery<SortItineraryEntry> {
 
 }
@@ -130,6 +138,14 @@ export class Itinerary extends ApiGroup {
   async create (params: CreateItineraryEntry): Promise<ItineraryEntry> {
     const { data } = await this.axios.post<IItineraryEntry>(`/holidays/versions/${this.version_id}/itinerary`, params)
     return new ItineraryEntry(data, this.axios)
+  }
+
+  async attachShared (sharedId: string, start_day: number): Promise<boolean> {
+      const { data } = await this.axios.put(
+          `/holidays/versions/${this.version_id}/itinerary/shared/${sharedId}/attach`,
+          { start_day }
+      )
+      return data
   }
 
   async update (id: string, params: UpdateItineraryEntry): Promise<ItineraryEntry> {
