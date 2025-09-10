@@ -3,6 +3,7 @@ import { ApiGroup } from './common.js'
 import type { AxiosInstance } from 'axios'
 import timestamp from '../annotations/timestamp.js'
 import { SharedItineraryEntries } from './sharedItineraryEntry.js'
+import {HolidayVersion, IHolidayVersion} from "./holidayVersion";
 
 export interface ISharedItinerary extends Entity {
     shared_id: string
@@ -80,10 +81,12 @@ export class Api extends ApiGroup {
         return data as Paginated<SharedItinerary>
     }
 
-    async uses(id: string, params?: PaginatedQuery): Promise<any> {
-        let { data } = await this.axios.get<any>(`/itineraries/${id}/uses`, { params })
+    async uses(id: string, params?: PaginatedQuery): Promise<Paginated<HolidayVersion>> {
+        let { data } = await this.axios.get<Paginated<IHolidayVersion>>(`/itineraries/${id}/uses`, { params })
 
-        return data
+        data.data = data.data.map(v => new HolidayVersion(v, this.axios))
+
+        return data as Paginated<HolidayVersion>
     }
 
     async find (id: string): Promise<SharedItinerary> {
