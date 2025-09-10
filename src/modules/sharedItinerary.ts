@@ -81,9 +81,9 @@ export class Api extends ApiGroup {
     }
 
     async uses(id: string, params?: PaginatedQuery): Promise<Paginated<SharedItinerary[]>> {
-        const { data } = await this.axios.get<Paginated<any[]>>(`/itineraries/${id}/uses`, { params })
+        let { data } = await this.axios.get<any>(`/itineraries/${id}/uses`, { params })
 
-        data.data = data.data.map(i => i.map(j => new SharedItinerary(j, this.axios)))
+        data = data.map(i => i.map(j => new SharedItinerary(j, this.axios)))
 
         return data
     }
