@@ -11,6 +11,8 @@ export interface IItineraryEntry extends Entity, Fields {
 
   version_id: string
 
+  grandparent_id: string | null
+
   shared_id: string | null
 
   shared_name: string | null
@@ -73,6 +75,7 @@ export class ItineraryEntry implements IItineraryEntry, Locatable<ItineraryEntry
   title!: string
   @timestamp() readonly updated_at!: Date
   version_id!: string
+  grandparent_id!: string | null
   shared_id!: string | null
   shared_name!: string | null
   published!: boolean
