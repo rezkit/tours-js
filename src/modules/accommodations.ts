@@ -17,6 +17,8 @@ import { ContentAttachment, type Contentized } from './content.js'
 import { type Imagable, ImageAttachment } from './images.js'
 import type { FieldData } from './fields.js'
 import { RoomTypes } from './roomTypes.js'
+import type { Locatable } from './locations.js'
+import { LocationAttachment } from './locations.js'
 
 export interface IAccommodation extends Entity, Fields, SEO, Slugged {
   name: string
@@ -74,7 +76,12 @@ export interface ListAccommodationsQuery extends PaginatedQuery {
   description?: string
 }
 
-export class Accommodation implements IAccommodation, Categorized<Accommodation>, Contentized<Accommodation>, Imagable<Accommodation> {
+export class Accommodation implements
+    IAccommodation,
+    Categorized<Accommodation>,
+    Contentized<Accommodation>,
+    Imagable<Accommodation>,
+    Locatable<Accommodation> {
   readonly id!: string
 
   name!: string
@@ -142,6 +149,10 @@ export class Accommodation implements IAccommodation, Categorized<Accommodation>
   images (): ImageAttachment<Accommodation> {
     return new ImageAttachment(this.axios, 'accommodation', this)
   }
+
+    locations (): LocationAttachment<this> {
+        return new LocationAttachment<this>(this.axios, 'accommodation', this)
+    }
 
   get path (): string {
     return `/accommodations/${this.id}`
