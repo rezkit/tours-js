@@ -7,6 +7,8 @@ import type { Locatable } from './locations.js'
 import { LocationAttachment } from './locations.js'
 import { type Accommodatable, AccommodationsAttachment } from './accommodations.js'
 import { ContentAttachment, type Contentized } from './content.js'
+import type { Imagable } from './images.js'
+import { ImageAttachment } from './images.js'
 
 export interface IItineraryEntry extends Entity, Fields {
 
@@ -61,7 +63,13 @@ export interface CreateItineraryEntry extends Partial<Fields> {
 
 export type UpdateItineraryEntry = Partial<CreateItineraryEntry>
 
-export class ItineraryEntry implements IItineraryEntry, Locatable<ItineraryEntry>, Accommodatable<IItineraryEntry>, Contentized<ItineraryEntry> {
+export class ItineraryEntry implements
+    IItineraryEntry,
+    Locatable<ItineraryEntry>,
+    Accommodatable<IItineraryEntry>,
+    Contentized<ItineraryEntry>,
+    Imagable<ItineraryEntry>
+{
   private readonly axios: AxiosInstance
 
   @timestamp() readonly created_at!: Date
@@ -114,6 +122,10 @@ export class ItineraryEntry implements IItineraryEntry, Locatable<ItineraryEntry
 
   content (): ContentAttachment<this> {
     return new ContentAttachment<this>(this.axios, 'itinerary', this)
+  }
+  
+  images (): ImageAttachment<this> {
+      return new ImageAttachment<this>(this.axios, 'itinerary', this)
   }
 }
 
