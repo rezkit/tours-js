@@ -1,6 +1,6 @@
 import type { AxiosInstance } from 'axios'
 import timestamp from '../annotations/timestamp.js'
-import type {UpdateOrganizationSettings, IOrganization, ImagePreset, OrganizationEnvironment} from './user.js'
+import type { UpdateOrganizationSettings, IOrganization, ImagePreset, OrganizationEnvironment } from './user.js'
 
 export class Organization implements IOrganization {
   private readonly axios: AxiosInstance

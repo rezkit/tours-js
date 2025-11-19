@@ -150,9 +150,9 @@ export class Accommodation implements
     return new ImageAttachment(this.axios, 'accommodation', this)
   }
 
-    locations (): LocationAttachment<this> {
-        return new LocationAttachment<this>(this.axios, 'accommodation', this)
-    }
+  locations (): LocationAttachment<this> {
+    return new LocationAttachment<this>(this.axios, 'accommodation', this)
+  }
 
   get path (): string {
     return `/accommodations/${this.id}`

@@ -108,7 +108,7 @@ export interface IAccommodationPrice extends Entity {
   readonly start: Date
   readonly end: Date
   readonly occupancy: { from: number, to: number }
-  readonly currency:  string
+  readonly currency: string
   readonly value: number
   readonly published: boolean
 }
@@ -122,16 +122,16 @@ export interface CreateAccommodationPriceParams {
   published: boolean
 }
 
-export interface ListAccommodationPriceParams extends PaginatedQuery{
+export interface ListAccommodationPriceParams extends PaginatedQuery {
   dates?: {
-    start?: Date,
-    end?: Date,
-  },
+    start?: Date
+    end?: Date
+  }
   before?: Date
   after?: Date
   occupancy?: {
-    from?: number,
-    to?: number,
+    from?: number
+    to?: number
   }
   currency?: string
   published?: boolean
@@ -144,15 +144,15 @@ export class AccommodationPrice implements IAccommodationPrice {
   readonly currency!: string
   readonly start!: Date
   readonly end!: Date
-  readonly occupancy!: { from: number; to: number }
+  readonly occupancy!: { from: number, to: number }
   readonly published!: boolean
-  readonly value!: number;
+  readonly value!: number
   @timestamp() readonly updated_at!: Date
   @timestamp() readonly created_at!: Date
 
   private readonly axios: AxiosInstance
 
-  constructor(data: IAccommodationPrice, axios: AxiosInstance) {
+  constructor (data: IAccommodationPrice, axios: AxiosInstance) {
     Object.assign(this, data)
     this.axios = axios
   }
@@ -166,7 +166,7 @@ export class AccommodationPrice implements IAccommodationPrice {
     return this
   }
 
-  async delete(): Promise<void> {
+  async delete (): Promise<void> {
     await this.axios.delete(
         `accommodations/${this.accommodation_id}/roomTypes/${this.room_type_id}/prices/${this.id}`
     )
