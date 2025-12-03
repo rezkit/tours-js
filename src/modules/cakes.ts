@@ -14,7 +14,7 @@ import type { TreeNode } from '../helpers.js'
 import timestamp from '../annotations/timestamp.js'
 
 export type CakeTypes = 'text' | 'number' | 'boolean' | 'selection' | 'section'
-export type DisplayTypes = 'fieldGroup' |
+export type DisplayTypes = 'section' |
 'number' |
 'numberStepper' |
 'text' |
