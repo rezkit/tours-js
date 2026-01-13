@@ -68,8 +68,7 @@ export class ItineraryEntry implements
     Locatable<ItineraryEntry>,
     Accommodatable<IItineraryEntry>,
     Contentized<ItineraryEntry>,
-    Imagable<ItineraryEntry>
-{
+    Imagable<ItineraryEntry> {
   private readonly axios: AxiosInstance
 
   @timestamp() readonly created_at!: Date
@@ -123,9 +122,9 @@ export class ItineraryEntry implements
   content (): ContentAttachment<this> {
     return new ContentAttachment<this>(this.axios, 'itinerary', this)
   }
-  
+
   images (): ImageAttachment<this> {
-      return new ImageAttachment<this>(this.axios, 'itinerary', this)
+    return new ImageAttachment<this>(this.axios, 'itinerary', this)
   }
 }
 
@@ -160,12 +159,12 @@ export class Itinerary extends ApiGroup {
     return new ItineraryEntry(data, this.axios)
   }
 
-  async attachShared (sharedId: string, start_day: number): Promise<boolean> {
-      const { data } = await this.axios.put(
+  async attachShared (sharedId: string, startDay: number): Promise<boolean> {
+    const { data } = await this.axios.put(
           `/holidays/versions/${this.version_id}/itinerary/shared/${sharedId}/attach`,
-          { start_day }
-      )
-      return data
+          { start_day: startDay }
+    )
+    return data
   }
 
   async update (id: string, params: UpdateItineraryEntry): Promise<ItineraryEntry> {

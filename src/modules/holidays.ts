@@ -23,7 +23,7 @@ import type { Imagable } from './images.js'
 import { ImageAttachment } from './images.js'
 import type { Locatable } from './locations.js'
 import { LocationAttachment } from './locations.js'
-import { Accommodatable, AccommodationsAttachment } from './accommodations.js'
+import { type Accommodatable, AccommodationsAttachment } from './accommodations.js'
 
 export * as Versions from './holidayVersion.js'
 

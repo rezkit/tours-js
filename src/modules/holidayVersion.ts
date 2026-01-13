@@ -1,7 +1,7 @@
 import type { AxiosInstance } from 'axios'
 import type { CreateHolidayInput, HolidayListQuery, IHoliday, UpdateHolidayInput } from './holidays.js'
 import type { FieldData } from './fields.js'
-import {ApiGroup, type Paginated, ReorderCommand} from './common.js'
+import { ApiGroup, type Paginated, type ReorderCommand } from './common.js'
 import { Categories, type Categorized, CategoryAttachment } from './categories.js'
 import { Elements } from './elements.js'
 import timestamp from '../annotations/timestamp.js'
@@ -12,7 +12,7 @@ import { LocationAttachment } from './locations.js'
 import { type IMap, Map } from './maps.js'
 import { type Accommodatable, AccommodationsAttachment } from './accommodations.js'
 import { ExtrasAttachment } from './extras.js'
-import { Cakeable, CakeAttachment } from './cakes.js'
+import { type Cakeable, CakeAttachment } from './cakes.js'
 
 export interface IHolidayVersion extends Omit<Omit<IHoliday, 'search_public'>, 'slug'> {
   holiday_id: string
@@ -48,7 +48,7 @@ export class HolidayVersion implements
     Object.assign(this, response)
     return this
   }
-  
+
   async move (ordering: ReorderCommand): Promise<number> {
     const response = (await this.axios.patch<IHolidayVersion>(this.path, { ordering })).data
     Object.assign(this, response)
@@ -110,7 +110,7 @@ export class HolidayVersion implements
     return new ExtrasAttachment<this>(this.axios, 'holiday_version', this)
   }
 
-  cakes ():CakeAttachment<this> {
+  cakes (): CakeAttachment<this> {
     return new CakeAttachment<this>(this.axios, 'holiday_version', this)
   }
 }
