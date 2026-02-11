@@ -35,7 +35,7 @@ export interface ICake extends Entity, TreeNode {
   label: string
   description: string | null
   published: boolean
-  required_to_reserve: boolean
+  required_to_confirm: boolean
   required_by: number | null
   validation: string | null
   global: boolean
@@ -51,7 +51,7 @@ export interface CreateCakeInput {
   label: string
   description?: string
   published: boolean
-  required_to_reserve: boolean
+  required_to_confirm: boolean
   required_by?: number
   validation?: string
   global: boolean
@@ -78,7 +78,7 @@ export class Cake implements ICake {
   label!: string
   description!: string | null
   published!: boolean
-  required_to_reserve!: boolean
+  required_to_confirm!: boolean
   required_by!: number | null
   validation!: string | null
   global!: boolean
