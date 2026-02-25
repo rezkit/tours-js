@@ -128,6 +128,10 @@ export default class TourManager {
   sharedItineraries (): Modules.SharedItinerary.Api {
     return new Modules.SharedItinerary.Api(this.axios)
   }
+
+  credentials (): Modules.Credentials.Api {
+    return new Modules.Credentials.Api(this.axios)
+  }
 }
 
 /**
