@@ -26,6 +26,7 @@ export class Credentials implements ICredentials {
   readonly id!: string
   name!: string
   public_key!: string
+  private_key!: string|null
   enabled!: boolean
 
   @timestamp() readonly created_at!: Date
