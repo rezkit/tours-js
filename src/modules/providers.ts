@@ -33,11 +33,9 @@ export class Providers implements IProviders {
 }
 
 export class Api extends ApiGroup {
-  async list (): Promise<Paginated<Providers>> {
-    const { data } = await this.axios.get<Paginated<IProviders>>(this.path)
-    data.data = data.data.map(p => new Providers(p, this.axios))
-
-    return data as Paginated<Providers>
+  async list (): Promise<Providers[]> {
+    const { data } = await this.axios.get<IProviders[]>(this.path)
+    return data.map(p => new Providers(p, this.axios))
   }
 
   async create (params: CreateProviderParams): Promise<Providers> {
