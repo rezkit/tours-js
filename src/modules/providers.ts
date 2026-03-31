@@ -34,14 +34,19 @@ export class Providers implements IProviders {
 
 export class Api extends ApiGroup {
   async list (): Promise<Paginated<Providers>> {
-    const { data } = await this.axios.get<Paginated<IProviders>>('/organization/providers')
+    const { data } = await this.axios.get<Paginated<IProviders>>(this.path)
     data.data = data.data.map(p => new Providers(p, this.axios))
 
     return data as Paginated<Providers>
   }
 
   async create (params: CreateProviderParams): Promise<Providers> {
-    const { data } = await this.axios.post<IProviders>('/organization/providers/create', params)
+    const { data } = await this.axios.post<IProviders>(this.path, params)
     return new Providers(data, this.axios)
+  }
+
+  // eslint-disable-next-line @typescript-eslint/class-literal-property-style
+  get path (): string {
+    return '/organization/providers'
   }
 }
