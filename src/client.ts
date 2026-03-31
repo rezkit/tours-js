@@ -132,6 +132,10 @@ export default class TourManager {
   credentials (): Modules.Credentials.Api {
     return new Modules.Credentials.Api(this.axios)
   }
+
+  providers (): Modules.Providers.Api {
+    return new Modules.Providers.Api(this.axios)
+  }
 }
 
 /**
