@@ -18,6 +18,10 @@ export interface CreateCredentialsParams {
   enabled: boolean
 }
 
+export interface CredentialsPrivateKey {
+  private_key: string
+}
+
 export interface UpdateCredentialsParams extends Partial<CreateCredentialsParams> {}
 
 export interface ListCredentialsQuery extends PaginatedQuery, Partial<CreateCredentialsParams> {}
@@ -57,6 +61,11 @@ export class Api extends ApiGroup {
   async find (id: string): Promise<Credentials> {
     const { data } = await this.axios.get<ICredentials>(this.path + `/${id}`)
     return new Credentials(data, this.axios)
+  }
+
+  async private (id: string): Promise<CredentialsPrivateKey> {
+    const { data } = await this.axios.get<CredentialsPrivateKey>(this.path + `/${id}/private`)
+    return data as CredentialsPrivateKey
   }
 
   async create (params: CreateCredentialsParams): Promise<Credentials> {
