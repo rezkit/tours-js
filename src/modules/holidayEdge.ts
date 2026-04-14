@@ -10,9 +10,15 @@ import {
 import { type Categorized, CategoryAttachment } from './categories.js'
 import timestamp from '../annotations/timestamp.js'
 
+export interface RelatedHoliday {
+  name: string
+  code: string
+}
+
 export interface IHolidayEdge extends Entity {
   source_id: string
   destination_id: string
+  holiday: RelatedHoliday
   category_id: string
   start_day: number
   ordering?: number
@@ -46,6 +52,7 @@ export class HolidayEdge implements
   readonly id!: string
   source_id!: string
   destination_id!: string
+  holiday!: RelatedHoliday
   category_id!: string
   start_day!: number
   ordering?: number
