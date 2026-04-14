@@ -30,6 +30,7 @@ export interface UpdateHolidayEdgeParams extends Partial<CreateHolidayEdgeParams
   ordering?: ReorderCommand
   category_id?: string
   start_day?: number
+  published?: boolean
 }
 
 export class HolidayEdge implements
