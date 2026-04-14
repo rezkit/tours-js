@@ -14,6 +14,7 @@ export interface IHolidayEdge extends Entity {
   source_id: string
   destination_id: string
   category_id: string
+  start_day: number
   ordering?: number
   published: boolean
 }
@@ -21,11 +22,14 @@ export interface IHolidayEdge extends Entity {
 export interface CreateHolidayEdgeParams {
   destination_id: string
   category_id: string
+  start_day: number
   published?: boolean
 }
 
 export interface UpdateHolidayEdgeParams extends Partial<CreateHolidayEdgeParams> {
   ordering?: ReorderCommand
+  category_id?: string
+  start_day?: number
 }
 
 export class HolidayEdge implements
@@ -42,6 +46,7 @@ export class HolidayEdge implements
   source_id!: string
   destination_id!: string
   category_id!: string
+  start_day!: number
   ordering?: number
   published!: boolean
   @timestamp() readonly created_at!: Date
