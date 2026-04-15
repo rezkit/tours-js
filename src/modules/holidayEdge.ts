@@ -44,6 +44,7 @@ export interface UpdateHolidayEdgeParams {
   start_day?: number | null
   published?: boolean
   ordering?: ReorderCommand
+  update_twin?: boolean
 }
 
 export class HolidayEdge implements
@@ -84,7 +85,7 @@ export class HolidayEdge implements
     return new CategoryAttachment(this.axios, 'holiday_edge', this)
   }
 
-  async delete (id: string): Promise<void> {
+  async delete (id: string, deleteTwin?: boolean): Promise<void> {
     await this.axios.delete(this.path)
     this.deleted_at = new Date()
   }
@@ -128,7 +129,7 @@ export class HolidayEdges extends ApiGroup {
     return new HolidayEdge(data, this.axios)
   }
 
-  async delete (id: string): Promise<void> {
+  async delete (id: string, deleteTwin?: boolean): Promise<void> {
     await this.axios.delete(`/holidays/${this.holidayId}/relations/${id}`)
   }
 
