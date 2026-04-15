@@ -36,9 +36,13 @@ export interface CreateHolidayEdgeParams {
   category_id: string
   start_day: number | null
   published: boolean
+  create_twin: boolean
 }
 
-export interface UpdateHolidayEdgeParams extends Partial<CreateHolidayEdgeParams> {
+export interface UpdateHolidayEdgeParams {
+  category_id?: string
+  start_day?: number | null
+  published?: boolean
   ordering?: ReorderCommand
 }
 
