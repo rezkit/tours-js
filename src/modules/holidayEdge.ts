@@ -7,7 +7,7 @@ import {
   type SortableQuery,
   ApiGroup
 } from './common.js'
-import { type Categorized, CategoryAttachment } from './categories.js'
+import { Categories, type Categorized, CategoryAttachment } from './categories.js'
 import timestamp from '../annotations/timestamp.js'
 
 export interface RelatedHoliday {
@@ -19,8 +19,8 @@ export interface IHolidayEdge extends Entity {
   source_id: string
   destination_id: string
   holiday: RelatedHoliday
-  category_id: string
-  start_day?: number
+  category: ICategory
+  start_day: number | null
   ordering?: number
   published: boolean
 }
@@ -28,14 +28,15 @@ export interface IHolidayEdge extends Entity {
 export interface CreateHolidayEdgeParams {
   destination_id: string
   category_id: string
-  start_day?: number
+  start_day: number | null
+  ordering?: number
   published?: boolean
 }
 
 export interface UpdateHolidayEdgeParams extends Partial<CreateHolidayEdgeParams> {
   ordering?: ReorderCommand
   category_id?: string
-  start_day?: number
+  start_day?: number | null
   published?: boolean
 }
 
@@ -116,10 +117,11 @@ export class HolidayEdges extends ApiGroup {
 
   async delete (id: string): Promise<void> {
     await this.axios.delete(`/holidays/${this.holidayId}/relations/${id}`)
+    this.deleted_at = new Date()
   }
 
   async restore (id: string): Promise<void> {
     const { data } = await this.axios.put<IHolidayEdge>(`/holidays/${this.holidayId}/relations/${id}/restore`)
-    return new HolidayEdge(data, this.axios)
+    this.deleted_at = null
   }
 }
