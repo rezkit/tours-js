@@ -20,7 +20,7 @@ export interface IHolidayEdge extends Entity {
   destination_id: string
   holiday: RelatedHoliday
   category_id: string
-  start_day: number
+  start_day?: number
   ordering?: number
   published: boolean
 }
@@ -28,7 +28,7 @@ export interface IHolidayEdge extends Entity {
 export interface CreateHolidayEdgeParams {
   destination_id: string
   category_id: string
-  start_day: number
+  start_day?: number
   published?: boolean
 }
 
@@ -54,7 +54,7 @@ export class HolidayEdge implements
   destination_id!: string
   holiday!: RelatedHoliday
   category_id!: string
-  start_day!: number
+  start_day!: number | null
   ordering?: number
   published!: boolean
   @timestamp() readonly created_at!: Date
