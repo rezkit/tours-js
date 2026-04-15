@@ -35,14 +35,11 @@ export interface CreateHolidayEdgeParams {
   destination_id: string
   category_id: string
   start_day: number | null
-  published?: boolean
+  published: boolean
 }
 
 export interface UpdateHolidayEdgeParams extends Partial<CreateHolidayEdgeParams> {
   ordering?: ReorderCommand
-  category_id?: string
-  start_day?: number | null
-  published?: boolean
 }
 
 export class HolidayEdge implements
@@ -123,7 +120,7 @@ export class HolidayEdges extends ApiGroup {
   }
 
   async create (params: CreateHolidayEdgeParams): Promise<HolidayEdge> {
-    const { data } = await this.axios.post<IHolidayEdge>(`/holidays/${this.holidayId}/relations`, { params })
+    const { data } = await this.axios.post<IHolidayEdge>(`/holidays/${this.holidayId}/relations`, params)
     return new HolidayEdge(data, this.axios)
   }
 
