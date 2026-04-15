@@ -5,9 +5,15 @@ import {
   type PaginatedQuery,
   type ReorderCommand,
   type SortableQuery,
+  type QueryBoolean,
   ApiGroup
 } from './common.js'
-import { Categories, type Categorized, CategoryAttachment } from './categories.js'
+import {
+  type Categorized,
+  type ICategory,
+  Category,
+  CategoryAttachment
+} from './categories.js'
 import timestamp from '../annotations/timestamp.js'
 
 export interface RelatedHoliday {
@@ -29,7 +35,6 @@ export interface CreateHolidayEdgeParams {
   destination_id: string
   category_id: string
   start_day: number | null
-  ordering?: number
   published?: boolean
 }
 
@@ -54,10 +59,11 @@ export class HolidayEdge implements
   source_id!: string
   destination_id!: string
   holiday!: RelatedHoliday
-  category_id!: string
+  category!: Category
   start_day!: number | null
-  ordering?: number
+  ordering!: number
   published!: boolean
+  deleted_at!: null | string | Date
   @timestamp() readonly created_at!: Date
   @timestamp() readonly updated_at!: Date
 
@@ -73,16 +79,22 @@ export class HolidayEdge implements
     return this.ordering
   }
 
-  async delete (): Promise<void> {
-    await this.axios.delete(this.path)
-  }
-
   categories (): CategoryAttachment<HolidayEdge> {
     return new CategoryAttachment(this.axios, 'holiday_edge', this)
   }
 
+  async delete (id: string): Promise<void> {
+    await this.axios.delete(this.path)
+    this.deleted_at = new Date()
+  }
+
+  async restore (id: string): Promise<void> {
+    await this.axios.put<IHolidayEdge>(this.path + '/restore')
+    this.deleted_at = null
+  }
+
   get path (): string {
-    return `/holidays/${this.source_id}/versions/${this.id}`
+    return `/holidays/${this.source_id}/relations/${this.id}`
   }
 }
 
@@ -117,11 +129,9 @@ export class HolidayEdges extends ApiGroup {
 
   async delete (id: string): Promise<void> {
     await this.axios.delete(`/holidays/${this.holidayId}/relations/${id}`)
-    this.deleted_at = new Date()
   }
 
   async restore (id: string): Promise<void> {
-    const { data } = await this.axios.put<IHolidayEdge>(`/holidays/${this.holidayId}/relations/${id}/restore`)
-    this.deleted_at = null
+    await this.axios.put<IHolidayEdge>(`/holidays/${this.holidayId}/relations/${id}/restore`)
   }
 }
