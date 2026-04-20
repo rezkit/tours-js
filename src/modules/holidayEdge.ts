@@ -128,6 +128,12 @@ export class HolidayEdges extends ApiGroup {
     return new HolidayEdge(data, this.axios)
   }
 
+  async update (params: UpdateHolidayEdgeParams): Promise<HolidayEdge> {
+    const { data } = await this.axios.patch<IHolidayEdge>(`/holidays/${this.holidayId}/relations`, params)
+    Object.assign(this, data)
+    return new HolidayEdge(data, this.axios)
+  }
+
   async delete (id: string): Promise<void> {
     await this.axios.delete(`/holidays/${this.holidayId}/relations/${id}`)
   }
