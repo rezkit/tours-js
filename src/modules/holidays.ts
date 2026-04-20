@@ -15,6 +15,7 @@ import {
 import type { FieldData } from './fields.js'
 import type { AxiosInstance } from 'axios'
 import { HolidayVersions } from './holidayVersion.js'
+import { HolidayEdges } from './holidayEdge.js'
 import { Categories, type Categorized, CategoryAttachment } from './categories.js'
 import timestamp from '../annotations/timestamp.js'
 import { Departures } from './departures.js'
@@ -295,6 +296,10 @@ export class Api extends ApiGroup {
      */
   versions (holidayId: string): HolidayVersions {
     return new HolidayVersions(this.axios, holidayId)
+  }
+
+  edges (holidayId: string): HolidayEdges {
+    return new HolidayEdges(this.axios, holidayId)
   }
 
   /**

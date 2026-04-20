@@ -139,6 +139,7 @@ export type EntityType =
     'holiday' |
     'category' |
     'holiday_version' |
+    'holiday_edge' |
     'element' |
     'element_option' |
     'departure' |
