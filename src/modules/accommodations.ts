@@ -43,11 +43,15 @@ interface IAccommodationPivot {
   description: string | null
   max_pre_days: number
   max_post_days: number
+  ordering: number
 }
 
 interface attachmentUpdate {
-  accommodations_id: string
+  accommodation_id: string
   description?: string
+  max_pre_days?: number
+  max_post_days?: number
+  ordering?: ReorderCommand
 }
 
 export class AccommodationPivot implements IAccommodationPivot {
@@ -57,6 +61,7 @@ export class AccommodationPivot implements IAccommodationPivot {
   description!: string | null
   max_pre_days!: number
   max_post_days!: number
+  ordering!: number
   private readonly axios: AxiosInstance
 
   constructor (values: IAccommodationPivot, axios: AxiosInstance) {
