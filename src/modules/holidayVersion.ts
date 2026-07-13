@@ -30,6 +30,11 @@ export interface CreateHolidayVersionInput extends CreateHolidayInput {
   map_id?: string | null
 }
 
+export interface CopyHolidayVersionInput {
+  name: string
+  code: string
+}
+
 export class HolidayVersion implements
     IHolidayVersion,
     Categorized<HolidayVersion>,
@@ -147,6 +152,20 @@ export class HolidayVersions extends ApiGroup {
      */
   async create (params: CreateHolidayVersionInput): Promise<HolidayVersion> {
     const response = (await this.axios.post<IHolidayVersion>(`/holidays/${this.holidayId}/versions`, params)).data
+    return new HolidayVersion(response, this.axios)
+  }
+
+    /**
+     * Copy a Version within this holiday
+     *
+     * The copy includes the version's locations, elements and options,
+     * itinerary entries and custom fields, and is unpublished by default.
+     *
+     * @param id ID of the version to copy
+     * @param params Name and code for the new version
+     */
+  async copy (id: string, params: CopyHolidayVersionInput): Promise<HolidayVersion> {
+    const response = (await this.axios.put<IHolidayVersion>(`/holidays/${this.holidayId}/versions/${id}/copy`, params)).data
     return new HolidayVersion(response, this.axios)
   }
 
