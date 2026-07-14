@@ -36,6 +36,7 @@ export interface ICake extends Entity, TreeNode {
   description: string | null
   published: boolean
   required_to_confirm: boolean
+  is_deadline_enforced: boolean
   required_by: number | null
   validation: string | null
   global: boolean
@@ -52,6 +53,7 @@ export interface CreateCakeInput {
   description?: string
   published: boolean
   required_to_confirm: boolean
+  is_deadline_enforced: boolean
   required_by?: number
   validation?: string
   global: boolean
@@ -79,6 +81,7 @@ export class Cake implements ICake {
   description!: string | null
   published!: boolean
   required_to_confirm!: boolean
+  is_deadline_enforced!: boolean
   required_by!: number | null
   validation!: string | null
   global!: boolean
