@@ -291,6 +291,10 @@ export class ExtrasAttachment<T extends ID> extends ApiGroup {
     return data
   }
 
+  async move (id: string, ordering: ReorderCommand): Promise<void> {
+    await this.axios.post(this.path + `/${id}/order`, { ordering })
+  }
+
   get path (): string {
     return `/${this.type}/${this.entity.id}/extras`
   }
