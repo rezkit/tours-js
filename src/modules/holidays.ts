@@ -37,6 +37,8 @@ export interface IHoliday extends Entity, Fields, Slugged, SEO {
 
   description: string | null
 
+  product_description: string | null
+
   published: boolean
 
   search_public: boolean | null
@@ -51,6 +53,7 @@ export interface CreateHolidayInput extends Partial<Fields> {
   slug?: string | null
   introduction?: string | null
   description?: string | null
+  product_description?: string | null
   published?: boolean | null
   search_public?: boolean
   seo?: Partial<SEOProperties>
@@ -172,6 +175,7 @@ export class Holiday implements IHoliday, Categorized<Holiday>, Contentized<Holi
   @timestamp() readonly created_at!: Date
   @timestamp() readonly updated_at!: Date
   description!: string | null
+  product_description!: string | null
   fields!: FieldData
   readonly id!: string
   introduction!: string | null
