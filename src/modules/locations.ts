@@ -122,11 +122,6 @@ export interface ListLocationsQuery extends PaginatedQuery, SortableQuery<Locati
    * Used for the linking view. Prepends the beginning of the list with the ancestry roots of the first item
    */
   prepend_ancestry?: QueryBoolean
-
-  /**
-   * Used to retrieve the ancestry of a parent node
-   */
-  ids?: string | null
 }
 
 export interface CreateLocationParams extends Partial<Fields> {
