@@ -126,7 +126,7 @@ export interface ListLocationsQuery extends PaginatedQuery, SortableQuery<Locati
   /**
    * Used to retrieve the ancestry of a parent node
    */
-  descendant_of?: string | null
+  ids?: string | null
 }
 
 export interface CreateLocationParams extends Partial<Fields> {
