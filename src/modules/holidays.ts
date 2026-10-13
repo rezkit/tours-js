@@ -202,6 +202,11 @@ export interface HolidayListQuery extends PaginatedQuery, SortableQuery<HolidayS
   name?: string
 
   /**
+     * Filter holidays by slug
+     */
+  slug?: string
+
+  /**
      * Filter holidays by code
      */
   code?: string

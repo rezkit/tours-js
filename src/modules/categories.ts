@@ -92,6 +92,7 @@ export class Category implements ICategory {
 export type CategorySortFields = 'name' | 'parent_id'
 export interface ListCategoriesQuery extends PaginatedQuery, SortableQuery<CategorySortFields> {
   name?: string
+  slug?: string
   search?: string
   published?: QueryBoolean
   searchable?: QueryBoolean

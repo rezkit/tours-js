@@ -100,6 +100,7 @@ export type LocationSortFields = 'name' | 'parent_id'
 
 export interface ListLocationsQuery extends PaginatedQuery, SortableQuery<LocationSortFields> {
   name?: string
+  slug?: string
   search?: string
   published?: QueryBoolean
 

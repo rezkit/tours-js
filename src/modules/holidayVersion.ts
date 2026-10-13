@@ -91,6 +91,7 @@ export class HolidayVersion implements
   readonly introduction!: string | null
   readonly name!: string
   readonly ordering!: number
+  readonly product_description!: string | null
   readonly published!: boolean
   duration?: number
   readonly map_id?: string

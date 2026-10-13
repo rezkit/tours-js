@@ -76,6 +76,7 @@ export interface ListAccommodationsQuery extends PaginatedQuery {
   before?: Date
   after?: Date
   name?: string
+  slug?: string
   search?: string
   published?: QueryBoolean
   description?: string
