@@ -83,12 +83,12 @@ export class Element implements IElement {
   balance_due!: number | null
   category!: Category
   name!: string
-  @timestamp() readonly created_at!: Date
+  @timestamp() accessor created_at!: Date
   readonly id!: string
   default_inventory!: Inventory
   is_package!: boolean
   published!: boolean
-  @timestamp() readonly updated_at!: Date
+  @timestamp() accessor updated_at!: Date
   version_id!: string
   fields!: FieldData
 
@@ -103,19 +103,19 @@ export class Element implements IElement {
 export class ElementOption implements IElementOption {
   category!: Category
   constraints!: Record<string, any>
-  @timestamp() readonly created_at!: Date
+  @timestamp() accessor created_at!: Date
   readonly id!: string
   is_lead!: boolean
   name!: string
   occupancy!: { from: number, to: number }
   price_unit!: PriceUnit
   published!: boolean
-  @timestamp() readonly updated_at!: Date
+  @timestamp() accessor updated_at!: Date
   web_bookable!: boolean
 
   private readonly axios: AxiosInstance
 
-  @timestamp() deleted_at?: Date
+  deleted_at!: null | string | Date
 
   readonly element_id: string
 

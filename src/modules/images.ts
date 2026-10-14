@@ -73,8 +73,8 @@ export class Image implements IImage {
   }
 
   private readonly axios: AxiosInstance
-  @timestamp() readonly created_at!: Date
-  @timestamp() readonly updated_at!: Date
+  @timestamp() accessor created_at!: Date
+  @timestamp() accessor updated_at!: Date
   category!: ICategory
   content!: string | null
   dimensions!: ImageDimensions

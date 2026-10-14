@@ -1,5 +1,5 @@
 import type { AxiosInstance } from 'axios'
-import { ApiGroup, type Entity, type Paginated } from './common.js'
+import { ApiGroup } from './common.js'
 import timestamp from '../annotations/timestamp.js'
 
 export interface IProviders {
@@ -23,8 +23,8 @@ export class Providers implements IProviders {
   descriptorUrl!: string
   enabled!: boolean
 
-  @timestamp() readonly createdAt!: Date
-  @timestamp() readonly updatedAt!: Date
+  @timestamp() accessor createdAt!: Date
+  @timestamp() accessor updatedAt!: Date
 
   private readonly axios: AxiosInstance
 

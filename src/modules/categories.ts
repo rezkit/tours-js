@@ -67,12 +67,12 @@ export class Category implements ICategory {
     return response.ordering
   }
 
-  @timestamp() readonly created_at!: Date
+  @timestamp() accessor created_at!: Date
   readonly id!: string
   name!: string
   parent_id!: string | null
   type!: EntityType
-  @timestamp() readonly updated_at!: Date
+  @timestamp() accessor updated_at!: Date
   deleted_at?: Date
   description!: string | null
   published!: boolean

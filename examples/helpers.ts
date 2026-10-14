@@ -1,4 +1,4 @@
-import type {AxiosRequestConfig} from "axios/index";
+import type {AxiosRequestConfig} from "axios";
 import TourManager from '@rezkit/tours'
 
 export async function auth(req: AxiosRequestConfig): Promise<string> {

@@ -36,10 +36,10 @@ export interface CreateDepartureRequest extends Partial<Fields> {
 export type UpdateDepartureRequest = Partial<Omit<CreateDepartureRequest, 'version_id'>>
 
 export class Departure implements IDeparture, Categorized<Departure> {
-  @timestamp() readonly created_at!: Date
+  @timestamp() accessor created_at!: Date
   readonly id!: string
 
-  @timestamp() readonly updated_at!: Date
+  @timestamp() accessor updated_at!: Date
 
   private readonly axios: AxiosInstance
 
@@ -67,10 +67,10 @@ export class Departure implements IDeparture, Categorized<Departure> {
     return new CategoryAttachment<Departure>(this.axios, 'departure', this)
   }
 
-  @timestamp() readonly end!: Date
+  @timestamp() accessor end!: Date
   readonly inventory!: Inventory
   readonly source_id!: string | null
-  @timestamp() readonly start!: Date
+  @timestamp() accessor start!: Date
   readonly version_id!: string
   fields!: FieldData
 
@@ -116,13 +116,13 @@ export class DepartureElement implements IDepartureElement {
     date: Date
   }
 
-  @timestamp() readonly created_at!: Date
+  @timestamp() accessor created_at!: Date
   id!: string
   inventory!: Inventory
   options!: DepartureElementOption[]
   element!: DepartureElementRel
   readonly departure_id!: string
-  @timestamp() readonly updated_at!: Date
+  @timestamp() accessor updated_at!: Date
 
   /**
      * Update a Departure Element
@@ -151,7 +151,7 @@ export interface IDepartureElementOption extends IElementOption {
 export class DepartureElementOption implements IDepartureElementOption {
   readonly category!: Category
   readonly constraints!: Record<string, any>
-  @timestamp() readonly created_at!: Date
+  @timestamp() accessor created_at!: Date
   readonly id!: string
   readonly is_lead!: boolean
   readonly name!: string
@@ -159,7 +159,7 @@ export class DepartureElementOption implements IDepartureElementOption {
   readonly price_unit!: PriceUnit
   readonly prices!: Price[]
   readonly published!: boolean
-  @timestamp() readonly updated_at!: Date
+  @timestamp() accessor updated_at!: Date
   readonly web_bookable!: boolean
 
   private readonly axios: AxiosInstance
@@ -201,14 +201,14 @@ export interface UpdatePriceParams {
 }
 
 export class Price implements IPrice {
-  @timestamp() readonly created_at!: Date
+  @timestamp() accessor created_at!: Date
   readonly currency!: string
   readonly deposit!: { calculated: boolean, value: string }
   readonly id!: string
   readonly initialized!: boolean
   readonly on_sale!: boolean
   readonly previous_value!: string | null
-  @timestamp() readonly updated_at!: Date
+  @timestamp() accessor updated_at!: Date
   readonly value!: string
 
   private readonly axios: AxiosInstance

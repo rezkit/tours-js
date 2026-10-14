@@ -87,14 +87,14 @@ export class ContentItem implements IContentItem, Imagable<ContentItem> {
 
   category: Category
   content!: string
-  @timestamp() readonly created_at!: Date
+  @timestamp() accessor created_at!: Date
   readonly id!: string
   ordering!: number
   published!: boolean
   title!: string
   readonly type!: EntityType
-  @timestamp() readonly updated_at!: Date
-  @timestamp() deleted_at?: Date
+  @timestamp() accessor updated_at!: Date
+  deleted_at!: null | string | Date
 
   get path (): string {
     return `/${this.type}/content/${this.id}`

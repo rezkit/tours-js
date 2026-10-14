@@ -102,8 +102,8 @@ export class Accommodation implements
   seo!: SEOProperties
   slug!: string
 
-  @timestamp() readonly created_at!: Date
-  @timestamp() readonly updated_at!: Date
+  @timestamp() accessor created_at!: Date
+  @timestamp() accessor updated_at!: Date
   deleted_at!: null | string | Date
 
   private readonly axios: AxiosInstance

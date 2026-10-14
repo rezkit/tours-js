@@ -82,8 +82,8 @@ export class HolidayVersion implements
   }
 
   readonly code!: string
-  @timestamp() readonly created_at!: Date
-  @timestamp() readonly updated_at!: Date
+  @timestamp() accessor created_at!: Date
+  @timestamp() accessor updated_at!: Date
   readonly description!: string | null
   readonly fields!: FieldData
   readonly holiday_id!: string
@@ -156,7 +156,7 @@ export class HolidayVersions extends ApiGroup {
     return new HolidayVersion(response, this.axios)
   }
 
-    /**
+  /**
      * Copy a Version within this holiday
      *
      * The copy includes the version's locations, elements and options,

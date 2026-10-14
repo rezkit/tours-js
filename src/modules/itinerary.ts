@@ -71,7 +71,7 @@ export class ItineraryEntry implements
     Imagable<ItineraryEntry> {
   private readonly axios: AxiosInstance
 
-  @timestamp() readonly created_at!: Date
+  @timestamp() accessor created_at!: Date
   description!: string | null
   end_day!: number
   readonly id!: string
@@ -81,7 +81,7 @@ export class ItineraryEntry implements
   introduction!: string | null
   start_day!: number
   title!: string
-  @timestamp() readonly updated_at!: Date
+  @timestamp() accessor updated_at!: Date
   version_id!: string
   grandparent_id!: string | null
   shared_id!: string | null

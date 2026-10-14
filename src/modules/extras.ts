@@ -47,8 +47,8 @@ export class Extra implements IExtra, Categorized<Extra>, Contentized<Extra>, Im
 
   fields!: FieldData
 
-  @timestamp() readonly created_at!: Date
-  @timestamp() readonly updated_at!: Date
+  @timestamp() accessor created_at!: Date
+  @timestamp() accessor updated_at!: Date
   deleted_at!: null | string | Date
 
   private readonly axios: AxiosInstance
@@ -142,8 +142,8 @@ export class ExtraPrice implements IExtraPrice {
   readonly end!: Date
   readonly occupancy!: { from: number, to: number }
   readonly value!: number
-  @timestamp() readonly updated_at!: Date
-  @timestamp() readonly created_at!: Date
+  @timestamp() accessor updated_at!: Date
+  @timestamp() accessor created_at!: Date
 
   private readonly axios: AxiosInstance
 

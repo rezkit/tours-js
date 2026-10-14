@@ -172,8 +172,8 @@ export class Holiday implements IHoliday, Categorized<Holiday>, Contentized<Holi
   }
 
   code!: string
-  @timestamp() readonly created_at!: Date
-  @timestamp() readonly updated_at!: Date
+  @timestamp() accessor created_at!: Date
+  @timestamp() accessor updated_at!: Date
   description!: string | null
   product_description!: string | null
   fields!: FieldData
