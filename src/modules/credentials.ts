@@ -33,8 +33,8 @@ export class Credentials implements ICredentials {
   private_key!: string | null
   enabled!: boolean
 
-  @timestamp() readonly created_at!: Date
-  @timestamp() readonly updated_at!: Date
+  @timestamp() accessor created_at!: Date
+  @timestamp() accessor updated_at!: Date
 
   private readonly axios: AxiosInstance
 
@@ -65,7 +65,7 @@ export class Api extends ApiGroup {
 
   async private (id: string): Promise<CredentialsPrivateKey> {
     const { data } = await this.axios.get<CredentialsPrivateKey>(this.path + `/${id}/private`)
-    return data as CredentialsPrivateKey
+    return data
   }
 
   async create (params: CreateCredentialsParams): Promise<Credentials> {

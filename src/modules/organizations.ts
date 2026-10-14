@@ -17,7 +17,7 @@ export class Organization implements IOrganization {
     return this
   }
 
-  @timestamp() readonly created_at!: Date
+  @timestamp() accessor created_at!: Date
   currencies!: string[]
   deposit_defaults!: { balance_due: number, percentage: number }
   image_settings!: ImagePreset[]

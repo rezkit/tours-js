@@ -49,8 +49,8 @@ export class SharedItineraryEntry implements ISharedItineraryEntry, Contentized<
   includes_dinner!: boolean
   published!: boolean
   deleted_at!: null | string | Date
-  @timestamp() readonly updated_at!: Date
-  @timestamp() readonly created_at!: Date
+  @timestamp() accessor updated_at!: Date
+  @timestamp() accessor created_at!: Date
 
   constructor (values: ISharedItineraryEntry, axios: AxiosInstance) {
     Object.assign(this, values)

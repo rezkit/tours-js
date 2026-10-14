@@ -1,15 +1,14 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "module": "ES2020",
+    "module": "NodeNext",
     "rootDir": "src/",
     "outDir": "lib/",
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
     "resolveJsonModule": true,
     "strict": true,
     "isolatedModules": true,
-    "experimentalDecorators": true,
     "sourceMap": true,
     "types": [
       "node"
@@ -17,12 +16,11 @@
     "declaration": true
   },
   "include": [
-    "./src",
-    "./.eslintsrc.cjs",
+    "./src"
   ],
   "exclude": [
     "./node_modules/",
     "**/*.spec.ts",
-    "./examples",
+    "./examples"
   ]
 }

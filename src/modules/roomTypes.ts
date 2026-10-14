@@ -54,8 +54,8 @@ export class RoomType implements IRoomType, Contentized<RoomType>, Imagable<Room
 
   fields!: FieldData
 
-  @timestamp() readonly created_at!: Date
-  @timestamp() readonly updated_at!: Date
+  @timestamp() accessor created_at!: Date
+  @timestamp() accessor updated_at!: Date
   deleted_at!: null | string | Date
 
   private readonly axios: AxiosInstance
@@ -147,8 +147,8 @@ export class AccommodationPrice implements IAccommodationPrice {
   readonly occupancy!: { from: number, to: number }
   readonly published!: boolean
   readonly value!: number
-  @timestamp() readonly updated_at!: Date
-  @timestamp() readonly created_at!: Date
+  @timestamp() accessor updated_at!: Date
+  @timestamp() accessor created_at!: Date
 
   private readonly axios: AxiosInstance
 

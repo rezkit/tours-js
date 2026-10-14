@@ -1,23 +1,31 @@
 /**
- * Annotation which will always return the given property as a `Date`
+ * Decorator for auto-accessors which will always return the given property as a `Date`,
+ * converting from the string representation returned by the API.
+ *
+ * @example
+ * class Foo {
+ *   @timestamp() accessor created_at!: Date
+ * }
  */
 export default function timestamp () {
-  return (target: any, name: PropertyKey) => {
-    // Internal name of the property to actually store the value against
-    const internalName = Symbol.for('__timestamp_' + String(name))
+  return function <This, V extends Date | undefined>(
+    target: ClassAccessorDecoratorTarget<This, V>,
+    _context: ClassAccessorDecoratorContext<This, V>
+  ): ClassAccessorDecoratorResult<This, V> {
+    return {
+      get (this: This): V {
+        const value: unknown = target.get.call(this)
 
-    Object.defineProperty(target, name, {
-      get (this: any) {
-        if (typeof this[internalName] === 'string') {
-          return new Date(this[internalName])
+        if (typeof value === 'string') {
+          return new Date(value) as V
         }
 
-        return this[internalName]
+        return value as V
       },
 
-      set (this: any, value: Date | string) {
-        this[internalName] = value
+      set (this: This, value: V | string) {
+        target.set.call(this, value as V)
       }
-    })
+    }
   }
 }

@@ -26,8 +26,8 @@ export interface ListMapLinesQuery extends PaginatedQuery {
 export class MapLines implements IMapLines {
   private readonly axios: AxiosInstance
 
-  @timestamp() readonly created_at!: Date
-  @timestamp() readonly updated_at!: Date
+  @timestamp() accessor created_at!: Date
+  @timestamp() accessor updated_at!: Date
 
   readonly id!: string
   readonly title!: string

@@ -45,8 +45,8 @@ export class User implements IUser {
   organization_id!: string
   preferences!: null
   rezkit_id!: string
-  @timestamp() readonly created_at!: Date
-  @timestamp() readonly updated_at!: Date
+  @timestamp() accessor created_at!: Date
+  @timestamp() accessor updated_at!: Date
 }
 
 export interface ImagePreset {

@@ -44,11 +44,11 @@ export class ApiKey implements IApiKey {
   }
 
   readonly abilities!: string[]
-  @timestamp() readonly created_at!: Date
+  @timestamp() accessor created_at!: Date
   readonly id!: string
   readonly last_used_at!: string
   readonly name!: string
-  @timestamp() readonly updated_at!: Date
+  @timestamp() accessor updated_at!: Date
 }
 
 export interface CreateApiKeyRequest {

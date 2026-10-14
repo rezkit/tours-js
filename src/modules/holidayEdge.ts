@@ -65,8 +65,8 @@ export class HolidayEdge implements
   ordering!: number
   published!: boolean
   deleted_at!: null | string | Date
-  @timestamp() readonly created_at!: Date
-  @timestamp() readonly updated_at!: Date
+  @timestamp() accessor created_at!: Date
+  @timestamp() accessor updated_at!: Date
 
   async update (params: UpdateHolidayEdgeParams): Promise<HolidayEdge> {
     const { data } = await this.axios.patch<IHolidayEdge>(this.path, params)
